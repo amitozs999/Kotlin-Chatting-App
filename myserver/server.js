@@ -6,6 +6,17 @@ var port = 3000;
 
 var io = require('socket.io')(http);
 
+var admin = require("firebase-admin");
+
+var firebasecredential=require(__dirname +'/private/mykey.json');
+
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(firebasecredential),
+  databaseURL: "https://node-chat-app-b19a4.firebaseio.com"
+});
+
 io.on('connection', function(socket) {
     var i=socket.id
     console.log(i+"has connected")

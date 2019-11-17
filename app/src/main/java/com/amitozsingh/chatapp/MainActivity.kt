@@ -1,4 +1,4 @@
-package com.amitozsingh.nodechatapp
+package com.amitozsingh.chatapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -6,6 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -14,7 +15,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        applicationId "com.amitozsingh.nodechatapp"
+        applicationId "com.amitozsingh.chatapp"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -46,5 +47,16 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.0'
     kapt 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.0'
+    implementation 'com.google.firebase:firebase-database-ktx:19.2.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.1'
+
 }
 
+apply plugin: 'com.google.gms.google-services'

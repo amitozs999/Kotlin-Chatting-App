@@ -1,4 +1,4 @@
-package com.amitozsingh.nodechatapp
+package com.amitozsingh.chatapp
 
 import org.junit.Test
 

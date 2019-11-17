@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "976639310406",
+    "firebase_url": "https://node-chat-app-b19a4.firebaseio.com",
+    "project_id": "node-chat-app-b19a4",
+    "storage_bucket": "node-chat-app-b19a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976639310406:android:ce2134b43e0687cb442847",
+        "android_client_info": {
+          "package_name": "com.amitozsingh.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976639310406-1n8865819qm6i7mgmfmukq19akk2mulm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amitozsingh.chatapp",
+            "certificate_hash": "54cd2c0b2d4e5f9c66727fbb71261a34c28a6973"
+          }
+        },
+        {
+          "client_id": "976639310406-uin32behjbmiqj1qt5mk4iftq5fubg9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE2-NULpUQpW-OUEzDJ6mbKaAlmp-jmto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976639310406-uin32behjbmiqj1qt5mk4iftq5fubg9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
