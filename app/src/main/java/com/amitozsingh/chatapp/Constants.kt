@@ -1,3 +1,3 @@
 package com.amitozsingh.chatapp
 
-val LOCAL_HOST = ":3000"
+val LOCAL_HOST = "http://192.168.0.106:3000"
