@@ -20,9 +20,17 @@ admin.initializeApp({
 io.on('connection', function(socket) {
     var i=socket.id
     console.log(i+"has connected")
- 
+    
+    socket.on('disconnect', function() {
+   
+      console.log("has disconnected")
+   
+     
+    });
    
   });
+
+  
 
 http.listen(port, function(err){
     if (err){
