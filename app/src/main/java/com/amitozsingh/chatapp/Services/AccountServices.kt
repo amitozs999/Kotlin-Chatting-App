@@ -1,20 +1,22 @@
 package com.amitozsingh.chatapp.Services
 
 import android.util.Log
-import io.reactivex.android.schedulers.AndroidSchedulers
+
 
 import org.json.JSONException
 
 import org.json.JSONObject
-import io.reactivex.schedulers.Schedulers
+
 import android.widget.EditText
-import org.reactivestreams.Subscription
-import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
+
 import io.socket.client.Socket
 import android.util.Patterns
-import io.reactivex.functions.Function
+import rx.Observable
+import rx.Observer
+import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
+import rx.functions.Func1
+import rx.schedulers.Schedulers
 
 
 class AccountServices {
@@ -44,9 +46,11 @@ class AccountServices {
     fun sendRegistrationInfo(
         userNameEt: EditText, userEmailEt: EditText,
         userPasswordEt: EditText, socket: Socket
-    ): Subscription {
+    ): Subscription? {
 
-        val userDetails = arrayListOf()
+
+
+        val userDetails = arrayListOf<String>()
         userDetails.add(userNameEt.text.toString())
         userDetails.add(userEmailEt.text.toString())
         userDetails.add(userPasswordEt.text.toString())
@@ -55,12 +59,10 @@ class AccountServices {
 
         return userDetailsObservable
             .subscribeOn(Schedulers.io())
-            .map(object : Function<List<String>, Int> {
-                override fun apply(t: List<String>): Int {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
+            .map(object : Func1<List<String>, Int> {
 
-                fun call(strings: List<String>): Int? {
+
+               override fun call(strings: List<String>): Int? {
                     val userName = strings[0]
                     val userEmail = strings[1]
                     val userPassword = strings[2]
@@ -95,7 +97,13 @@ class AccountServices {
                 }
             })
             .observeOn(AndroidSchedulers.mainThread())
+            .unsubscribeOn(Schedulers.io())
             .subscribe(object : Observer<Int> {
+                override fun onCompleted() {
+
+                }
+
+
                 override fun onNext(t: Int) {
 
                     if (t == EMPTY_EMAIL) {
@@ -111,13 +119,6 @@ class AccountServices {
                     }
                 }
 
-                override fun onComplete() {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
 
 
 
