@@ -51,12 +51,13 @@ function registerUser(socket,io){
           hasLoggedIn:false
         });
   
+        //used to send response to android app that our user us registerd succesfuly
         Object.keys(io.sockets.sockets).forEach((id)=>{
           if (id == socket.id) {
             var message = {
               text:'Success'
             }
-            io.to(id).emit('message',{message});
+            io.to(id).emit('responseMessage',{message});
           }
         });
   
@@ -68,7 +69,7 @@ function registerUser(socket,io){
             var message = {
               text:error.message
             }
-            io.to(id).emit('message',{message});
+            io.to(id).emit('responseMessage',{message});   
           }
         });
       });

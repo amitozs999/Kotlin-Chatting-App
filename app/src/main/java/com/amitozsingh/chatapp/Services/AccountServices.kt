@@ -17,6 +17,8 @@ import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Func1
 import rx.schedulers.Schedulers
+import android.widget.Toast
+import com.amitozsingh.chatapp.Activities.BaseActivity
 
 
 class AccountServices {
@@ -127,6 +129,45 @@ class AccountServices {
                 }
 
 
+            })
+    }
+
+    fun registerResponse(data: JSONObject, activity: BaseActivity): Subscription {
+        val jsonObjectObservable = Observable.just(data)
+        return jsonObjectObservable
+            .subscribeOn(Schedulers.io())
+            .map(object :Func1<JSONObject, String>{
+                override fun call(t: JSONObject?): String {
+                       val message: String
+
+                try {
+                    val json = t!!.getJSONObject("message")
+                    message = json.get("text") as String
+                    return message
+                } catch (e: JSONException) {
+                    return e.message!!
+                }
+                }
+
+            }).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<String> {
+                override fun onCompleted() {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onNext(Response: String) {
+                    if (Response == "Success") {
+                        activity.finish()
+                        Toast.makeText(activity, "Registration Successful!", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(activity, Response, Toast.LENGTH_SHORT).show()
+                    }
+                }
             })
     }
     private fun isEmailValid(email: CharSequence): Boolean {

@@ -13,8 +13,14 @@ import com.amitozsingh.chatapp.utils.LOCAL_HOST
 
 import io.socket.client.IO
 import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.fragment_register.*
 import rx.subscriptions.CompositeSubscription
+import org.json.JSONObject
+
+import com.amitozsingh.chatapp.Activities.BaseActivity
+
+import android.content.Context
 
 
 /**
@@ -25,6 +31,7 @@ class RegisterFragment : BaseFragment() {
     lateinit var msocket: Socket
 
     var mAccountService:AccountServices?=null
+    var mbaseActivity:BaseActivity?=null
 
     companion object {
         fun newInstance(): RegisterFragment {
@@ -38,6 +45,8 @@ class RegisterFragment : BaseFragment() {
         msocket= IO.socket(LOCAL_HOST)
         msocket.connect()
 
+        msocket.on("responseMessage",Response())
+
         mAccountService=AccountServices().getInstance()
 
 
@@ -49,6 +58,17 @@ class RegisterFragment : BaseFragment() {
             //mAccountService.sendRegistrationInfo(register_userName,register_Email,register_Password,msocket)
 
             mCompositeSubscription?.add(mAccountService!!.sendRegistrationInfo(register_userName,register_Email,register_Password,msocket))
+        }
+
+
+    }
+
+
+
+     fun Response(): Emitter.Listener {
+        return Emitter.Listener { args ->
+            val data = args[0] as JSONObject
+            mCompositeSubscription!!.add(mAccountService!!.registerResponse(data,mbaseActivity!!))
         }
     }
 
@@ -65,6 +85,16 @@ class RegisterFragment : BaseFragment() {
         msocket.disconnect()
     }
 
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mbaseActivity = context as BaseActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mbaseActivity = null
+    }
 
 }
 
