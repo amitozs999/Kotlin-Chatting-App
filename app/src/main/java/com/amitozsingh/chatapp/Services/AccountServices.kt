@@ -19,11 +19,37 @@ import rx.functions.Func1
 import rx.schedulers.Schedulers
 import android.widget.Toast
 import com.amitozsingh.chatapp.Activities.BaseActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
+import com.amitozsingh.chatapp.utils.LOCAL_HOST
+
+import com.google.firebase.auth.AuthResult
+import com.google.android.gms.tasks.Task
+import androidx.annotation.NonNull
+import com.google.android.gms.tasks.OnCompleteListener
+import java.io.IOException
+import androidx.core.content.ContextCompat.startActivity
+import android.content.Intent
+import android.R.id.edit
+import android.content.Context
+import android.content.SharedPreferences
+import butterknife.internal.Utils
+
+import com.amitozsingh.chatapp.Activities.MessagesActivity
+import com.amitozsingh.chatapp.utils.USER_EMAIL
+import com.amitozsingh.chatapp.utils.USER_NAME
+import com.amitozsingh.chatapp.utils.USER_PICTURE
+import java.lang.Exception
+import kotlin.math.log
 
 
 class AccountServices {
 
     private var myAccountService: AccountServices? = null
+    var messagesActivity=MessagesActivity()
+    var baseActivity:BaseActivity?=null
+
+    var mContext: Context? = null
 
     private val EMPTY_PASSWORD = 1
     private val EMPTY_EMAIL = 2
@@ -42,6 +68,205 @@ class AccountServices {
             myAccountService = AccountServices()
         }
         return myAccountService as AccountServices
+    }
+
+
+    fun getAuthToken(
+        data: JSONObject,
+        activity: BaseActivity?,
+        sharedPreferences: SharedPreferences?
+    ): Subscription {
+        val jsonObservable = Observable.just(data)
+
+        return jsonObservable
+            .subscribeOn(Schedulers.io())
+            .unsubscribeOn(Schedulers.io())
+            .map(object : Func1<JSONObject, List<String>> {
+                override fun call(t: JSONObject?): List<String> {
+
+
+                    val userDetails = arrayListOf<String>()
+
+                    try {
+                        val serverData = t!!.getJSONObject("token")
+                        val token = serverData.get("authToken") as String
+                        val email = serverData.get("email") as String
+                        val photo = serverData.get("photo") as String
+                        val userName = serverData.get("displayName") as String
+
+                        userDetails.add(token)
+                        userDetails.add(email)
+                        userDetails.add(photo)
+                        userDetails.add(userName)
+                        return userDetails
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        return userDetails
+                    }
+                }
+            }).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<List<String>> {
+                override fun onCompleted() {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onNext(strings: List<String>) {
+                    val token = strings[0]
+                    val email = strings[1]
+                    val photo = strings[2]
+                    val userName = strings[3]
+
+                    Log.i("AMITOZ",email)
+                    Log.i("AMITOZ",token)
+                    Log.i("AMITOZ",photo)
+                    Log.i("AMITOZ",userName)
+
+                    if (email != "error") {
+                        FirebaseAuth.getInstance().signInWithCustomToken(token)
+                            .addOnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+
+                                } else {
+                                    sharedPreferences!!.edit().putString(USER_EMAIL, email)
+                                        .apply()
+                                    sharedPreferences.edit()
+                                        .putString(USER_NAME, userName).apply()
+
+
+                                   try {
+
+
+
+                                     Log.i("AMITOZ",activity.toString())
+                                       val intent = Intent(activity, messagesActivity::class.java)
+                                       // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                       if (activity != null) {
+                                           activity.startActivity(intent)
+                                       }
+
+                                       activity?.finish()
+                                   }catch (e:Exception)
+                                   {
+                                       e.printStackTrace()
+                                   }
+
+                                }
+                            }
+                    }
+                }
+            })
+    }
+
+
+     fun sendLoginInfo(
+        userEmailEt: EditText,
+        userPasswordEt: EditText,
+        socket: Socket,
+        activity: BaseActivity?
+    ): Subscription? {
+        Log.i("AMITOZ","i m here 2")
+        val userDetails = arrayListOf<String>()
+        userDetails.add(userEmailEt.text.toString())
+        userDetails.add(userPasswordEt.text.toString())
+        Log.i("AMITOZ","i m here")
+        val userDetailsObservable = Observable.just<List<String>>(userDetails)
+
+        return userDetailsObservable
+            .subscribeOn(Schedulers.io())
+            .unsubscribeOn(Schedulers.io())
+            .map(object : Func1<List<String>, Int> {
+                override fun call(strings: List<String>): Int? {
+                    val userEmail=strings[0]
+                    val userPassword = strings[1]
+
+                    Log.i("AMITOZ",userEmail)
+                    Log.i("AMITOZ",userPassword)
+
+                    if (userEmail.isEmpty()) {
+                       return EMPTY_EMAIL
+                    } else if (userPassword.isEmpty()) {
+                       return EMPTY_PASSWORD
+                    } else if (userPassword.length < 6) {
+                       return PASSWORD_SHORT
+                    } else if (!isEmailValid(userEmail)) {
+                       return EMAIL_BAD_FORMAT
+                    } else {
+                        FirebaseAuth.getInstance()
+                            .signInWithEmailAndPassword(userEmail, userPassword)
+                            .addOnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    Log.i("AMITOZ","NI HOGYA")
+                                  Log.i("AMITOZ",task.exception!!.message)
+
+
+                                   // Toast.makeText(activity,task.exception!!.message,Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    Log.i("AMITOZ","HOGYA")
+                                    val sendData = JSONObject()
+                                    try {
+                                        sendData.put("email", userEmail)
+                                        socket.emit("userInfo", sendData)
+                                        Log.i("AMITOZ","HOGYA DONE")
+
+
+                                    } catch (e: JSONException) {
+                                        e.printStackTrace()
+                                    }
+
+                                }
+                            }
+
+
+                        try {
+                            FirebaseInstanceId.getInstance().deleteInstanceId()
+                            FirebaseInstanceId.getInstance().token
+                            Log.i("AMITOZ","LEVEL 4")
+                        } catch (e: IOException) {
+                            Log.i("AMITOZ","LEVEL 5")
+                            e.printStackTrace()
+
+                        }
+
+
+                        FirebaseAuth.getInstance().signOut()
+                        Log.i("AMITOZ","LEVEL 6")
+                       return NO_ERRORS
+
+
+                    }
+                }
+            })
+            .subscribe(object : Observer<Int> {
+                override fun onCompleted() {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onNext(integer: Int?) {
+
+
+
+                    if (integer == EMPTY_EMAIL) {
+                        userEmailEt.error = "Email Address Can't Be Empty"
+                    } else if (integer == EMAIL_BAD_FORMAT) {
+                        userEmailEt.error = "Please check your email format"
+                    } else if (integer == EMPTY_PASSWORD) {
+                        userPasswordEt.error = "Password Can't Be Blank"
+                    } else if (integer == PASSWORD_SHORT) {
+                        userPasswordEt.error = "Password must be at least 6 characters long"
+                    }
+
+                }
+            })
+
     }
 
 
@@ -173,5 +398,6 @@ class AccountServices {
     private fun isEmailValid(email: CharSequence): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
+
 
 }

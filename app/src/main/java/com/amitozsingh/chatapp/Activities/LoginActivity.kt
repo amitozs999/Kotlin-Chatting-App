@@ -1,5 +1,6 @@
 package com.amitozsingh.chatapp.Activities
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.amitozsingh.chatapp.Fragments.LoginFragment
 
@@ -7,7 +8,6 @@ class LoginActivity : BaseActivity() {
     override fun createFragment(): Fragment {
         return LoginFragment.newInstance()
     }
-
 //    lateinit var msocket:Socket
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {

@@ -51,7 +51,7 @@ function logUserIn(socket,io){
             email:data.email
           };
   
-          admin.auth().createCustomToken(userRecord.uidInternal,addtotoken)
+          admin.auth().createCustomToken(userRecord.uid,addtotoken)
           .then((customToken) =>{
   
             Object.keys(io.sockets.sockets).forEach((id)=>{
