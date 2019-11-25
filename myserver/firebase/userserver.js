@@ -22,11 +22,73 @@ var userAccountrequests=(io)=>{
         });
 
         registerUser(socket,io);
+        logUserIn(socket,io);
        
       });
 
 
 };
+
+
+function logUserIn(socket,io){
+    socket.on('userInfo',(data)=>{
+      admin.auth().getUserByEmail(data.email)         //admin.auth().getUserByEmail(email)
+                                                      //.then(function(userRecord) {
+                                                      // See the UserRecord reference doc for the contents of userRecord.
+                                                     //console.log('Successfully fetched user data:', userRecord.toJSON());
+                                                     //})
+                                                     //.catch(function(error) {
+                                                     //console.log('Error fetching user data:', error);
+                                                     //});
+      .then((userRecord)=>{
+  
+        var db = admin.database();
+        var ref = db.ref('users');
+        var userRef = ref.child(encodeEmail(data.email));
+  
+        userRef.once('value',(snapshot) =>{
+          var addtotoken = {
+            email:data.email
+          };
+  
+          admin.auth().createCustomToken(userRecord.uidInternal,addtotoken)
+          .then((customToken) =>{
+  
+            Object.keys(io.sockets.sockets).forEach((id)=>{
+              if (id == socket.id) {
+                var token = {
+                  authToken:customToken,
+                  email:data.email,
+                  photo:snapshot.val().userPicture,
+                  displayName:snapshot.val().userName
+                }
+  
+                userRef.child('hasLoggedIn').set(true);
+  
+                io.to(id).emit('token',{token});
+              }
+            });
+  
+          }).catch((error)=>{
+            console.log(error.message);
+  
+            Object.keys(io.sockets.sockets).forEach((id)=>{
+              if (id == socket.id) {
+                var token = {
+                  authToken:error.message,
+                  email:'error',
+                  photo:'error',
+                  displayName:'error'
+                }
+                io.to(id).emit('token',{token});
+              }
+            });
+          });
+        });
+      });
+    });
+  }
+  
 function registerUser(socket,io){
     socket.on('userData',(data)=>{
       admin.auth().createUser({
@@ -57,7 +119,7 @@ function registerUser(socket,io){
             var message = {
               text:'Success'
             }
-            io.to(id).emit('responseMessage',{message});
+            io.to(id).emit('responseMessage',{message});   //obj->responseMessage->message->text=success
           }
         });
   
