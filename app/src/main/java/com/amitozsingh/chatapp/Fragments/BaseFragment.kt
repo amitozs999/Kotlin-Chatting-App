@@ -15,13 +15,19 @@ import rx.subscriptions.CompositeSubscription
 import android.content.SharedPreferences
 
 import android.content.Context
+import android.view.MenuItem
+import android.widget.Switch
+import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.utils.USER_INFO_PREFERENCE
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.fragment_messages.*
 
 
 /**
  * A simple [Fragment] subclass.
  */
 open class BaseFragment : Fragment() {
+
 
     protected var mCompositeSubscription: CompositeSubscription? = null
 
@@ -34,6 +40,8 @@ open class BaseFragment : Fragment() {
 
         mSharedPreferences = getActivity()!!.getSharedPreferences(USER_INFO_PREFERENCE,
             Context.MODE_PRIVATE);
+
+
     }
 
     override fun onDestroy() {
