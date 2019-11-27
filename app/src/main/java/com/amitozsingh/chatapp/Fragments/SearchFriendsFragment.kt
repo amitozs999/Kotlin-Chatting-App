@@ -38,6 +38,8 @@ class SearchFriendsFragment : BaseFragment(),SearchAdapter.UserListener {
 
     }
 
+
+
     private var mUsersReference: DatabaseReference? = null
     private var mUsersListener: ValueEventListener? = null
 

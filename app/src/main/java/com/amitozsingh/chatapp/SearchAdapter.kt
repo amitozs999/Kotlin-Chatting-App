@@ -15,6 +15,10 @@ import com.squareup.picasso.Picasso
 
 class SearchAdapter(var mActivity:MessagesActivity,var mListener:UserListener,private var userlist: ArrayList<User>) : RecyclerView.Adapter<SearchAdapter.myviewHolder>() {
 
+    fun addElement(chat: User) {
+        userlist.add(chat)
+        notifyDataSetChanged()
+    }
     fun setmUsers(users: List<User>) { Log.i("AMITOZ1","AGYA1")
         userlist.clear()
       userlist.addAll(users)
@@ -27,7 +31,7 @@ class SearchAdapter(var mActivity:MessagesActivity,var mListener:UserListener,pr
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int):myviewHolder {
         Log.i("AMITOZ1","AGYA")
-        var li=mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view=li.inflate(R.layout.user_list,parent,false)
         return myviewHolder(view)
 
@@ -42,7 +46,7 @@ class SearchAdapter(var mActivity:MessagesActivity,var mListener:UserListener,pr
         //var layout = holder.view.findViewById<View>(R.id.chatLayout)
         var userdp = holder.view.findViewById<ImageView>(R.id.userdp)
         var username = holder.view.findViewById<TextView>(R.id.username)
-
+        Log.i("AMITOZ1",item1.userName!!)
         username.text=item1.userName
 //        if(userdp!=null){
 //            Picasso.get().load(item1.userPicture).into(userdp)
