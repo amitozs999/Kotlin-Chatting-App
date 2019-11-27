@@ -8,17 +8,29 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.amitozsingh.chatapp.R
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseReference
+
+import com.amitozsingh.chatapp.SearchAdapter
+import com.amitozsingh.chatapp.Services.FriendServices
+import com.amitozsingh.chatapp.utils.User
+
 
 /**
  * A simple [Fragment] subclass.
  */
 class FriendRequestsFragment : Fragment() {
 
+
+
+
     companion object {
         fun newInstance(): FriendRequestsFragment {
             return FriendRequestsFragment()
         }
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

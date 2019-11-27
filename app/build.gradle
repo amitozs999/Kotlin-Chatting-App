@@ -64,6 +64,8 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.0'
     implementation 'io.reactivex:rxjava:1.1.8'
 
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
 
 }
 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+
+        android:orientation="horizontal">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/userdp"
+            app:riv_mutate_background="true"
+            app:riv_tile_mode="repeat"
+
+            android:scaleType="fitCenter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:riv_border_color="@android:color/widget_edittext_dark"
+            app:riv_border_width="10dip"
+            app:riv_corner_radius="40dip"
+            app:riv_oval="true"
+            android:src="@drawable/ic_profile" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:orientation="vertical"
+        android:paddingTop="30dp">
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="10sp"
+            android:text="Amitoz"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="10sp"
+            android:text="Reqest Sent"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginStart="30dp"
+    android:layout_marginTop="45dp"
+
+    android:background="@drawable/request_sent_bg">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/ic_send" />
+
+</LinearLayout>
+
+</LinearLayout>

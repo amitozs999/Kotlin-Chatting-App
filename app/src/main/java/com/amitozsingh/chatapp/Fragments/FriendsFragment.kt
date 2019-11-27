@@ -14,11 +14,10 @@ import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.myPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_friends.*
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseReference
 
-
-
-
-
+import com.amitozsingh.chatapp.Services.FriendServices
 
 
 /**
@@ -26,8 +25,12 @@ import kotlinx.android.synthetic.main.fragment_friends.*
  */
 class FriendsFragment : BaseFragment() {
 
-
-var mViewPager: ViewPager? =null
+//    private val mFriendsService: FriendServices? = null
+//    private val mRequestsReference: DatabaseReference? = null
+//    private val mRequestsListener: ValueEventListener? = null
+//
+//    private val mUserEmailString: String? = null
+    var mViewPager: ViewPager? =null
 
     companion object {
         fun newInstance(): FriendsFragment {
