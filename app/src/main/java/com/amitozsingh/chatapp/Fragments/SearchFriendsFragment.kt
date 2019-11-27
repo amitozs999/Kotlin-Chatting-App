@@ -22,6 +22,7 @@ import kotlin.collections.ArrayList
 
 import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
+import com.amitozsingh.chatapp.FindFriendsAdapter
 import com.amitozsingh.chatapp.utils.FIREBASE_USERS
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_search_friends.*
@@ -33,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_search_friends.*
 /**
  * A simple [Fragment] subclass.
  */
-class SearchFriendsFragment : BaseFragment(),SearchAdapter.UserListener {
+class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
     override fun OnUserClicked(user: User) {
 
     }
@@ -48,7 +49,7 @@ class SearchFriendsFragment : BaseFragment(),SearchAdapter.UserListener {
 
 
     private var mUserEmailString: String? = null
-    private var mAdapter: SearchAdapter? = null
+    private var mAdapter: FindFriendsAdapter? = null
 
 
     lateinit var mAllUsers: ArrayList<User>
@@ -65,8 +66,8 @@ class SearchFriendsFragment : BaseFragment(),SearchAdapter.UserListener {
         super.onCreate(savedInstanceState)
 
 
-        mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL,"");
-        Log.i("AMITOZZ",mUserEmailString!!)
+        mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL,null)
+        Log.i("AMITOZZ",mUserEmailString.toString())
     }
 
     override fun onCreateView(
@@ -88,7 +89,7 @@ class SearchFriendsFragment : BaseFragment(),SearchAdapter.UserListener {
 //        mAdapter = SearchAdapter(activity as MessagesActivity, this,mAllUsers)
 
         mAllUsers = ArrayList()
-        mAdapter = SearchAdapter(activity as MessagesActivity, this,mAllUsers)
+        mAdapter = FindFriendsAdapter(activity as MessagesActivity, this)
 
         mUsersListener = getAllUsers(mAdapter!!,mUserEmailString)
 
@@ -98,19 +99,24 @@ class SearchFriendsFragment : BaseFragment(),SearchAdapter.UserListener {
 
         mUsersReference!!.addListenerForSingleValueEvent(mUsersListener!!)
 
-        mRview.layoutManager= LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
+        mRview.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         mRview.setAdapter(mAdapter)
     }
 
-    fun getAllUsers(adapter: SearchAdapter, currentUsersEmail: String?): ValueEventListener {
+    fun getAllUsers(adapter: FindFriendsAdapter, currentUsersEmail: String?): ValueEventListener {
         return object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                mAllUsers.clear()
+var i=0
                 for (snapshot in dataSnapshot.children) {
+                    i++
                     val user = snapshot.getValue(User::class.java)
-                    if (!user!!.email.equals(currentUsersEmail) && user.hasLoggedIn) {
-                        mAllUsers.add(user)
+Log.i("AMITOZ12",i.toString())
+                    if (!user!!.email.equals(currentUsersEmail)) {
+                        mAllUsers.add(user);
+
+
                     }
+
                 }
                 adapter.setmUsers(mAllUsers)
             }
