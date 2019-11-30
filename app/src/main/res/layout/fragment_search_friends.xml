@@ -15,9 +15,10 @@
         android:drawableStart="@drawable/ic_search"
         android:drawableLeft="@drawable/ic_search"
         android:hint="     Search Friends Here ..."
-
         android:paddingLeft="5dp"
+
         android:textColor="#DE000000"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
