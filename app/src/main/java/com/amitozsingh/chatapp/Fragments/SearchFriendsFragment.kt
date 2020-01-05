@@ -41,6 +41,9 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
     private var mGetAllFriendRequestsSentReference: DatabaseReference? = null
     private var mGetAllFriendRequestsSentListener: ValueEventListener? = null
 
+    private var mGetAllFriendRequestsRecievedReference: DatabaseReference? = null
+    private var mGetAllFriendRequestsRecievedListener: ValueEventListener? = null
+
 
      var mUserEmailString: String?=null
     private var mAdapter: FindFriendsAdapter? = null
@@ -53,6 +56,7 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
     lateinit var msocket:Socket
 
     var mFriendRequestsSentMap: HashMap<String, User>? = null
+    var mFriendRequestsRecievedMap: HashMap<String, User>? = null
 
 
     companion object {
@@ -75,6 +79,7 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 
         mFriendServices = FriendServices().getInstance()
         mFriendRequestsSentMap = HashMap()
+        mFriendRequestsRecievedMap= HashMap()
     }
 
     override fun onCreateView(
@@ -118,6 +123,17 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 
         mGetAllFriendRequestsSentReference!!.addValueEventListener(mGetAllFriendRequestsSentListener!!)
 
+
+        mGetAllFriendRequestsRecievedReference = FirebaseDatabase.getInstance().getReference()
+            .child(FIRE_BASE_PATH_FRIEND_REQUEST_RECIEVED)
+            .child(encodeEmail(mUserEmailString))
+
+        mGetAllFriendRequestsRecievedListener = FriendServices().getFriendRequestsRecieved(mAdapter!!)
+
+        mGetAllFriendRequestsRecievedReference!!.addValueEventListener(mGetAllFriendRequestsRecievedListener!!)
+
+
+
         mRview.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         mRview.setAdapter(mAdapter)
     }
@@ -158,6 +174,11 @@ Log.i("AMITOZ12",i.toString())
         if (mGetAllFriendRequestsSentListener!=null){
             mGetAllFriendRequestsSentReference?.removeEventListener(
                 mGetAllFriendRequestsSentListener!!
+            )
+        }
+        if(mGetAllFriendRequestsRecievedListener!=null){
+            mGetAllFriendRequestsRecievedReference?.removeEventListener(
+                mGetAllFriendRequestsRecievedListener!!
             )
         }
     }

@@ -23,12 +23,14 @@ class FindFriendsAdapter(
     private val mInflater: LayoutInflater
 
     private var mFriendRequestSentMap: HashMap<String, User>? = null
+    private var mFriendRequestRecievedMap: HashMap<String, User>? = null
 
 
     init {
         mInflater = mActivity.layoutInflater
         mUsers = ArrayList()
         mFriendRequestSentMap = HashMap()
+        mFriendRequestRecievedMap= HashMap()
 
     }
 
@@ -44,6 +46,11 @@ class FindFriendsAdapter(
         notifyDataSetChanged()
     }
 
+    fun setmFriendRequestRecievedMap(friendRequestRecievedMap: HashMap<String, User>) {
+        mFriendRequestRecievedMap!!.clear()
+        mFriendRequestRecievedMap!!.putAll(friendRequestRecievedMap)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -69,18 +76,25 @@ return  ViewHolder(userView)
             var user=mUsers[position]
             mListener.OnUserClicked(user)
         }
-        holder.bindItems(mUsers[position],mFriendRequestSentMap)
+        holder.bindItems(mUsers[position],mFriendRequestSentMap,mFriendRequestRecievedMap!!)
     }
     class ViewHolder(itemview:View):RecyclerView.ViewHolder(itemview){
-        fun bindItems(user: User,friendRequestSentMap:HashMap<String,User>?){
+        fun bindItems(user: User,friendRequestSentMap:HashMap<String,User>?,friendRequestRecievedMap: HashMap<String, User>){
             itemView.username.text=user.userName
+
             if (isIncludedInMap(friendRequestSentMap,user)){
                 //senttv.setVisibility(View.VISIBLE);
                 itemView.senttv.text="Friend Request Sent"
+                itemView.reqsentbutton.setVisibility(View.VISIBLE)
                 itemView.reqsentbutton.setImageResource(R.drawable.btn_minus);
                 //mAddFriend.setVisibility(View.VISIBLE);
+            }else if(isIncludedInMap(friendRequestRecievedMap,user)){
+                itemView.senttv.text="User sent you request"
+                itemView.reqsentbutton.setVisibility(View.GONE)
+
             }
             else{
+                itemView.reqsentbutton.setVisibility(View.VISIBLE)
                 itemView.senttv.setText("Add Friend")
                 itemView.reqsentbutton.setImageResource(R.drawable.btn_plus)
             }

@@ -62,6 +62,30 @@ class FriendServices {
         }
     }
 
+    fun getFriendRequestsRecieved(
+        adapter: FindFriendsAdapter
+    ): ValueEventListener {
+        val userHashMap=HashMap<String,User>()
+        // var userHashMap: HashMap<String, User>? = null
+
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                userHashMap.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    userHashMap.put(user?.email!!, user!!)
+                }
+
+                adapter.setmFriendRequestRecievedMap(userHashMap)
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
+
 
     fun sendorremoverequests(
        socket: Socket,
