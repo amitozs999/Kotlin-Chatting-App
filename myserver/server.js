@@ -11,9 +11,11 @@ var admin = require("firebase-admin");
 var firebasecredential=require(__dirname +'/private/mykey.json');
 
 var userrequests=require('./firebase/userserver')
+var friendrequests=require('./firebase/friendserver')
 
 
 userrequests.userAccountrequests(io);
+friendrequests.userFriendsrequests(io);
 
 admin.initializeApp({
   credential: admin.credential.cert(firebasecredential),

@@ -22,25 +22,8 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_search_friends.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import io.socket.client.IO
+import io.socket.client.Socket
 
 
 /**
@@ -67,6 +50,8 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 
     private var mFriendServices: FriendServices? = null
 
+    lateinit var msocket:Socket
+
     var mFriendRequestsSentMap: HashMap<String, User>? = null
 
 
@@ -78,6 +63,11 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        msocket= IO.socket(LOCAL_HOST)
+        msocket.connect()
+
 
 
         mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL,null)
@@ -179,13 +169,22 @@ Log.i("AMITOZ12",i.toString())
             mGetAllFriendRequestsSentReference?.child(encodeEmail(user.email))
                 ?.removeValue();
 
+            mCompositeSubscription?.add(FriendServices().sendorremoverequests(msocket,mUserEmailString!!,
+                user.email!!,"1"))
+
 
         } else {
 
             mGetAllFriendRequestsSentReference!!.child(encodeEmail(user.email))
                 .setValue(user)
 
+            mCompositeSubscription?.add(FriendServices().sendorremoverequests(msocket,mUserEmailString!!,
+                user.email!!,"0"))
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        msocket.disconnect()
+    }
 }
