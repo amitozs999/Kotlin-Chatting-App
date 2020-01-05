@@ -44,6 +44,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/senttv"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:paddingLeft="10sp"
@@ -66,6 +67,7 @@
             android:background="@drawable/request_sent_bg">
 
             <ImageView
+                android:id="@+id/reqsentbutton"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
 

@@ -7,25 +7,37 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 
 import com.amitozsingh.chatapp.R
-import com.amitozsingh.chatapp.SearchAdapter
 import com.amitozsingh.chatapp.Services.FriendServices
-import com.amitozsingh.chatapp.utils.User
-import java.util.*
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.amitozsingh.chatapp.utils.USER_EMAIL
 import kotlin.collections.ArrayList
 
-import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.FindFriendsAdapter
-import com.amitozsingh.chatapp.utils.FIREBASE_USERS
+import com.amitozsingh.chatapp.utils.*
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_search_friends.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -35,9 +47,7 @@ import kotlinx.android.synthetic.main.fragment_search_friends.*
  * A simple [Fragment] subclass.
  */
 class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
-    override fun OnUserClicked(user: User) {
 
-    }
 
 
 
@@ -45,16 +55,20 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
     private var mUsersListener: ValueEventListener? = null
 
 
+    private var mGetAllFriendRequestsSentReference: DatabaseReference? = null
+    private var mGetAllFriendRequestsSentListener: ValueEventListener? = null
 
 
-
-    private var mUserEmailString: String? = null
+     var mUserEmailString: String?=null
     private var mAdapter: FindFriendsAdapter? = null
 
 
     lateinit var mAllUsers: ArrayList<User>
 
-    private var mFriendsService: FriendServices? = null
+    private var mFriendServices: FriendServices? = null
+
+    var mFriendRequestsSentMap: HashMap<String, User>? = null
+
 
     companion object {
         fun newInstance(): SearchFriendsFragment{
@@ -68,6 +82,9 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 
         mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL,null)
         Log.i("AMITOZZ",mUserEmailString.toString())
+
+        mFriendServices = FriendServices().getInstance()
+        mFriendRequestsSentMap = HashMap()
     }
 
     override fun onCreateView(
@@ -99,6 +116,18 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 
         mUsersReference!!.addListenerForSingleValueEvent(mUsersListener!!)
 
+
+
+
+
+        mGetAllFriendRequestsSentReference = FirebaseDatabase.getInstance().getReference()
+            .child(FIRE_BASE_PATH_FRIEND_REQUEST_SENT)
+            .child(encodeEmail(mUserEmailString))
+
+        mGetAllFriendRequestsSentListener = FriendServices().getFriendRequestsSent(mAdapter!!,this)
+
+        mGetAllFriendRequestsSentReference!!.addValueEventListener(mGetAllFriendRequestsSentListener!!)
+
         mRview.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         mRview.setAdapter(mAdapter)
     }
@@ -126,14 +155,37 @@ Log.i("AMITOZ12",i.toString())
             }
         }
     }
-
+    fun setmFriendRequestsSentMap(friendRequestsSentMap: HashMap<String, User>) {
+        mFriendRequestsSentMap?.clear()
+        mFriendRequestsSentMap?.putAll(friendRequestsSentMap)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
 
         if (mUsersListener !=null){
             mUsersReference?.removeEventListener(mUsersListener!!);
         }
+        if (mGetAllFriendRequestsSentListener!=null){
+            mGetAllFriendRequestsSentReference?.removeEventListener(
+                mGetAllFriendRequestsSentListener!!
+            )
+        }
     }
 
+
+    override fun OnUserClicked(user: User) {
+
+        if (isIncludedInMap(mFriendRequestsSentMap,user)){
+            mGetAllFriendRequestsSentReference?.child(encodeEmail(user.email))
+                ?.removeValue();
+
+
+        } else {
+
+            mGetAllFriendRequestsSentReference!!.child(encodeEmail(user.email))
+                .setValue(user)
+
+        }
+    }
 
 }

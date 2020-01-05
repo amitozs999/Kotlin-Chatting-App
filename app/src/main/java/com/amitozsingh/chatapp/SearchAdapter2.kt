@@ -9,6 +9,7 @@ import android.view.View
 import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.utils.User
+import com.amitozsingh.chatapp.utils.isIncludedInMap
 import kotlinx.android.synthetic.main.user_list.view.*
 
 
@@ -21,12 +22,13 @@ class FindFriendsAdapter(
     private val mUsers: ArrayList<User>
     private val mInflater: LayoutInflater
 
-
+    private var mFriendRequestSentMap: HashMap<String, User>? = null
 
 
     init {
         mInflater = mActivity.layoutInflater
         mUsers = ArrayList()
+        mFriendRequestSentMap = HashMap()
 
     }
 
@@ -36,7 +38,11 @@ class FindFriendsAdapter(
         mUsers.addAll(users)
         notifyDataSetChanged()
     }
-
+    fun setmFriendRequestSentMap(friendRequestSentMap: HashMap<String, User>) {
+        mFriendRequestSentMap!!.clear()
+        mFriendRequestSentMap!!.putAll(friendRequestSentMap)
+        notifyDataSetChanged()
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -59,11 +65,25 @@ return  ViewHolder(userView)
 //            mActivity,
 //            mUsers[position]
 //        )
-        holder.bindItems(mUsers[position])
+        holder.itemView.reqsentbutton.setOnClickListener {
+            var user=mUsers[position]
+            mListener.OnUserClicked(user)
+        }
+        holder.bindItems(mUsers[position],mFriendRequestSentMap)
     }
     class ViewHolder(itemview:View):RecyclerView.ViewHolder(itemview){
-        fun bindItems(user: User){
+        fun bindItems(user: User,friendRequestSentMap:HashMap<String,User>?){
             itemView.username.text=user.userName
+            if (isIncludedInMap(friendRequestSentMap,user)){
+                //senttv.setVisibility(View.VISIBLE);
+                itemView.senttv.text="Friend Request Sent"
+                itemView.reqsentbutton.setImageResource(R.drawable.btn_minus);
+                //mAddFriend.setVisibility(View.VISIBLE);
+            }
+            else{
+                itemView.senttv.setText("Add Friend")
+                itemView.reqsentbutton.setImageResource(R.drawable.btn_plus)
+            }
         }
     }
 
