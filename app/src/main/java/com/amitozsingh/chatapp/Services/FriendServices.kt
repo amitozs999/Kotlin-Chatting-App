@@ -21,6 +21,10 @@ import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Func1
 import rx.schedulers.Schedulers
+import android.text.Editable
+import android.text.TextWatcher
+
+
 
 
 class FriendServices {
@@ -157,4 +161,14 @@ class FriendServices {
 
             })
     }
+
+    fun getMatchingUsers(users: List<User>): List<User> {
+
+
+
+        return users
+    }
+
+
+
 }

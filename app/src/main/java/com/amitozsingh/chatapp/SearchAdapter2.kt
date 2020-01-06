@@ -6,8 +6,11 @@ import android.content.Context
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Filter
+import android.widget.Filterable
 import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
+import com.amitozsingh.chatapp.Services.FriendServices
 import com.amitozsingh.chatapp.utils.User
 import com.amitozsingh.chatapp.utils.isIncludedInMap
 import kotlinx.android.synthetic.main.user_list.view.*
@@ -16,7 +19,9 @@ import kotlinx.android.synthetic.main.user_list.view.*
 class FindFriendsAdapter(
     private val mActivity: MessagesActivity,
     private val mListener: UserListener
-) : RecyclerView.Adapter<FindFriendsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FindFriendsAdapter.ViewHolder>() , Filterable {
+
+
 
 
     private val mUsers: ArrayList<User>
@@ -52,6 +57,47 @@ class FindFriendsAdapter(
         notifyDataSetChanged()
     }
 
+
+    var filteredlist=mUsers
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence): FilterResults? {
+
+
+                var key=constraint.toString()
+                if(key.isEmpty()){
+
+
+
+                    filteredlist=mUsers
+                }
+                else{
+                    var newfiltered=ArrayList<User>()
+                    for(i in mUsers)  //filteredlist
+                    {
+                        if(i.email!!.toLowerCase().startsWith(key.toLowerCase()))
+                            newfiltered.add(i)
+                    }
+
+                    filteredlist=newfiltered
+//                    if(filteredlist.isEmpty()){
+//                        FriendServices().getMatchingUsers(filteredlist)
+//
+//                    }
+                }
+                var filterResults=FilterResults()
+                filterResults.values=filteredlist
+                return filterResults
+            }
+
+            override fun publishResults(constraint: CharSequence, results: FilterResults) {
+
+                filteredlist=results.values  as ArrayList<User>
+                notifyDataSetChanged()
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val userView=li.inflate(com.amitozsingh.chatapp.R.layout.user_list,parent,false)
@@ -76,7 +122,7 @@ return  ViewHolder(userView)
             var user=mUsers[position]
             mListener.OnUserClicked(user)
         }
-        holder.bindItems(mUsers[position],mFriendRequestSentMap,mFriendRequestRecievedMap!!)
+        holder.bindItems(filteredlist[position],mFriendRequestSentMap,mFriendRequestRecievedMap!!)
     }
     class ViewHolder(itemview:View):RecyclerView.ViewHolder(itemview){
         fun bindItems(user: User,friendRequestSentMap:HashMap<String,User>?,friendRequestRecievedMap: HashMap<String, User>){
@@ -102,7 +148,7 @@ return  ViewHolder(userView)
     }
 
     override fun getItemCount(): Int {
-        return mUsers.size
+        return filteredlist.size
     }
 
     interface UserListener {

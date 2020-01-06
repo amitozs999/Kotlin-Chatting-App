@@ -7,7 +7,9 @@
     tools:context=".Fragments.SearchFriendsFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <EditText
+        android:id="@+id/searchedtxt"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="5dp"
@@ -15,8 +17,8 @@
         android:drawableStart="@drawable/ic_search"
         android:drawableLeft="@drawable/ic_search"
         android:hint="     Search Friends Here ..."
-        android:paddingLeft="5dp"
 
+        android:paddingLeft="5dp"
         android:textColor="#DE000000"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -24,6 +26,17 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mRview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/noresulttv"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="           NO RESULT FOUND"
+        android:textSize="30sp"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -24,6 +24,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import io.socket.client.IO
 import io.socket.client.Socket
+import rx.subjects.PublishSubject
+
+import rx.android.schedulers.AndroidSchedulers
+import rx.functions.Func1
+import rx.schedulers.Schedulers
+import rx.internal.operators.OperatorReplay.observeOn
+import rx.Subscription
+
+import android.text.Editable
+import android.text.TextWatcher
+import rx.Observer
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -58,6 +70,7 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
     var mFriendRequestsSentMap: HashMap<String, User>? = null
     var mFriendRequestsRecievedMap: HashMap<String, User>? = null
 
+    private var mSearchBarString: PublishSubject<String>? = null
 
     companion object {
         fun newInstance(): SearchFriendsFragment{
@@ -136,8 +149,101 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 
         mRview.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         mRview.setAdapter(mAdapter)
-    }
 
+
+        searchedtxt.addTextChangedListener(
+            object :TextWatcher{
+                override fun afterTextChanged(p0: Editable?) {
+
+
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    //  CommandAdapter(this@basicShortcutActivity,list).filter.filter(p0)
+                    mAdapter!!.filter.filter(p0)
+
+                }
+
+            }
+
+        )
+//
+//        mCompositeSubscription!!.add(createSearchBarSubscription())
+//        listenToSearchBar()
+    }
+//
+//    private fun createSearchBarSubscription(): Subscription {
+//        mSearchBarString = PublishSubject.create()
+//
+////        return mSearchBarString
+////                .debounce(1000, TimeUnit.MILLISECONDS)
+////                .subscribeOn(Schedulers.io())
+////                .map(new Func1<String, List<User>>() {
+////                    @Override
+////                    public List<User> call(String searchString) {
+////                        return mLiveFriendsService.getMatchingUsers(mAllUsers,searchString);
+////                    }
+////                })
+//        return mSearchBarString!!
+//            .debounce(1000, TimeUnit.MILLISECONDS)
+//            .subscribeOn(Schedulers.io())
+//            .map(object : Func1<String, List<User>> {
+//
+//
+//            override fun call(strings: String): List<User> {
+//                Log.d("ERROR2",strings)
+//
+//return FriendServices().getMatchingUsers(mAllUsers,strings)
+//
+//
+//            }
+//
+//        }).observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(object : Observer<List<User>> {
+//               override fun onCompleted() {
+//
+//                }
+//
+//               override fun onError(e: Throwable) {
+//
+//                }
+//
+//               override fun onNext(users: List<User>) {
+//
+//                    if (users.isEmpty()) {
+//                        noresulttv.setVisibility(View.VISIBLE)
+//                        mRview.setVisibility(View.GONE)
+//                    } else {
+//                        noresulttv.setVisibility(View.GONE)
+//                        mRview.setVisibility(View.VISIBLE)
+//                    }
+//
+//                    mAdapter!!.setmUsers(users)
+//                }
+//            })
+//    }
+//
+//    private fun listenToSearchBar() {
+//
+//        searchedtxt.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//                Log.d("ERROR",s.toString())
+//                mSearchBarString!!.onNext(s.toString())
+//            }
+//
+//            override fun afterTextChanged(s: Editable) {
+//
+//            }
+//        })
+//    }
     fun getAllUsers(adapter: FindFriendsAdapter, currentUsersEmail: String?): ValueEventListener {
         return object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
