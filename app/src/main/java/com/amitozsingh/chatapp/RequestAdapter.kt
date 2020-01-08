@@ -76,7 +76,7 @@ class RequestAdapter(
         fun bindItems(user: User){
 
 
-            Picasso.get().load(user.userPicture).into(itemView.userdp)
+            //Picasso.get().load(user.userPicture).into(itemView.userdp)
 
             itemView.friend_request_userName.text=user.userName
 
