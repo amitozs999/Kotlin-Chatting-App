@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/userdp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_profile"
+        app:riv_border_color="@color/design_default_color_primary"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="40dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"
+        app:riv_tile_mode="repeat" />
+
+    <TextView
+        android:id="@+id/friend_request_userName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Carlos Valentin"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:layout_weight="0.20"
+        />
+<LinearLayout
+    android:layout_width="wrap_content"
+
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/acceptRequest"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.05"
+        android:background="@drawable/request_approve"
+
+        android:src="@drawable/ic_add"
+
+        />
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/rejectRequest"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+
+            android:layout_weight="0.05"
+            android:background="@drawable/request_decline"
+            android:src="@drawable/ic_cancel"
+
+            />
+    </LinearLayout>
+</LinearLayout>

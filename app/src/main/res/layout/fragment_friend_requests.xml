@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.FriendRequestsFragment">
+    android:gravity="center"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_friend_request_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="friendrequests" />
+        android:layout_height="match_parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/fragment_friend_request_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Friend Request"
+        android:layout_gravity="center_horizontal"
+        android:textSize="22sp"
+        android:visibility="gone"
+        />
+
+
+</LinearLayout>
