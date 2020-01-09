@@ -29,6 +29,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.RequestAdapter
 
 
+
+
+
 class FriendServices {
 
     public var myFriendServices: FriendServices? = null
@@ -90,6 +93,57 @@ class FriendServices {
 
             }
         }
+    }
+
+    fun approveDeclineFriendRequest(
+        socket: Socket,
+        userEmail: String,
+        friendEmail: String,
+        requestCode: String
+    ): Subscription {
+        val details = arrayListOf<String>()
+        details.add(userEmail)
+        details.add(friendEmail)
+        details.add(requestCode)
+
+        val listObservable = Observable.just(details)
+
+        return listObservable
+            .subscribeOn(Schedulers.io())
+            .map(object : Func1<List<String>, Int> {
+
+
+                override fun call(strings: List<String>): Int? {
+
+
+                    val sendData = JSONObject()
+                    try {
+                        sendData.put("userEmail", strings[0])
+                        sendData.put("friendEmail", strings[1])
+                        sendData.put("requestCode", strings[2])
+                        socket.emit("friendRequestResponse", sendData)
+                        return SERVER_SUCCESS
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        return SERVER_FAILURE
+                    }
+
+                }
+
+            }).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Int> {
+                override fun onCompleted() {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onNext(integer: Int?) {
+
+                }
+            })
     }
 
 

@@ -61,13 +61,14 @@ class RequestAdapter(
             var user=mUsers[position]
 
 
-            mListener.OnOptionClicked(user,"1")
+            mListener.OnOptionClicked(user,"0")
+
         }
         holder.itemView.rejectRequest.setOnClickListener {
             var user=mUsers[position]
 
 
-            mListener.OnOptionClicked(user,"0")
+            mListener.OnOptionClicked(user,"1")
         }
 
         holder.bindItems(mUsers[position])

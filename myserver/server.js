@@ -17,6 +17,7 @@ var friendrequests=require('./firebase/friendserver')
 userrequests.userAccountrequests(io);
 friendrequests.userFriendsrequests(io);
 
+
 admin.initializeApp({
   credential: admin.credential.cert(firebasecredential),
   databaseURL: "https://node-chat-app-b19a4.firebaseio.com"

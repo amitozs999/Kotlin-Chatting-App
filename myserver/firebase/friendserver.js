@@ -21,6 +21,7 @@ var userFriendsrequests=(io)=>{
          
         });
 
+        approveOrDeclineFrienqRequest(socket,io);
         sendOrDeleteFriendRequest(socket,io);
        
       });
@@ -45,7 +46,7 @@ function sendOrDeleteFriendRequest(socket,io){
       if (requestCode ==0) {
         var db = admin.database();
         var ref = db.ref('users');
-        var userRef = ref.child(encodeEmail(data.userEmail));
+        var userRef = ref.child(encodeEmail(userEmail));
   
         userRef.once('value',(snapshot)=>{
           friendRef.set({
@@ -67,7 +68,52 @@ function sendOrDeleteFriendRequest(socket,io){
       }
   
     });
+
   }
+  // sendData.put("userEmail", strings[0])
+  // sendData.put("friendEmail", strings[1])
+  // sendData.put("requestCode", strings[2])
+  // socket.emit("friendRequestResponse", sendData)
+  
+  function approveOrDeclineFrienqRequest(socket,io){
+    socket.on('friendRequestResponse',(data)=>{
+
+      var friendEmail = data.friendEmail;
+      var userEmail = data.userEmail;
+      var requestCode = data.requestCode;
+      var date = {
+        data:admin.database.ServerValue.TIMESTAMP
+      };
+
+          var db = admin.database();
+          var friendRequestRef = db.ref('friendRequestsSent').child(encodeEmail(friendEmail))
+          .child(encodeEmail(userEmail));
+          friendRequestRef.remove();                     //yaha sent wala reference delete hoga 
+  
+  
+          if (requestCode ==0) {
+            var db = admin.database();
+            var ref = db.ref('users');
+            var userRef = ref.child(encodeEmail(userEmail));
+                                                                          //if approved create new user friends reference
+            var userFriendsRef = db.ref('userFriends');                        
+            var friendFriendRef = userFriendsRef.child(encodeEmail(friendEmail))
+            .child(encodeEmail(userEmail));
+  
+            userRef.once('value',(snapshot)=>{
+              friendFriendRef.set({
+                email:snapshot.val().email,
+                userName:snapshot.val().userName,
+                userPicture:' ',
+                dateJoined:date,
+                hasLoggedIn:snapshot.val().hasLoggedIn
+              });
+            });
+          }
+    });
+  }
+  
+
   function encodeEmail(email){
     return email.replace('.',',');
   }

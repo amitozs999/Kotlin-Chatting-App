@@ -32,13 +32,13 @@ import kotlinx.android.synthetic.main.friend_request_list_layout.*
 
 
 
+
+
+
 /**
  * A simple [Fragment] subclass.
  */
 class FriendRequestsFragment : BaseFragment(),RequestAdapter.OnOptionListener{
-    override fun OnOptionClicked(user: User, result: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 
     private var mFriendServices: FriendServices? = null
@@ -51,6 +51,35 @@ class FriendRequestsFragment : BaseFragment(),RequestAdapter.OnOptionListener{
     private var mUserEmailString: String? = null
 
     private var mSocket: Socket? = null
+    override fun OnOptionClicked(user: User, result: String) {
+
+        if (result.equals("0")) {
+            val userFriendReference = FirebaseDatabase.getInstance().reference
+                .child(FIRE_BASE_PATH_USER_FRIENDS)
+                .child(encodeEmail(mUserEmailString))
+                .child(encodeEmail(user.email))
+            userFriendReference.setValue(user)
+            mGetAllUsersFriendRequestsReference!!.child(encodeEmail(user.email))    //recieved wali yaha delete hogi //sent wali node server pe
+                .removeValue()
+            mCompositeSubscription!!.add(
+                mFriendServices!!.approveDeclineFriendRequest(                     //after deleting create new user friends reference in node server
+                    mSocket!!, mUserEmailString!!,
+                    user.email!!, "0"
+                )
+            )
+        } else {
+            mGetAllUsersFriendRequestsReference!!.child(encodeEmail(user.email))
+                .removeValue()
+            mCompositeSubscription!!.add(
+                mFriendServices!!.approveDeclineFriendRequest(
+                    mSocket!!, mUserEmailString!!,
+                    user.email!!, "1"
+                ))
+        }
+    }
+
+
+
 
 
     companion object {
