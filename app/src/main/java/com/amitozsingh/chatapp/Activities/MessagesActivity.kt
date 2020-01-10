@@ -18,6 +18,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_messages.*
 import kotlinx.android.synthetic.main.fragment_messages.*
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
+import com.amitozsingh.chatapp.utils.FIRE_BASE_PATH_USER_TOKEN
+import com.amitozsingh.chatapp.utils.encodeEmail
 
 
 class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
@@ -60,12 +65,24 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val messageToken = FirebaseInstanceId.getInstance().token
+
+
         val sharedPreferences = getSharedPreferences(
             USER_INFO_PREFERENCE,
             Context.MODE_PRIVATE
         )
         //initialy set email null so that it will come back to base activity if user not signed in
         val userEmail = sharedPreferences.getString(USER_EMAIL, "")
+
+
+        if (messageToken != null && !userEmail.equals("")) {
+            val tokenReference = FirebaseDatabase.getInstance().reference
+                .child(FIRE_BASE_PATH_USER_TOKEN).child(encodeEmail(userEmail))
+            tokenReference.child("token").setValue(messageToken)
+
+        }
+
 
         mAuth = FirebaseAuth.getInstance()
 

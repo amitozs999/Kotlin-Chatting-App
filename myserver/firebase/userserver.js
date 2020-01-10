@@ -63,7 +63,8 @@ function logUserIn(socket,io){
                   displayName:snapshot.val().userName
                 }
   
-                userRef.child('hasLoggedIn').set(true);
+               
+                userRef.child('hasLoggedIn').set(true); 
   
                 io.to(id).emit('token',{token});
               }

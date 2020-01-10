@@ -222,16 +222,18 @@ class AccountServices {
                             }
 
 
+
+
+
                         try {
                             FirebaseInstanceId.getInstance().deleteInstanceId()
                             FirebaseInstanceId.getInstance().token
-                            Log.i("AMITOZ","LEVEL 4")
+
                         } catch (e: IOException) {
-                            Log.i("AMITOZ","LEVEL 5")
+
                             e.printStackTrace()
 
                         }
-
 
                         FirebaseAuth.getInstance().signOut()
                         Log.i("AMITOZ","LEVEL 6")

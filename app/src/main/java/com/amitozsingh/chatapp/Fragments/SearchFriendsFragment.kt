@@ -261,7 +261,8 @@ var i=0
                     i++
                     val user = snapshot.getValue(User::class.java)
 Log.i("AMITOZ12",i.toString())
-                    if (!user!!.email.equals(currentUsersEmail)) {
+                    if (!user!!.email.equals(currentUsersEmail)&&user.hasLoggedIn
+                    ) {
                         mAllUsers.add(user);
 
 
