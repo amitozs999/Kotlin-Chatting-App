@@ -29,6 +29,7 @@ class FindFriendsAdapter(
 
     private var mFriendRequestSentMap: HashMap<String, User>? = null
     private var mFriendRequestRecievedMap: HashMap<String, User>? = null
+    private var mCurrentUserFriendsMap: HashMap<String, User>? = null
 
 
     init {
@@ -36,6 +37,7 @@ class FindFriendsAdapter(
         mUsers = ArrayList()
         mFriendRequestSentMap = HashMap()
         mFriendRequestRecievedMap= HashMap()
+        mCurrentUserFriendsMap=HashMap()
 
     }
 
@@ -54,6 +56,11 @@ class FindFriendsAdapter(
     fun setmFriendRequestRecievedMap(friendRequestRecievedMap: HashMap<String, User>) {
         mFriendRequestRecievedMap!!.clear()
         mFriendRequestRecievedMap!!.putAll(friendRequestRecievedMap)
+        notifyDataSetChanged()
+    }
+    fun setmUserFriendMap(currentUserfriendmap: HashMap<String, User>) {
+        mCurrentUserFriendsMap!!.clear()
+        mCurrentUserFriendsMap!!.putAll(currentUserfriendmap)
         notifyDataSetChanged()
     }
 
@@ -122,10 +129,10 @@ return  ViewHolder(userView)
             var user=mUsers[position]
             mListener.OnUserClicked(user)
         }
-        holder.bindItems(filteredlist[position],mFriendRequestSentMap,mFriendRequestRecievedMap!!)
+        holder.bindItems(filteredlist[position],mFriendRequestSentMap,mFriendRequestRecievedMap!!,mCurrentUserFriendsMap!!)
     }
     class ViewHolder(itemview:View):RecyclerView.ViewHolder(itemview){
-        fun bindItems(user: User,friendRequestSentMap:HashMap<String,User>?,friendRequestRecievedMap: HashMap<String, User>){
+        fun bindItems(user: User,friendRequestSentMap:HashMap<String,User>?,friendRequestRecievedMap: HashMap<String, User>,UserFriendMap: HashMap<String, User>){
             itemView.username.text=user.userName
 
             if (isIncludedInMap(friendRequestSentMap,user)){
@@ -138,6 +145,10 @@ return  ViewHolder(userView)
                 itemView.senttv.text="User sent you request"
                 itemView.reqsentbutton.setVisibility(View.GONE)
 
+            }else if(isIncludedInMap(UserFriendMap,user)){
+                //mUserStatus.setVisibility(View.VISIBLE);
+                itemView.senttv.text="You are Friends"
+                //mAddFriend.setVisibility(View.GONE);
             }
             else{
                 itemView.reqsentbutton.setVisibility(View.VISIBLE)

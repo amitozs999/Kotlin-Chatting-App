@@ -32,6 +32,10 @@ import com.amitozsingh.chatapp.RequestAdapter
 
 
 
+
+
+
+
 class FriendServices {
 
     public var myFriendServices: FriendServices? = null
@@ -250,6 +254,24 @@ class FriendServices {
         }
     }
 
+    fun getAllCurrentUsersFriendMap(adapter: FindFriendsAdapter): ValueEventListener {
+        val userHashMap = HashMap<String,User>()
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                userHashMap.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    userHashMap.put(user?.email!!, user)
+                }
+
+                adapter.setmUserFriendMap(userHashMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
     fun getMatchingUsers(users: List<User>): List<User> {
 
 

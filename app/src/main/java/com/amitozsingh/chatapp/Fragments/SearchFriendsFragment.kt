@@ -56,6 +56,9 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
     private var mGetAllFriendRequestsRecievedReference: DatabaseReference? = null
     private var mGetAllFriendRequestsRecievedListener: ValueEventListener? = null
 
+     private var mGetAllCurrentUsersFriendsReference: DatabaseReference? = null
+    private var mGetAllCurrentUsersFriendsListener: ValueEventListener? = null
+
 
      var mUserEmailString: String?=null
     private var mAdapter: FindFriendsAdapter? = null
@@ -144,6 +147,12 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
         mGetAllFriendRequestsRecievedListener = FriendServices().getFriendRequestsRecieved(mAdapter!!)
 
         mGetAllFriendRequestsRecievedReference!!.addValueEventListener(mGetAllFriendRequestsRecievedListener!!)
+
+        mGetAllCurrentUsersFriendsReference = FirebaseDatabase.getInstance().getReference()
+            .child(FIRE_BASE_PATH_USER_FRIENDS).child(encodeEmail(mUserEmailString))
+
+        mGetAllCurrentUsersFriendsListener = FriendServices().getAllCurrentUsersFriendMap(mAdapter!!)
+        mGetAllCurrentUsersFriendsReference!!.addValueEventListener(mGetAllCurrentUsersFriendsListener!!)
 
 
 

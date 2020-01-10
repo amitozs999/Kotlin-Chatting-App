@@ -131,6 +131,9 @@ class FriendRequestsFragment : BaseFragment(),RequestAdapter.OnOptionListener{
         mGetAllUsersFriendRequestsReference!!.addValueEventListener(mGetAllUsersFriendRequestsListener!!)
         mrequestrview.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         mrequestrview.setAdapter(mAdapter)
+
+
+
     }
 
     override fun onDestroyView() {
