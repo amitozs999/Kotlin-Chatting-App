@@ -27,13 +27,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.RequestAdapter
-
-
-
-
-
-
-
+import com.amitozsingh.chatapp.UserFriendsAdapter
 
 
 class FriendServices {
@@ -272,6 +266,36 @@ class FriendServices {
             }
         }
     }
+    fun getAllFriends(
+        recyclerView: RecyclerView,
+        adapter: UserFriendsAdapter,
+        textView: TextView
+    ): ValueEventListener {
+        val users = ArrayList<User>()
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                users.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    users.add(user!!)
+                }
+
+                if (users.isEmpty()) {
+                    recyclerView.visibility = View.GONE
+                    textView.visibility = View.VISIBLE
+                } else {
+                    recyclerView.visibility = View.VISIBLE
+                    textView.visibility = View.GONE
+                    adapter.setmUsers(users)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
+
     fun getMatchingUsers(users: List<User>): List<User> {
 
 
