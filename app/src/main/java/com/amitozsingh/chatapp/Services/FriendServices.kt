@@ -25,11 +25,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.RequestAdapter
 import com.amitozsingh.chatapp.UserFriendsAdapter
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class FriendServices {
@@ -298,31 +296,6 @@ class FriendServices {
         }
     }
 
-    fun getFriendRequestBottom(bottomBar: BottomNavigationView, tagId: Int): ValueEventListener {
-        val users = ArrayList<User>()
-        return object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                users.clear()
-
-                for (snapshot in dataSnapshot.children) {
-                    val user = snapshot.getValue(User::class.java)
-                    users.add(user!!)
-                }
-
-                if (!users.isEmpty()) {
-                    bottomBar.getOrCreateBadge(tagId).number = users.size
-
-
-                } else {
-                    bottomBar.removeBadge(tagId)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        }
-    }
     fun getMatchingUsers(users: List<User>): List<User> {
 
 
