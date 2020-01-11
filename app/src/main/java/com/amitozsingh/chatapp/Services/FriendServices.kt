@@ -26,8 +26,10 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.RequestAdapter
 import com.amitozsingh.chatapp.UserFriendsAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class FriendServices {
@@ -287,6 +289,38 @@ class FriendServices {
                     recyclerView.visibility = View.VISIBLE
                     textView.visibility = View.GONE
                     adapter.setmUsers(users)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
+
+    fun getFriendRequestBottom(bottomBar: BottomNavigationView, tagId: Int): ValueEventListener {
+        val users = ArrayList<User>()
+               val badge = bottomBar?.getOrCreateBadge(R.id.itemfriends)
+       badge?.number=5
+
+        badge?.setVisible(true)
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                users.clear()
+
+                for (snapshot in dataSnapshot.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    users.add(user!!)
+                }
+
+                if (!users.isEmpty()) {
+
+                    badge?.number=users.size
+
+                    badge?.setVisible(true)
+
+                } else {
+                    bottomBar.removeBadge(tagId)
                 }
             }
 

@@ -44,6 +44,8 @@ open class BaseFragment : Fragment() {
 
     }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
         mCompositeSubscription?.clear()

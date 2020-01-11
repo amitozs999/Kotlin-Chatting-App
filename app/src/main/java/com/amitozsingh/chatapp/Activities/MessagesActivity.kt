@@ -2,6 +2,7 @@ package com.amitozsingh.chatapp.Activities
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -11,8 +12,8 @@ import com.amitozsingh.chatapp.Fragments.LoginFragment
 import com.amitozsingh.chatapp.Fragments.MessagesFragment
 import com.amitozsingh.chatapp.Fragments.ProfileFragment
 import com.amitozsingh.chatapp.R
-import com.amitozsingh.chatapp.utils.USER_EMAIL
-import com.amitozsingh.chatapp.utils.USER_INFO_PREFERENCE
+import com.amitozsingh.chatapp.Services.FriendServices
+import com.amitozsingh.chatapp.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -21,14 +22,28 @@ import kotlinx.android.synthetic.main.fragment_messages.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
-import com.amitozsingh.chatapp.utils.FIRE_BASE_PATH_USER_TOKEN
-import com.amitozsingh.chatapp.utils.encodeEmail
+import com.google.firebase.database.ValueEventListener
+import io.socket.client.IO
+import io.socket.client.Socket
 
 
 class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var mAuth: FirebaseAuth? = null
     private var mListener: FirebaseAuth.AuthStateListener? = null
+
+    private var mLiveFriendsService: FriendServices? = null
+
+    private var mAllFriendRequestsReference: DatabaseReference? = null
+    private var mAllFriendRequestsListener: ValueEventListener? = null
+
+
+    private var mUserEmailString: String? = null
+
+    // private val mActivity: BaseFragmentActivity? = null
+    private var mSocket: Socket? = null
+
+    var bott: BottomNavigationView?=null
    // private var navPosition: BottomNavigationView =findViewById(R.id.bottom_nav)
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
             var fragment: Fragment? =null
@@ -64,6 +79,12 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mSocket = IO.socket(LOCAL_HOST)
+
+
+        mSocket!!.connect()
+        mLiveFriendsService = FriendServices().getInstance()
+
 
         val messageToken = FirebaseInstanceId.getInstance().token
 
@@ -102,12 +123,28 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
             }
 
         setContentView(R.layout.activity_messages)
+
+        mAllFriendRequestsReference = FirebaseDatabase.getInstance().getReference()
+            .child(FIRE_BASE_PATH_FRIEND_REQUEST_RECIEVED).child(encodeEmaill(userEmail))
+        mAllFriendRequestsListener = mLiveFriendsService?.getFriendRequestBottom(bottom_nav_main,R.id.itemfriends);
+        mAllFriendRequestsReference!!.addValueEventListener(mAllFriendRequestsListener!!)
+
+//        val badge = bottom_nav_main?.getOrCreateBadge(R.id.itemfriends)
+//        badge?.number=5
+//
+//        badge?.setVisible(true)
         if (savedInstanceState == null) {
             val fragment = MessagesFragment()
             supportFragmentManager.beginTransaction().replace(R.id.fragcont, fragment)
                 .commit()
         }
+
        bottom_nav_main.setOnNavigationItemSelectedListener(this)
+
+    }
+
+    fun encodeEmaill(email: String?): String {
+        return email!!.replace(".", ",")
     }
     override fun onStart() {
         super.onStart()

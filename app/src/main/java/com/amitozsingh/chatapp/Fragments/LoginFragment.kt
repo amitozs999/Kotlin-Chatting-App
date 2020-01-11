@@ -34,7 +34,7 @@ import android.content.Context
 class LoginFragment : BaseFragment() {
 
 
-    var mActivity: BaseActivity? = null
+     var mActivity: BaseActivity? = null
    var mAccountServices: AccountServices? = null
     lateinit var msocket: Socket
     companion object {
