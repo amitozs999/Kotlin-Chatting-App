@@ -12,17 +12,17 @@ import com.amitozsingh.chatapp.Fragments.SearchFriendsFragment
 class myPagerAdapter(fm:FragmentManager) :FragmentStatePagerAdapter(fm) {
 
 
-    override fun getItem(position: Int): Fragment? {
-        val fragment: Fragment
+    override fun getItem(position: Int): Fragment {
+        var fragment: Fragment?=null
 
         when (position) {
             0 -> fragment = FriendslistFragment.newInstance()
             1 -> fragment = FriendRequestsFragment.newInstance()
             2 -> fragment = SearchFriendsFragment.newInstance()
 
-            else -> return null
+
         }
-        return fragment
+        return fragment!!
 
     }
 

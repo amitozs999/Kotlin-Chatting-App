@@ -8,6 +8,10 @@ var io = require('socket.io')(http);
 
 var admin = require("firebase-admin");
 
+var FCM = require('fcm-push');
+var serverKey ='AAAA42Q9OkY:APA91bEWYPsVzg82e031BH8MpL8__CvdSO07rT_ve5tEhs7y1ApKXBzJ3jcnj5obPxuCRNC00MpO0XE9j3B_Fw2oF0nWM-AL-Y7sfen1owouOzlHrjnDfe_fSKrOYF75rag-PT4eXctv';
+var fcm = new FCM(serverKey);
+
 var userFriendsrequests=(io)=>{
 
     io.on('connection', function(socket) {
@@ -59,7 +63,29 @@ function sendOrDeleteFriendRequest(socket,io){
         });
   
       
+        var tokenRef = db.ref('userToken');
+        var friendToken = tokenRef.child(encodeEmail(friendEmail));
   
+        friendToken.once("value",(snapshot)=>{
+          var message = {
+            to:snapshot.val().token,
+            data:{
+              title:'my Chat',
+              body:`Friend Request from ${userEmail}`
+            },
+          };
+  
+          fcm.send(message)
+          .then((response)=>{
+
+            console.log('Message sent!');
+
+          }).catch((err)=>{
+
+            console.log(err);
+
+          });
+        });
          
         
   
