@@ -54,15 +54,21 @@ class UserFriendsAdapter(
 
 
 
-        holder.bindItems(mUsers[position])
+
+        holder.bindItems(mListener,mUsers[position])
     }
     class ViewHolder(itemview: View): RecyclerView.ViewHolder(itemview){
-        fun bindItems(user: User){
+        fun bindItems(mListener: UserListener,user: User){
 
 
             //Picasso.get().load(user.userPicture).into(itemView.userdp)
 
             itemView.friend_request_userName.text=user.userName
+
+            itemView.setOnClickListener {
+                mListener.OnUserClicked(user)
+            }
+
 
 
         }

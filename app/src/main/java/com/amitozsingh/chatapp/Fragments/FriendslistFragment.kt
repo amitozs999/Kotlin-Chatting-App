@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.amitozsingh.chatapp.R
 import butterknife.Unbinder
-import com.amitozsingh.chatapp.Activities.MessagesActivity
+
 import com.amitozsingh.chatapp.RequestAdapter
 import com.amitozsingh.chatapp.Services.FriendServices
 import com.amitozsingh.chatapp.UserFriendsAdapter
@@ -21,15 +21,26 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_friend_requests.*
 import kotlinx.android.synthetic.main.fragment_friendslist.*
+import com.amitozsingh.chatapp.Activities.MessagesActivity
+import android.content.Intent
+
+import android.content.Context
+import android.util.Log
+import com.amitozsingh.chatapp.Activities.ChattingActivity
+
+
+
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class FriendslistFragment : BaseFragment(),UserFriendsAdapter.UserListener {
-    override fun OnUserClicked(user: User) {
 
-    }
+
+    var mActivity:MessagesActivity?=null
+
+
 
 
     private var mFriendServices: FriendServices? = null
@@ -52,6 +63,7 @@ class FriendslistFragment : BaseFragment(),UserFriendsAdapter.UserListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("ERROR","KK1")
 
         mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL,null)
         mFriendServices = FriendServices().getInstance()
@@ -84,5 +96,23 @@ class FriendslistFragment : BaseFragment(),UserFriendsAdapter.UserListener {
         mUserFriendsRview.setAdapter(mAdapter)
 
     }
+    override fun OnUserClicked(user: User) {
 
+        Log.d("ERROR","KK2")
+        val friendDetails = ArrayList<String>()
+        friendDetails.add(user.email!!)
+        //friendDetails.add(user.userPicture!!)
+        friendDetails.add(user.userName!!)
+       // val intent = ChattingActivity.newInstance(mActivity.applicationContext ,friendDetails)
+        val intent = Intent(activity, ChattingActivity::class.java)
+        intent.putStringArrayListExtra("EXTRA_FRIENDS_DETAILS", friendDetails)
+        startActivity(intent)
+
+        startActivity(intent)
+//        activity!!.overridePendingTransition(
+//            android.R.anim.fade_in,
+//            android.R.anim.fade_out
+//        )
+
+    }
 }

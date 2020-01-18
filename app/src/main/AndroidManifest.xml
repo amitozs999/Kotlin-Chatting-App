@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Activities.LoginActivity"/>
+        <activity android:name=".Activities.ChattingActivity"></activity>
+        <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.BaseActivity" />
         <activity android:name=".Activities.MessagesActivity">
@@ -23,12 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".Notification.FriendRequestMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-
-
         </service>
     </application>
 

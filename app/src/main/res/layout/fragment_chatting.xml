@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_messages_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/fragment_messages_layout"
+        />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/fragment_messages_friendPicture"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_profile"
+        app:riv_border_color="@color/design_default_color_primary"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="40dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"
+        android:layout_centerInParent="true"
+        app:riv_tile_mode="repeat" />
+
+    <TextView
+        android:id="@+id/fragment_messages_friendName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_messages_friendPicture"
+        android:layout_centerHorizontal="true"
+        android:text="Carlos Valentin"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/fragment_messages_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#E1F5FE"
+        >
+
+
+        <EditText
+            android:id="@+id/fragment_messages_messageBox"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:hint="Enter a message"
+            android:layout_weight="0.85"
+            android:layout_gravity="center"
+            />
+
+        <ImageView
+            android:id="@+id/fragment_messages_sendArrow"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.15"
+            android:layout_gravity="center"
+            android:src="@drawable/message_sent"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
