@@ -24,7 +24,7 @@ var userFriendsrequests=(io)=>{
        
          
         });
-
+        sendMessage(socket,io);
         approveOrDeclineFrienqRequest(socket,io);
         sendOrDeleteFriendRequest(socket,io);
        
@@ -139,6 +139,32 @@ function sendOrDeleteFriendRequest(socket,io){
     });
   }
   
+  function sendMessage(socket,io){
+    socket.on('details',(data)=>{
+      var db = admin.database();
+      var friendMessageRef = db.ref('userMessages').child(encodeEmail(data.friendEmail))
+      .child(encodeEmail(data.senderEmail)).push();
+  
+  
+      var newfriendMessagesRef = db.ref('newUserMessages').child(encodeEmail(data.friendEmail))
+      .child(friendMessageRef.key);
+  
+        var message={
+        messageId: friendMessageRef.key,
+        messageText: data.messageText,
+        messageSenderEmail: data.senderEmail,
+        messageSenderPicture: data.senderPicture
+      };
+  
+     
+  
+      friendMessageRef.set(message);
+      newfriendMessagesRef.set(message);
+
+  
+  
+    });
+  }
 
   function encodeEmail(email){
     return email.replace('.',',');

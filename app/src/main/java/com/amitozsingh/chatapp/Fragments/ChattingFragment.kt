@@ -19,6 +19,25 @@ import com.amitozsingh.chatapp.utils.USER_EMAIL
 /**
  * A simple [Fragment] subclass.
  */
+
+
+import kotlinx.android.synthetic.main.fragment_chatting.*
+
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.widget.Toast
+
+import com.amitozsingh.chatapp.Services.FriendServices
+import com.amitozsingh.chatapp.utils.*
+import io.socket.client.IO
+import io.socket.client.Socket
+
+
+/**
+ * A simple [Fragment] subclass.
+ */
 class ChattingFragment : BaseFragment() {
 
 
@@ -39,11 +58,22 @@ class ChattingFragment : BaseFragment() {
     private var mFriendNameString: String? = null
     private var mUserEmailString: String? = null
 
+    private var mGetAllMessagesReference: DatabaseReference? = null
+    private var mGetAllMessagesListener: ValueEventListener? = null
+
+    private var mSocket: Socket? = null
+    private var mLiveFriendsService: FriendServices? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        mSocket= IO.socket(LOCAL_HOST)
+        mSocket!!.connect()
+        mLiveFriendsService = FriendServices().getInstance();
+
         val friendDetails = arguments!!.getStringArrayList(FRIEND_DETAILS_EXTRA)
         mFriendEmailString = friendDetails!![0]
-       // mFriendPictureString = friendDetails[1]
+        // mFriendPictureString = friendDetails[1]
         mFriendNameString = friendDetails[1]
         mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL, "")
 
@@ -62,9 +92,51 @@ class ChattingFragment : BaseFragment() {
 //        Picasso.get()
 //            .load(mFriendPictureString)
 //            .into(mFriendPicture);
+        sendArrow.setOnClickListener {
+            setmSendMessage()
+        }
 
         fragment_messages_friendName.setText(mFriendNameString);
 
+        mGetAllMessagesReference = FirebaseDatabase.getInstance().getReference().child(FIRE_BASE_PATH_USER_MESSAGES)
+            .child(encodeEmail(mUserEmailString)).child(encodeEmail(mFriendEmailString));
+
+
+
+    }
+
+
+    fun setmSendMessage() {
+        if (fragment_messages_messageBox.getText().toString().equals("")) {
+            Toast.makeText(activity, "Message Can't Be Blank", Toast.LENGTH_SHORT).show()
+        } else {
+
+
+            val newMessageRefernce = mGetAllMessagesReference?.push()
+            val message = Message(
+                newMessageRefernce?.key!!,
+                fragment_messages_messageBox.getText().toString(),
+                mUserEmailString!!,
+                mSharedPreferences?.getString(USER_PICTURE, "")!!
+            )
+
+            newMessageRefernce.setValue(message)
+
+            mCompositeSubscription!!.add(
+                mLiveFriendsService?.sendMessage(
+                    mSocket!!,
+                    mUserEmailString!!,
+                    mSharedPreferences?.getString(USER_PICTURE, "")!!,
+                    fragment_messages_messageBox.getText().toString(),
+                    mFriendEmailString!!,
+                    mSharedPreferences?.getString(USER_NAME, "")!!
+                )
+            )
+
+
+
+
+        }
     }
 
     override fun onDestroy() {

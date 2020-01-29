@@ -1,6 +1,6 @@
 package com.amitozsingh.chatapp.utils
 
-val LOCAL_HOST = "http://192.168.0.106:3000"
+val LOCAL_HOST = "http://192.168.0.103:3000"
 val USER_INFO_PREFERENCE = "USER_INFO_PREFERENCE"
 
 val USER_EMAIL = "USER_EMAIL"

@@ -330,6 +330,62 @@ class FriendServices {
         }
     }
 
+
+    fun sendMessage(
+        socket: Socket,
+        messageSenderEmail: String,
+        messageSenderPicture: String,
+        messageText: String,
+        friendEmail: String,
+        messageSenderName: String
+    ): Subscription {
+        val details = ArrayList<String>()
+        details.add(messageSenderEmail)
+        details.add(messageSenderPicture)
+        details.add(messageText)
+        details.add(friendEmail)
+        details.add(messageSenderName)
+        val listObservable = Observable.just(details)
+
+        return listObservable
+            .subscribeOn(Schedulers.io())
+            .map(object : Func1<List<String>, Int> {
+
+
+                override fun call(strings: List<String>): Int? {
+
+                    val sendData = JSONObject()
+
+                    try {
+                        sendData.put("senderEmail", strings[0])
+                        sendData.put("senderPicture", strings[1])
+                        sendData.put("messageText", strings[2])
+                        sendData.put("friendEmail", strings[3])
+                        sendData.put("senderName", strings[4])
+                        socket.emit("details", sendData)
+                        return SERVER_SUCCESS
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        return SERVER_FAILURE
+                    }
+
+                }
+            }).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Int> {
+                override fun onCompleted() {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onNext(integer: Int?) {
+
+                }
+            })
+    }
+
     fun getMatchingUsers(users: List<User>): List<User> {
 
 

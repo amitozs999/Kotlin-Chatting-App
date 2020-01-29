@@ -61,7 +61,7 @@
             />
 
         <ImageView
-            android:id="@+id/fragment_messages_sendArrow"
+            android:id="@+id/sendArrow"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="0.15"
