@@ -68,10 +68,10 @@ class ChatroomAdapter(
 
 
 
-        holder.bindItems(mChatRooms[position],mCurrentUserEmail)
+        holder.bindItems(mChatRooms[position],mCurrentUserEmail,mListener)
     }
     class ViewHolder(itemview: View): RecyclerView.ViewHolder(itemview){
-        fun bindItems(chatRoom: ChatRoom, currentUserEmail:String){
+        fun bindItems(chatRoom: ChatRoom, currentUserEmail:String,mListener: ChatRoomListener){
 
 
 //            Picasso.with(context)
@@ -105,9 +105,9 @@ class ChatroomAdapter(
             itemView.list_chat_room_lastMessage.setText(lastMessageSent)
 
 
-//            itemView.setOnClickListener {
-//                mListener.OnUserClicked(user)
-//            }
+            itemView.setOnClickListener {
+                mListener.OnChatRoomClicked(chatRoom)
+            }
 
 
 

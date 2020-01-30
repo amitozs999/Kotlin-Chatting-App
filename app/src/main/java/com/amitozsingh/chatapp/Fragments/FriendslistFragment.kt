@@ -108,7 +108,7 @@ class FriendslistFragment : BaseFragment(),UserFriendsAdapter.UserListener {
         intent.putStringArrayListExtra("EXTRA_FRIENDS_DETAILS", friendDetails)
         startActivity(intent)
 
-        startActivity(intent)
+
 //        activity!!.overridePendingTransition(
 //            android.R.anim.fade_in,
 //            android.R.anim.fade_out

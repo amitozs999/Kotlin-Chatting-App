@@ -1,12 +1,15 @@
 package com.amitozsingh.chatapp.Fragments
 
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 
@@ -30,11 +33,24 @@ import kotlinx.android.synthetic.main.fragment_chatting.*
 import kotlinx.android.synthetic.main.fragment_messages.*
 
 
+
+
+
 /**
  * A simple [Fragment] subclass.
  */
 class MessagesFragment : BaseFragment() ,ChatroomAdapter.ChatRoomListener{
     override fun OnChatRoomClicked(chatRoom: ChatRoom) {
+
+
+        val friendDetails = ArrayList<String>()
+        friendDetails.add(chatRoom.friendEmail!!)
+        //friendDetails.add(chatRoom.friendPicture!!)
+        friendDetails.add(chatRoom.friendName!!)
+        // val intent = ChattingActivity.newInstance(mActivity.applicationContext ,friendDetails)
+        val intent = Intent(activity, ChattingActivity::class.java)
+        intent.putStringArrayListExtra("EXTRA_FRIENDS_DETAILS", friendDetails)
+        startActivity(intent)
 
     }
 
@@ -90,14 +106,29 @@ class MessagesFragment : BaseFragment() ,ChatroomAdapter.ChatRoomListener{
 
         mAdapter= ChatroomAdapter(activity as MessagesActivity,this,mUserEmailString!!)
 
+
         mUserChatRoomReference = FirebaseDatabase.getInstance().getReference()
             .child(FIRE_BASE_PATH_USER_CHAT_ROOMS).child(encodeEmail(mUserEmailString));
 
-        mUserChatRoomListener = mLiveFriendsService?.getAllChatRooms(fragment_messages_recyclerView,fragment_inbox_message,mAdapter!!);
+        mUserChatRoomListener = mLiveFriendsService?.getAllChatRooms(fragment_inbox_recyclerView,fragment_inbox_message,mAdapter!!);
 
         mUserChatRoomReference?.addValueEventListener(mUserChatRoomListener!!)
 
+        fragment_inbox_recyclerView.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
+        fragment_inbox_recyclerView.setAdapter(mAdapter)
 
+
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+
+        if (mUserChatRoomListener != null) {
+            mUserChatRoomReference?.removeEventListener(mUserChatRoomListener!!)
+        }
 
 
     }

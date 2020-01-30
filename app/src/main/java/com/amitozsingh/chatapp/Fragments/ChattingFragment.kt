@@ -40,6 +40,16 @@ import com.amitozsingh.chatapp.utils.*
 import io.socket.client.IO
 import io.socket.client.Socket
 import kotlinx.android.synthetic.main.fragment_friendslist.*
+import rx.subjects.PublishSubject
+import com.amitozsingh.chatapp.utils.ChatRoom
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
+import rx.internal.operators.OperatorReplay.observeOn
+import rx.Subscription
+import rx.Observer
+import java.util.concurrent.TimeUnit
+import android.text.Editable
+import android.text.TextWatcher
 
 
 
@@ -71,6 +81,12 @@ class ChattingFragment : BaseFragment() {
     private var mGetAllMessagesReference: DatabaseReference? = null
     private var mGetAllMessagesListener: ValueEventListener? = null
 
+
+    private var mUserChatRoomReference: DatabaseReference? = null
+    private var mUserChatRoomListener: ValueEventListener? = null
+
+
+    private var mMessageSubject: PublishSubject<String>? = null
 
     var mActivity: MessagesActivity?=null
     private var mAdapter: MessagesAdapter? = null
@@ -114,6 +130,17 @@ class ChattingFragment : BaseFragment() {
 
         mAdapter= MessagesAdapter(activity as ChattingActivity, mUserEmailString!!)
 
+
+
+        mUserChatRoomReference = FirebaseDatabase.getInstance().getReference()
+            .child(FIRE_BASE_PATH_USER_CHAT_ROOMS).child(encodeEmail(mUserEmailString))
+            .child(encodeEmail(mFriendEmailString));
+
+
+        //mUserChatRoomListener = getCurrentChatRoomListener();
+
+        //mUserChatRoomReference?.addValueEventListener(mUserChatRoomListener!!);
+
         mGetAllMessagesReference = FirebaseDatabase.getInstance().getReference().child(FIRE_BASE_PATH_USER_MESSAGES)
             .child(encodeEmail(mUserEmailString)).child(encodeEmail(mFriendEmailString));
 
@@ -125,6 +152,11 @@ class ChattingFragment : BaseFragment() {
 
         fragment_messages_recyclerView.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         fragment_messages_recyclerView.setAdapter(mAdapter)
+
+        mCompositeSubscription!!.add(createChatRoomSubscription())
+
+        //mRecyclerView.scrollToPosition(mAdapter.getmMessages().size()-1);
+        messageBoxListener();
 
     }
 
@@ -160,6 +192,51 @@ class ChattingFragment : BaseFragment() {
 
 
         }
+    }
+    private fun createChatRoomSubscription(): Subscription {
+        mMessageSubject = PublishSubject.create()
+        return mMessageSubject!!
+            .debounce(200, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<String> {
+                override fun onCompleted() {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onNext(message: String) {
+                    if (!message.isEmpty()) {
+                        val chatRoom = ChatRoom(
+                            mFriendPictureString, mFriendNameString,
+                            mFriendEmailString, message, mUserEmailString, true, false
+                        )
+
+                        mUserChatRoomReference!!.setValue(chatRoom)
+
+                    }
+                }
+            })
+    }
+
+
+    private fun messageBoxListener() {
+        fragment_messages_messageBox.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                mMessageSubject!!.onNext(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+        })
     }
 
     override fun onDestroy() {
