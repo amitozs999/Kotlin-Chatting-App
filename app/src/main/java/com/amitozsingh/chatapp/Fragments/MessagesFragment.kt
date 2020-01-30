@@ -12,22 +12,49 @@ import com.amitozsingh.chatapp.Activities.MessagesActivity
 
 import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.Services.AccountServices
-import com.amitozsingh.chatapp.utils.LOCAL_HOST
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.socket.client.IO
 import io.socket.client.Socket
 import kotlinx.android.synthetic.main.activity_messages.*
 import com.google.android.material.badge.BadgeDrawable
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseReference
 
-
+import com.amitozsingh.chatapp.Activities.ChattingActivity
+import com.amitozsingh.chatapp.ChatroomAdapter
+import com.amitozsingh.chatapp.MessagesAdapter
+import com.amitozsingh.chatapp.Services.FriendServices
+import com.amitozsingh.chatapp.utils.*
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.fragment_chatting.*
+import kotlinx.android.synthetic.main.fragment_messages.*
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class MessagesFragment : BaseFragment() {
+class MessagesFragment : BaseFragment() ,ChatroomAdapter.ChatRoomListener{
+    override fun OnChatRoomClicked(chatRoom: ChatRoom) {
+
+    }
 
     //var mActivity: MessagesActivity? = null
+
+    private var mLiveFriendsService: FriendServices? = null
+//
+//    private var mAllFriendRequestsReference: DatabaseReference? = null
+//    private var mAllFriendRequestsListener: ValueEventListener? = null
+
+    private var mAdapter: ChatroomAdapter? = null
+
+
+    private var mUserChatRoomReference: DatabaseReference? = null
+    private var mUserChatRoomListener: ValueEventListener? = null
+
+    private var mUserEmailString: String? = null
+
+//    private var mUsersNewMessagesReference: DatabaseReference? = null
+//    private var mUsersNewMessagesListener: ValueEventListener? = null
 
     companion object {
         fun newInstance(): MessagesFragment{
@@ -35,6 +62,12 @@ class MessagesFragment : BaseFragment() {
         }
     }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mLiveFriendsService = FriendServices().getInstance();
+        mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL,"");
+    }
     //var bott: BottomNavigationView?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,8 +88,14 @@ class MessagesFragment : BaseFragment() {
 //
 //        badge?.setVisible(true)
 
+        mAdapter= ChatroomAdapter(activity as MessagesActivity,this,mUserEmailString!!)
 
+        mUserChatRoomReference = FirebaseDatabase.getInstance().getReference()
+            .child(FIRE_BASE_PATH_USER_CHAT_ROOMS).child(encodeEmail(mUserEmailString));
 
+        mUserChatRoomListener = mLiveFriendsService?.getAllChatRooms(fragment_messages_recyclerView,fragment_inbox_message,mAdapter!!);
+
+        mUserChatRoomReference?.addValueEventListener(mUserChatRoomListener!!)
 
 
 

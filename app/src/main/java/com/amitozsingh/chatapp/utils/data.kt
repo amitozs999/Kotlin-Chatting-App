@@ -22,3 +22,14 @@ var messageSenderPicture:String=""
 
 
 )
+
+
+data class ChatRoom (
+     var friendPicture: String? = "",
+     var friendName: String? = "",
+   var friendEmail: String? = "",
+     var lastMessage: String? = "",
+     var lastMessageSenderEmail: String? = "",
+     var lastMessageRead: Boolean = false,
+    var sentLastMessage: Boolean = false
+)

@@ -10,7 +10,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.amitozsingh.chatapp.Fragments.SearchFriendsFragment
-import com.amitozsingh.chatapp.utils.User
 import io.socket.client.Socket
 import org.json.JSONException
 import org.json.JSONObject
@@ -27,9 +26,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.*
-import com.amitozsingh.chatapp.utils.FIRE_BASE_PATH_USER_NEW_MESSAGES
-import com.amitozsingh.chatapp.utils.Message
-import com.amitozsingh.chatapp.utils.encodeEmail
+import com.amitozsingh.chatapp.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
 
@@ -423,6 +420,35 @@ class FriendServices {
         }
     }
 
+
+    fun getAllChatRooms(
+        recyclerView: RecyclerView, textView: TextView,
+        adapter: ChatroomAdapter
+    ): ValueEventListener {
+        val chatRooms = ArrayList<ChatRoom>()
+        return object : ValueEventListener {
+           override fun onDataChange(dataSnapshot: DataSnapshot) {
+                chatRooms.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val chatRoom = snapshot.getValue(ChatRoom::class.java)
+                    chatRooms.add(chatRoom!!)
+                }
+                if (chatRooms.isEmpty()) {
+                    recyclerView.visibility = View.GONE
+                    textView.visibility = View.VISIBLE
+                } else {
+                    recyclerView.visibility = View.VISIBLE
+                    textView.visibility = View.GONE
+                    adapter.setmChatRoom(chatRooms)
+                }
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
 
     fun getMatchingUsers(users: List<User>): List<User> {
 
