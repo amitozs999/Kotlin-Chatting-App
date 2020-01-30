@@ -28,11 +28,21 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.amitozsingh.chatapp.Activities.ChattingActivity
+import com.amitozsingh.chatapp.Activities.MessagesActivity
+import com.amitozsingh.chatapp.MessagesAdapter
 
 import com.amitozsingh.chatapp.Services.FriendServices
+import com.amitozsingh.chatapp.UserFriendsAdapter
 import com.amitozsingh.chatapp.utils.*
 import io.socket.client.IO
 import io.socket.client.Socket
+import kotlinx.android.synthetic.main.fragment_friendslist.*
+
+
+
 
 
 /**
@@ -60,6 +70,10 @@ class ChattingFragment : BaseFragment() {
 
     private var mGetAllMessagesReference: DatabaseReference? = null
     private var mGetAllMessagesListener: ValueEventListener? = null
+
+
+    var mActivity: MessagesActivity?=null
+    private var mAdapter: MessagesAdapter? = null
 
     private var mSocket: Socket? = null
     private var mLiveFriendsService: FriendServices? = null
@@ -96,12 +110,21 @@ class ChattingFragment : BaseFragment() {
             setmSendMessage()
         }
 
-        fragment_messages_friendName.setText(mFriendNameString);
+        fragment_messages_friendName.setText(mFriendNameString)
+
+        mAdapter= MessagesAdapter(activity as ChattingActivity, mUserEmailString!!)
 
         mGetAllMessagesReference = FirebaseDatabase.getInstance().getReference().child(FIRE_BASE_PATH_USER_MESSAGES)
             .child(encodeEmail(mUserEmailString)).child(encodeEmail(mFriendEmailString));
 
 
+        mGetAllMessagesListener = mLiveFriendsService?.getAllMessages(fragment_messages_recyclerView,fragment_messages_friendName,fragment_messages_friendPicture,mAdapter!!,mUserEmailString!!);
+
+        mGetAllMessagesReference!!.addValueEventListener(mGetAllMessagesListener!!)
+
+
+        fragment_messages_recyclerView.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
+        fragment_messages_recyclerView.setAdapter(mAdapter)
 
     }
 
@@ -144,6 +167,16 @@ class ChattingFragment : BaseFragment() {
         //FriendslistFragment.newInstance()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+
+        if (mGetAllMessagesListener != null) {
+            mGetAllMessagesReference?.removeEventListener(mGetAllMessagesListener!!)
+        }
+
+
+    }
 
 
 }

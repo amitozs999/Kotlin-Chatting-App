@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.amitozsingh.chatapp.Activities.ChattingActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.utils.Message
 
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.list_messages.view.*
 
 
 class MessagesAdapter(
-    private val mActivity: MessagesActivity,
+    private val mActivity: ChattingActivity,
     var mCurrentUserEmail:String
 ) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>()  {
 
@@ -69,7 +70,7 @@ class MessagesAdapter(
                 itemView.list_messages_friendPicture.visibility=View.VISIBLE
                 itemView.list_messages_friendText.visibility=View.VISIBLE
 
-                Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_friendPicture)
+               // Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_friendPicture)
 
                 itemView.list_messages_friendText.setText(message.messageText)
             } else{
@@ -78,7 +79,7 @@ class MessagesAdapter(
                 itemView.list_messages_friendPicture.visibility=View.GONE
                 itemView.list_messages_friendText.visibility=View.GONE
 
-                Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_userPicture)
+                //Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_userPicture)
 
                 itemView.list_messages_UserText.setText(message.messageText)
             }

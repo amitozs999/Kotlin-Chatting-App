@@ -9,7 +9,6 @@ import com.google.firebase.database.DatabaseError
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
-import com.amitozsingh.chatapp.FindFriendsAdapter
 import com.amitozsingh.chatapp.Fragments.SearchFriendsFragment
 import com.amitozsingh.chatapp.utils.User
 import io.socket.client.Socket
@@ -24,12 +23,15 @@ import rx.schedulers.Schedulers
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.amitozsingh.chatapp.R
-import com.amitozsingh.chatapp.RequestAdapter
-import com.amitozsingh.chatapp.UserFriendsAdapter
+import com.amitozsingh.chatapp.*
+import com.amitozsingh.chatapp.utils.FIRE_BASE_PATH_USER_NEW_MESSAGES
+import com.amitozsingh.chatapp.utils.Message
+import com.amitozsingh.chatapp.utils.encodeEmail
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.FirebaseDatabase
 
 
 class FriendServices {
@@ -385,6 +387,42 @@ class FriendServices {
                 }
             })
     }
+
+    fun getAllMessages(
+        recyclerView: RecyclerView, textView: TextView, imageView: ImageView,
+        adapter: MessagesAdapter, userEmail: String
+    ): ValueEventListener {
+        val messages = ArrayList<Message>()
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                messages.clear()
+                val newMessagesReference = FirebaseDatabase.getInstance().getReference()
+                    .child(FIRE_BASE_PATH_USER_NEW_MESSAGES)
+                    .child(encodeEmail(userEmail))
+                for (snapshot in dataSnapshot.children) {
+                    val message = snapshot.getValue(Message::class.java)
+                    newMessagesReference.child(message?.messageId!!).removeValue()
+                    messages.add(message)
+                }
+
+                if (messages.isEmpty()) {
+                    imageView.setVisibility(View.VISIBLE)
+                    textView.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                } else {
+                    imageView.setVisibility(View.GONE)
+                    textView.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
+                    adapter.setmUsers(messages)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
+
 
     fun getMatchingUsers(users: List<User>): List<User> {
 
