@@ -37,7 +37,9 @@ class MessagesAdapter(
         notifyDataSetChanged()
     }
 
-
+    fun getmMessages(): List<Message> {
+        return mMesages
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

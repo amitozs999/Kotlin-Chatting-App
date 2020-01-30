@@ -128,6 +128,9 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
             .child(FIRE_BASE_PATH_FRIEND_REQUEST_RECIEVED).child(encodeEmaill(userEmail))
         mAllFriendRequestsListener = mLiveFriendsService?.getFriendRequestBottom(bottom_nav_main,R.id.itemfriends);
         mAllFriendRequestsReference!!.addValueEventListener(mAllFriendRequestsListener!!)
+        bottom_nav_main.setOnNavigationItemSelectedListener(this)
+
+
 
 //        val badge = bottom_nav_main?.getOrCreateBadge(R.id.itemfriends)
 //        badge?.number=5
@@ -139,9 +142,10 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
                 .commit()
         }
 
-       bottom_nav_main.setOnNavigationItemSelectedListener(this)
+
 
     }
+
 
     fun encodeEmaill(email: String?): String {
         return email!!.replace(".", ",")

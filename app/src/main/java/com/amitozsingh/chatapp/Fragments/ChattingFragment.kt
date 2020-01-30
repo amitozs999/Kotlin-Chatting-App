@@ -149,13 +149,19 @@ class ChattingFragment : BaseFragment() {
 
         mGetAllMessagesReference!!.addValueEventListener(mGetAllMessagesListener!!)
 
+       var linearlayout=LinearLayoutManager(context, RecyclerView.VERTICAL,false)
+        linearlayout.stackFromEnd=true
+        fragment_messages_recyclerView.layoutManager= linearlayout
 
-        fragment_messages_recyclerView.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         fragment_messages_recyclerView.setAdapter(mAdapter)
 
-        mCompositeSubscription!!.add(createChatRoomSubscription())
 
-        //mRecyclerView.scrollToPosition(mAdapter.getmMessages().size()-1);
+
+
+        mCompositeSubscription!!.add(createChatRoomSubscription())
+        fragment_messages_recyclerView.scrollToPosition(mAdapter!!.itemCount-1);
+
+
         messageBoxListener();
 
     }
@@ -166,6 +172,12 @@ class ChattingFragment : BaseFragment() {
             Toast.makeText(activity, "Message Can't Be Blank", Toast.LENGTH_SHORT).show()
         } else {
 
+            val chatRoom = ChatRoom(
+                mFriendPictureString, mFriendNameString,
+                mFriendEmailString, fragment_messages_messageBox.text.toString(), mUserEmailString, true, true
+            )
+
+            mUserChatRoomReference!!.setValue(chatRoom)
 
             val newMessageRefernce = mGetAllMessagesReference?.push()
             val message = Message(

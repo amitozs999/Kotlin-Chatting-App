@@ -148,6 +148,9 @@ function sendOrDeleteFriendRequest(socket,io){
   
       var newfriendMessagesRef = db.ref('newUserMessages').child(encodeEmail(data.friendEmail))
       .child(friendMessageRef.key);
+
+      var chatRoomRef = db.ref('userChatRooms').child(encodeEmail(data.friendEmail))
+      .child(encodeEmail(data.senderEmail));
   
         var message={
         messageId: friendMessageRef.key,
@@ -157,9 +160,20 @@ function sendOrDeleteFriendRequest(socket,io){
       };
   
      
-  
+      var chatRoom = {
+        friendPicture: data.senderPicture,
+        friendName:data.senderName,
+        friendEmail: data.senderEmail,
+        lastMessage: data.messageText,
+        lastMessageSenderEmail: data.senderEmail,
+        lastMessageRead:false,
+        sentLastMessage:true
+      };
+
       friendMessageRef.set(message);
       newfriendMessagesRef.set(message);
+
+      chatRoomRef.set(chatRoom);
 
   
   

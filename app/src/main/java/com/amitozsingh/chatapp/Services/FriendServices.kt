@@ -299,8 +299,8 @@ class FriendServices {
 
     fun getFriendRequestBottom(bottomBar: BottomNavigationView, tagId: Int): ValueEventListener {
         val users = ArrayList<User>()
-               val badge = bottomBar?.getOrCreateBadge(R.id.itemfriends)
-       badge?.number=5
+               val badge = bottomBar?.getOrCreateBadge(tagId)
+
 
         badge?.setVisible(true)
         return object : ValueEventListener {
@@ -319,7 +319,7 @@ class FriendServices {
                     badge?.setVisible(true)
 
                 } else {
-                    bottomBar.removeBadge(tagId)
+                    badge?.setVisible(false)
                 }
             }
 
