@@ -1,17 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/fragment_profile_userPicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="30dip"
+        app:riv_border_width="2dip"
+        app:riv_border_color="#333333"
+        app:riv_oval="true"
+        android:layout_above="@+id/fragment_profile_centerPoint"
+        android:layout_centerHorizontal="true"
+        />
+
 
     <TextView
+        android:id="@+id/fragment_profile_centerPoint"
+        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PROFILE"/>
+        android:layout_centerInParent="true"
+        />
+
+    <ImageView
+        android:id="@+id/fragment_profile_camera_Picture"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/fragment_profile_userPicture"
+        android:background="@drawable/request_sent_bg"
+        android:layout_toLeftOf="@+id/fragment_profile_centerPoint"
+        android:layout_toStartOf="@+id/fragment_profile_centerPoint"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/ic_add"
+        />
+
+
+    <ImageView
+        android:id="@+id/fragment_profile_image_Picture"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/fragment_profile_userPicture"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@+id/fragment_profile_centerPoint"
+        android:layout_toEndOf="@+id/fragment_profile_centerPoint"
+        android:background="@drawable/request_sent_bg"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/ic_send"
+        />
+
+
+    <TextView
+        android:id="@+id/fragment_profile_userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_profile_camera_Picture"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="Amitoz Singh"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/fragment_profile_userEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_profile_userName"
+        android:layout_centerInParent="true"
+        android:text="eka01@gmail.com"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+
+    <Button
+        android:id="@+id/fragment_profile_signOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_profile_userEmail"
+        android:layout_centerHorizontal="true"
+        android:text="Sign Out"
+        />
+
+
+
+
+
 
 
 </RelativeLayout>
