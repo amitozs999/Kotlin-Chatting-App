@@ -20,7 +20,7 @@ var userAccountrequests=(io)=>{
        
          
         });
-
+        updateProfilePicture(socket,io);
         registerUser(socket,io);
         logUserIn(socket,io);
        
@@ -138,6 +138,27 @@ function registerUser(socket,io){
       });
     });
   }
+
+  function updateProfilePicture(socket,io){
+    socket.on('userUpdatedPicture',(data) =>{
+      console.log(data.email);
+      console.log(data.picUrl);
+      var db = admin.database();
+      var ref = db.ref(`users`);
+      var userRef = ref.child(encodeEmail(data.email)).child('userPicture');
+      userRef.set(data.picUrl);
+  
+      // var userFriendRef = db.ref('userFriends').child(encodeEmail(data.email));
+      // userFriendRef.orderByChild("email").on("child_added",(snapshot)=>{
+      //   var friendRef = db.ref('userFriends').child(encodeEmail(snapshot.val().email))
+      //   .child(encodeEmail(data.email)).child('userPicture');
+      //   friendRef.set(data.picUrl);
+      // });
+  });
+  
+  }
+  
+
   function encodeEmail(email){
     return email.replace('.',',');
   }

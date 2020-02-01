@@ -410,7 +410,7 @@ class AccountServices {
     }
 
     fun changeProfilePhoto(
-        storageReference: StorageReference,
+
         uri: Uri,
         activity: MessagesActivity,
         currentUserEmail: String,
@@ -422,18 +422,11 @@ class AccountServices {
 
         return uriObservable
             .subscribeOn(Schedulers.io())
-            .map(object : Func1<Uri, ByteArray> {
-                override fun call(uri: Uri): ByteArray? {
+            .map(object : Func1<Uri, String> {
+                override fun call(uri: Uri): String? {
                     try {
-                        val bitmap =
-                            MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
 
-//                        val outPutHeight = (bitmap.getHeight() * (512.0 / bitmap.getWidth())).toInt()
-//                        val scaledBitmap =
-//                            Bitmap.createScaledBitmap(bitmap, 512, outPutHeight, true)
-                          val byteArrayOutPutStream = ByteArrayOutputStream()
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
-                        return byteArrayOutPutStream.toByteArray()
+                        return uri.toString()
 
                     } catch (e: IOException) {
                         e.printStackTrace()
@@ -442,7 +435,7 @@ class AccountServices {
 
                 }
             }).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<ByteArray> {
+            .subscribe(object : Observer<String> {
                 override fun onCompleted() {
 
                 }
@@ -451,44 +444,32 @@ class AccountServices {
 
                 }
 
-                override fun onNext(bytes: ByteArray) {
+                override fun onNext(picUrl: String) {
 
-                    //Log.i("aa", storageReference.downloadUrl.toString())
-                    val uploadTask = storageReference.putBytes(bytes)
-                    var link:String?=null
-                    uploadTask.addOnSuccessListener { taskSnapshot ->
+//                    //Log.i("aa", storageReference.downloadUrl.toString())
+//                    val uploadTask = storageReference.putBytes(bytes)
+//                    var link:String?=null
+//                    uploadTask.addOnSuccessListener { taskSnapshot ->
 
-//                        val sendData = JSONObject()
-//                        try {
-//                            sendData.put("email", currentUserEmail)
-//                            sendData.put("picUrl", taskSnapshot.metadata!!.reference!!.getDownloadUrl().toString())
-//                            socket.emit("userUpdatedPicture", sendData)
-                        storageReference.downloadUrl.addOnSuccessListener {
-                            Log.i("aaa", uri.toString())
-                            link = uri.toString()
+                        val sendData = JSONObject()
+                          try {
+                            sendData.put("email", currentUserEmail)
+                            sendData.put("picUrl", picUrl)
+                            socket.emit("userUpdatedPicture", sendData)
 
 
-                            sharedPreferences.edit().putString(
-                                USER_PICTURE, link
+                             //node-chat-app-b19a4.appspot.com/usersProfilePics/babaji@gmail,com/IMG_20200201_192158.jpg
 
-                            ).apply()
-                            Picasso.get()
-                                .load(link).resize(200, 250)
-                                .into(imageView)
+                              // Log.i("aaaa",taskSnapshot.ge)
+                               //serDatabase.child("imageurl").setValue(uri)
+
+
+
+
+                            } catch (e: JSONException) {
+                            e.printStackTrace()
                         }
 
-                        //node-chat-app-b19a4.appspot.com/usersProfilePics/babaji@gmail,com/IMG_20200201_192158.jpg
-
-                       // Log.i("aaaa",taskSnapshot.ge)
-                        //serDatabase.child("imageurl").setValue(uri)
-
-
-
-
-//                        } catch (e: JSONException) {
-//                            e.printStackTrace()
-//                        }
-                    }
                 }
             })
     }
