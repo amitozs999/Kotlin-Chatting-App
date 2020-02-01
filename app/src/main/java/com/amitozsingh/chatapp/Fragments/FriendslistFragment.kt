@@ -27,9 +27,7 @@ import android.content.Intent
 import android.content.Context
 import android.util.Log
 import com.amitozsingh.chatapp.Activities.ChattingActivity
-
-
-
+import com.google.firebase.database.DataSnapshot
 
 
 /**
@@ -50,6 +48,7 @@ class FriendslistFragment : BaseFragment(),UserFriendsAdapter.UserListener {
 
     private var mGetAllCurrenUsersFriendsReference: DatabaseReference? = null
     private var mGetAllCurrentUsersFriendsListener: ValueEventListener? = null
+    private var userdatabase:DatabaseReference?=null
 
 
 

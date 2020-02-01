@@ -33,12 +33,23 @@ import android.content.Intent
 import android.R.id.edit
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
+import android.widget.ImageView
 import butterknife.internal.Utils
 
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.utils.USER_EMAIL
 import com.amitozsingh.chatapp.utils.USER_NAME
 import com.amitozsingh.chatapp.utils.USER_PICTURE
+
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import com.makeramen.roundedimageview.RoundedImageView
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.ByteArrayOutputStream
 import java.lang.Exception
 import kotlin.math.log
 
@@ -397,9 +408,97 @@ class AccountServices {
                 }
             })
     }
+
+    fun changeProfilePhoto(
+        storageReference: StorageReference,
+        uri: Uri,
+        activity: MessagesActivity,
+        currentUserEmail: String,
+        imageView:ImageView,
+        sharedPreferences: SharedPreferences,
+        socket: Socket
+    ): Subscription {
+        val uriObservable = Observable.just(uri)
+
+        return uriObservable
+            .subscribeOn(Schedulers.io())
+            .map(object : Func1<Uri, ByteArray> {
+                override fun call(uri: Uri): ByteArray? {
+                    try {
+                        val bitmap =
+                            MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
+
+//                        val outPutHeight = (bitmap.getHeight() * (512.0 / bitmap.getWidth())).toInt()
+//                        val scaledBitmap =
+//                            Bitmap.createScaledBitmap(bitmap, 512, outPutHeight, true)
+                          val byteArrayOutPutStream = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
+                        return byteArrayOutPutStream.toByteArray()
+
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        return null
+                    }
+
+                }
+            }).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<ByteArray> {
+                override fun onCompleted() {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onNext(bytes: ByteArray) {
+
+                    //Log.i("aa", storageReference.downloadUrl.toString())
+                    val uploadTask = storageReference.putBytes(bytes)
+                    var link:String?=null
+                    uploadTask.addOnSuccessListener { taskSnapshot ->
+
+//                        val sendData = JSONObject()
+//                        try {
+//                            sendData.put("email", currentUserEmail)
+//                            sendData.put("picUrl", taskSnapshot.metadata!!.reference!!.getDownloadUrl().toString())
+//                            socket.emit("userUpdatedPicture", sendData)
+                        storageReference.downloadUrl.addOnSuccessListener {
+                            Log.i("aaa", uri.toString())
+                            link = uri.toString()
+
+
+                            sharedPreferences.edit().putString(
+                                USER_PICTURE, link
+
+                            ).apply()
+                            Picasso.get()
+                                .load(link).resize(200, 250)
+                                .into(imageView)
+                        }
+
+                        //node-chat-app-b19a4.appspot.com/usersProfilePics/babaji@gmail,com/IMG_20200201_192158.jpg
+
+                       // Log.i("aaaa",taskSnapshot.ge)
+                        //serDatabase.child("imageurl").setValue(uri)
+
+
+
+
+//                        } catch (e: JSONException) {
+//                            e.printStackTrace()
+//                        }
+                    }
+                }
+            })
+    }
+
+
     private fun isEmailValid(email: CharSequence): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
+
+
 
 
 }
