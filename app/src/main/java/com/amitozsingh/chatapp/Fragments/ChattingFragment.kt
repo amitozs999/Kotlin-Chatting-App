@@ -23,9 +23,6 @@ import com.amitozsingh.chatapp.utils.USER_EMAIL
 
 import kotlinx.android.synthetic.main.fragment_chatting.*
 
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,9 +47,7 @@ import rx.Observer
 import java.util.concurrent.TimeUnit
 import android.text.Editable
 import android.text.TextWatcher
-
-
-
+import com.google.firebase.database.*
 
 
 /**
@@ -137,9 +132,9 @@ class ChattingFragment : BaseFragment() {
             .child(encodeEmail(mFriendEmailString));
 
 
-        //mUserChatRoomListener = getCurrentChatRoomListener();
+        mUserChatRoomListener = getCurrentChatRoomListener();
 
-        //mUserChatRoomReference?.addValueEventListener(mUserChatRoomListener!!);
+        mUserChatRoomReference?.addValueEventListener(mUserChatRoomListener!!);
 
         mGetAllMessagesReference = FirebaseDatabase.getInstance().getReference().child(FIRE_BASE_PATH_USER_MESSAGES)
             .child(encodeEmail(mUserEmailString)).child(encodeEmail(mFriendEmailString));
@@ -200,6 +195,9 @@ class ChattingFragment : BaseFragment() {
                 )
             )
 
+            fragment_messages_recyclerView.scrollToPosition(mAdapter!!.itemCount-1);
+
+            fragment_messages_messageBox.setText("");
 
 
 
@@ -251,6 +249,22 @@ class ChattingFragment : BaseFragment() {
         })
     }
 
+    fun getCurrentChatRoomListener(): ValueEventListener {
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val chatRoom = dataSnapshot.getValue(ChatRoom::class.java)
+                if (chatRoom != null) {
+                    mUserChatRoomReference
+                        ?.child("lastMessageRead")
+                        ?.setValue(true)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         //FriendslistFragment.newInstance()
@@ -263,7 +277,9 @@ class ChattingFragment : BaseFragment() {
         if (mGetAllMessagesListener != null) {
             mGetAllMessagesReference?.removeEventListener(mGetAllMessagesListener!!)
         }
-
+        if (mUserChatRoomListener!=null){
+            mUserChatRoomReference?.removeEventListener(mUserChatRoomListener!!)
+        }
 
     }
 

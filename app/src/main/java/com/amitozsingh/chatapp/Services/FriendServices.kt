@@ -330,6 +330,46 @@ class FriendServices {
     }
 
 
+
+    fun getMessagesBottom(bottomBar: BottomNavigationView, tagId: Int): ValueEventListener {
+        val messages = ArrayList<Message>()
+        val badge = bottomBar?.getOrCreateBadge(tagId)
+
+
+        badge?.setVisible(true)
+
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                messages.clear()
+
+                for (snapshot in dataSnapshot.children) {
+                    val message = snapshot.getValue(Message::class.java)
+                    messages.add(message!!)
+                }
+
+                if (!messages.isEmpty()) {
+                    badge?.number=messages.size
+
+                    badge?.setVisible(true)
+                } else {
+
+                    badge?.number=messages.size
+
+                    badge?.setVisible(false)
+                }
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+    }
+
+
+
+
+
     fun sendMessage(
         socket: Socket,
         messageSenderEmail: String,

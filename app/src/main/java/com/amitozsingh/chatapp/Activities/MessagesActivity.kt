@@ -27,6 +27,9 @@ import io.socket.client.IO
 import io.socket.client.Socket
 
 
+
+
+
 class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var mAuth: FirebaseAuth? = null
@@ -36,6 +39,9 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
 
     private var mAllFriendRequestsReference: DatabaseReference? = null
     private var mAllFriendRequestsListener: ValueEventListener? = null
+
+    private var mUsersNewMessagesReference: DatabaseReference? = null
+    private var mUsersNewMessagesListener: ValueEventListener? = null
 
 
     private var mUserEmailString: String? = null
@@ -128,8 +134,18 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
             .child(FIRE_BASE_PATH_FRIEND_REQUEST_RECIEVED).child(encodeEmaill(userEmail))
         mAllFriendRequestsListener = mLiveFriendsService?.getFriendRequestBottom(bottom_nav_main,R.id.itemfriends);
         mAllFriendRequestsReference!!.addValueEventListener(mAllFriendRequestsListener!!)
-        bottom_nav_main.setOnNavigationItemSelectedListener(this)
 
+
+
+
+
+        mUsersNewMessagesReference = FirebaseDatabase.getInstance().getReference()
+            .child(FIRE_BASE_PATH_USER_NEW_MESSAGES).child(encodeEmail(userEmail));
+        mUsersNewMessagesListener = mLiveFriendsService?.getMessagesBottom(bottom_nav_main,R.id.itemmessages);
+
+        mUsersNewMessagesReference!!.addValueEventListener(mUsersNewMessagesListener!!);
+
+        bottom_nav_main.setOnNavigationItemSelectedListener(this)
 
 
 //        val badge = bottom_nav_main?.getOrCreateBadge(R.id.itemfriends)
