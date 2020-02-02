@@ -270,45 +270,47 @@ class ProfileFragment : BaseFragment() {
 
 
 
-            val filePath = FirebaseStorage.getInstance().reference
+          val filePath = FirebaseStorage.getInstance().reference
                 .child("usersProfilePics").child(encodeEmail(mUserEmailString))
-            var bitmap: Bitmap? = null
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(mActivity!!.contentResolver, selectedImageUri)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            val baos = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, baos)
-            val data = baos.toByteArray()
-
-            val uploadTask = filePath.putBytes(data)
-            uploadTask.addOnFailureListener { e -> e.printStackTrace() }
-            uploadTask.addOnSuccessListener { taskSnapshot ->
-                filePath.downloadUrl
-                    .addOnSuccessListener { uri ->
-                        // x=uri
-                        Log.i("zz3",uri.toString())
-
-                        mSharedPreferences!!.edit().putString(
-                            USER_PICTURE, uri.toString()
-
-                        ).apply()
-                        updateImageUri(uri.toString(),mUserEmailString!!)
-                    }
-                    .addOnFailureListener { e -> e.printStackTrace() }
-            }
 
 
+//            var bitmap: Bitmap? = null
+//            try {
+//                bitmap = MediaStore.Images.Media.getBitmap(mActivity!!.contentResolver, selectedImageUri)
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//
+//            val baos = ByteArrayOutputStream()
+//            bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+//            val data = baos.toByteArray()
+//
+//            val uploadTask = filePath.putBytes(data)
+//            uploadTask.addOnFailureListener { e -> e.printStackTrace() }
+//            uploadTask.addOnSuccessListener { taskSnapshot ->
+//                filePath.downloadUrl
+//                    .addOnSuccessListener { uri ->
+//                        // x=uri
+//                        Log.i("zz3",uri.toString())
+//
+//                        mSharedPreferences!!.edit().putString(
+//                            USER_PICTURE, uri.toString()
+//
+//                        ).apply()
+//                        updateImageUri(uri.toString(),mUserEmailString!!)
+//                    }
+//                    .addOnFailureListener { e -> e.printStackTrace() }
+//            }
 
-//            mCompositeSubscription!!.add(
-//                AccountServices().getInstance()
-//                    .changeProfilePhoto(
-//                        storageReference, selectedImageUri, mActivity!!,
-//                        mUserEmailString!!,fragment_profile_userPicture, mSharedPreferences!!, mSocket!!
-//                    )
-//            )
+
+
+            mCompositeSubscription!!.add(
+                AccountServices().getInstance()
+                    .changeProfilePhoto(
+                        filePath, selectedImageUri!!, mActivity!!,
+                        mUserEmailString!!, fragment_profile_userPicture, mSharedPreferences!!, mSocket!!,userref!!
+                    )
+            )
 
 
 
