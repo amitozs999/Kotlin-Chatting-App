@@ -1,6 +1,8 @@
 package com.amitozsingh.chatapp.Fragments
 
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +26,9 @@ import com.amitozsingh.chatapp.utils.USER_EMAIL
 import kotlinx.android.synthetic.main.fragment_chatting.*
 
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Intent
+import android.graphics.Bitmap
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,7 +52,13 @@ import rx.Observer
 import java.util.concurrent.TimeUnit
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import com.amitozsingh.chatapp.Services.AccountServices
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 
 /**
@@ -68,6 +79,11 @@ class ChattingFragment : BaseFragment() {
         }
     }
 
+    private val REQUEST_CODE_CAMERA = 100
+    private val REQUEST_CODE_PICTURE = 101
+
+    private var mPermission: PermissionsChatting? = null
+
     private var mFriendEmailString: String? = null
     private var mFriendPictureString: String? = null
     private var mFriendNameString: String? = null
@@ -83,7 +99,9 @@ class ChattingFragment : BaseFragment() {
 
     private var mMessageSubject: PublishSubject<String>? = null
 
-    var mActivity: MessagesActivity?=null
+
+
+    var mActivity: ChattingActivity?=null
     private var mAdapter: MessagesAdapter? = null
 
     private var mSocket: Socket? = null
@@ -102,6 +120,8 @@ class ChattingFragment : BaseFragment() {
         mFriendNameString = friendDetails[1]
         mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL, "")
 
+        mPermission = PermissionsChatting(activity as ChattingActivity)
+
     }
 
     override fun onCreateView(
@@ -117,9 +137,34 @@ class ChattingFragment : BaseFragment() {
 //        Picasso.get()
 //            .load(mFriendPictureString)
 //            .into(mFriendPicture);
+
+
+
         sendArrow.setOnClickListener {
-            setmSendMessage()
+            setmSendMessage("textMessage","")
         }
+
+
+        sendPic.setOnClickListener {
+
+            if (!mPermission!!.checkPermissionForWriteExternalStorage()) {
+                mPermission!!.requestPermissionForWriteExternalStorage()
+            } else if (!mPermission!!.checkPermissionForReadExternalStorage()) {
+                mPermission!!.requestPermissionForReadExternalStorage()
+            } else {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/jpeg"
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                startActivityForResult(
+                    Intent.createChooser(intent, "Choose Image With"),
+                    REQUEST_CODE_PICTURE
+                )
+            }
+
+        }
+
+
+
 
         fragment_messages_friendName.setText(mFriendNameString)
 
@@ -162,8 +207,70 @@ class ChattingFragment : BaseFragment() {
     }
 
 
-    fun setmSendMessage() {
-        if (fragment_messages_messageBox.getText().toString().equals("")) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if(data!=null) {
+
+            if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_PICTURE) {
+                val selectedImageUri = data!!.data
+
+
+                val filePath = FirebaseStorage.getInstance().reference
+                    .child("usersProfilePic").child(encodeEmail(mUserEmailString))
+                var bitmap: Bitmap? = null
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                        mActivity!!.contentResolver,
+                        selectedImageUri
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                val baos = ByteArrayOutputStream()
+                bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+                val data = baos.toByteArray()
+
+                val uploadTask = filePath.putBytes(data)
+                uploadTask.addOnFailureListener { e -> e.printStackTrace() }
+                uploadTask.addOnSuccessListener { taskSnapshot ->
+                    filePath.downloadUrl
+                        .addOnSuccessListener { uri ->
+
+                            Log.i("zz5", uri.toString())
+
+                            mSharedPreferences!!.edit().putString(
+                                USER_PICTURE, uri.toString()
+
+                            ).apply()
+                            //PicUrl = uri.toString()
+                            setmSendMessage("picMessage",uri.toString())
+                            // updateImageUri(uri.toString(),mUserEmailString!!)
+                        }
+                        .addOnFailureListener { e -> e.printStackTrace() }
+                }
+//                Log.i("zz6", PicUrl)
+
+//            mCompositeSubscription!!.add(
+//                AccountServices().getInstance()
+//                    .changeProfilePhoto(
+//                        filePath, selectedImageUri!!, mActivity!!,
+//                        mUserEmailString!!, fragment_profile_userPicture, mSharedPreferences!!, mSocket!!,userref!!
+//                    )
+//            )
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+    fun setmSendMessage(type:String,uri:String) {
+        if (fragment_messages_messageBox.getText().toString().equals("")&&type=="textMessage") {
             Toast.makeText(activity, "Message Can't Be Blank", Toast.LENGTH_SHORT).show()
         } else {
 
@@ -175,14 +282,33 @@ class ChattingFragment : BaseFragment() {
             mUserChatRoomReference!!.setValue(chatRoom)
 
             val newMessageRefernce = mGetAllMessagesReference?.push()
-            val message = Message(
-                newMessageRefernce?.key!!,
-                fragment_messages_messageBox.getText().toString(),
-                mUserEmailString!!,
-                mSharedPreferences?.getString(USER_PICTURE, "")!!
-            )
+          Log.i("zz7", uri)
+            var message=Message()
+            if(type=="textMessage"){
+                message = Message(
+                    newMessageRefernce?.key!!,
+                    fragment_messages_messageBox.getText().toString(),type,
+                    mUserEmailString!!,
+                    mSharedPreferences?.getString(USER_PICTURE, "")!!
+                )
 
-            newMessageRefernce.setValue(message)
+                Log.i("xx",fragment_messages_messageBox.text.toString())
+
+            }
+            if(type=="picMessage"){
+
+                message = Message(
+                    newMessageRefernce?.key!!,
+                   uri,type,
+                    mUserEmailString!!,
+                    mSharedPreferences?.getString(USER_PICTURE, "")!!
+                )
+
+                Log.i("xx2",uri)
+            }
+
+
+            newMessageRefernce!!.setValue(message)
 
             mCompositeSubscription!!.add(
                 mLiveFriendsService?.sendMessage(
@@ -281,6 +407,16 @@ class ChattingFragment : BaseFragment() {
             mUserChatRoomReference?.removeEventListener(mUserChatRoomListener!!)
         }
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mActivity = context as ChattingActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mActivity = null
     }
 
 

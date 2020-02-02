@@ -16,6 +16,7 @@ data class User(
 data class Message(
     var messageId:String="",
 var messageText:String="",
+    var messageType:String="",
 var messageSenderEmail:String="",
 var messageSenderPicture:String=""
 

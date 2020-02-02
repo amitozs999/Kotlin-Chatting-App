@@ -61,6 +61,14 @@
             />
 
         <ImageView
+            android:id="@+id/sendPic"
+            android:src="@drawable/ic_message"
+            android:layout_width="wrap_content"
+              android:layout_weight="0.15"
+        android:layout_gravity="center"
+            android:layout_height="30dp"/>
+
+        <ImageView
             android:id="@+id/sendArrow"
             android:layout_width="0dp"
             android:layout_height="30dp"

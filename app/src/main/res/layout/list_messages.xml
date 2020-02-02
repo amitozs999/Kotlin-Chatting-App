@@ -33,6 +33,15 @@
         android:textSize="16sp"
         />
 
+    <ImageView
+        android:id="@+id/list_messages_messagePicfriend"
+        android:layout_toEndOf="@+id/list_messages_friendPicture"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/list_messages_userPicture"
@@ -60,5 +69,15 @@ android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         android:textSize="16sp"
         />
+
+    <ImageView
+        android:id="@+id/list_messages_messagePicUser"
+        android:layout_toStartOf="@+id/list_messages_userPicture"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
 
 </RelativeLayout>
