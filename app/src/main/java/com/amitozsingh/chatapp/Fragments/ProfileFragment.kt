@@ -46,8 +46,6 @@ import com.google.firebase.database.*
 import io.socket.client.IO
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.lang.IllegalArgumentException
-import java.net.URISyntaxException
 
 
 /**
@@ -85,8 +83,6 @@ class ProfileFragment : BaseFragment() {
     private var mActivity: MessagesActivity? = null
     private var mSocket: Socket? = null
 
-
-    var x:Uri?= null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val builder = StrictMode.VmPolicy.Builder()
@@ -126,14 +122,12 @@ class ProfileFragment : BaseFragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(User::class.java)
 
-
                 if(user!!.userPicture != null) {
                     try {
 
 
                         Picasso.get().load(user.userPicture).into(fragment_profile_userPicture)
-                    }
-                    catch (e:IllegalArgumentException){
+                    } catch (e: IllegalArgumentException) {
 
                     }
                 }
@@ -156,7 +150,7 @@ class ProfileFragment : BaseFragment() {
             mSharedPreferences!!.edit().putString(USER_NAME,"").apply();
             mSharedPreferences!!.edit().putString(USER_EMAIL,"").apply();
             FirebaseAuth.getInstance().signOut();
-            getActivity()?.finish();
+           mActivity!!.finish()
         }
         fragment_profile_camera_Picture.setOnClickListener {
 
@@ -222,58 +216,58 @@ class ProfileFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
 
-
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_PICTURE) {
             val selectedImageUri = data!!.data
 
 
             val filePath = FirebaseStorage.getInstance().reference
                 .child("usersProfilePics").child(encodeEmail(mUserEmailString))
-            var bitmap: Bitmap? = null
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(mActivity!!.contentResolver, selectedImageUri)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            val baos = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, baos)
-            val data = baos.toByteArray()
-
-            val uploadTask = filePath.putBytes(data)
-            uploadTask.addOnFailureListener { e -> e.printStackTrace() }
-            uploadTask.addOnSuccessListener { taskSnapshot ->
-                filePath.downloadUrl
-                    .addOnSuccessListener { uri ->
-                                   // x=uri
-                        Log.i("zz3",uri.toString())
-
-                        mSharedPreferences!!.edit().putString(
-                            USER_PICTURE, uri.toString()
-
-                        ).apply()
-                        updateImageUri(uri.toString(),mUserEmailString!!)
-                    }
-                    .addOnFailureListener { e -> e.printStackTrace() }
-            }
-
-
-
-
-
+//            var bitmap: Bitmap? = null
+//            try {
+//                bitmap = MediaStore.Images.Media.getBitmap(mActivity!!.contentResolver, selectedImageUri)
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
 //
-//            mCompositeSubscription!!.add(
-//                AccountServices().getInstance()
-//                    .changeProfilePhoto(
-//                        x!!, mActivity!!,
-//                        mUserEmailString!!, fragment_profile_userPicture, mSharedPreferences!!, mSocket!!
-//                    )
-//            )
+//            val baos = ByteArrayOutputStream()
+//            bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+//            val data = baos.toByteArray()
+//
+//            val uploadTask = filePath.putBytes(data)
+//            uploadTask.addOnFailureListener { e -> e.printStackTrace() }
+//            uploadTask.addOnSuccessListener { taskSnapshot ->
+//                filePath.downloadUrl
+//                    .addOnSuccessListener { uri ->
+//
+//                        Log.i("zz3",uri.toString())
+//
+//                        mSharedPreferences!!.edit().putString(
+//                            USER_PICTURE, uri.toString()
+//
+//                        ).apply()
+//                        updateImageUri(uri.toString(),mUserEmailString!!)
+//                    }
+//                    .addOnFailureListener { e -> e.printStackTrace() }
+//            }
+
+
+
+
+
+
+            mCompositeSubscription!!.add(
+                AccountServices().getInstance()
+                    .changeProfilePhoto(
+                        filePath, selectedImageUri!!, mActivity!!,
+                        mUserEmailString!!, fragment_profile_userPicture, mSharedPreferences!!, mSocket!!,userref!!
+                    )
+            )
 
         }
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
-            val selectedImageUri =  mTempUri
+            val selectedImageUri = mTempUri
+
 
 
             val filePath = FirebaseStorage.getInstance().reference
@@ -305,6 +299,8 @@ class ProfileFragment : BaseFragment() {
                     }
                     .addOnFailureListener { e -> e.printStackTrace() }
             }
+
+
 
 //            mCompositeSubscription!!.add(
 //                AccountServices().getInstance()
@@ -342,6 +338,11 @@ class ProfileFragment : BaseFragment() {
     override fun onDetach() {
         super.onDetach()
         mActivity = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSocket!!.disconnect()
     }
 }
 

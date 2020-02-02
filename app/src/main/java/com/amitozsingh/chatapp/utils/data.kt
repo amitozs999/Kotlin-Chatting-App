@@ -33,3 +33,4 @@ data class ChatRoom (
      var lastMessageRead: Boolean = false,
     var sentLastMessage: Boolean = false
 )
+

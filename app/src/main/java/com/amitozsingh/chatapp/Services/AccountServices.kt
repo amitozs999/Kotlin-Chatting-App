@@ -21,7 +21,6 @@ import android.widget.Toast
 import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
-import com.amitozsingh.chatapp.utils.LOCAL_HOST
 
 import com.google.firebase.auth.AuthResult
 import com.google.android.gms.tasks.Task
@@ -40,14 +39,15 @@ import android.widget.ImageView
 import butterknife.internal.Utils
 
 import com.amitozsingh.chatapp.Activities.MessagesActivity
-import com.amitozsingh.chatapp.utils.USER_EMAIL
-import com.amitozsingh.chatapp.utils.USER_NAME
-import com.amitozsingh.chatapp.utils.USER_PICTURE
+import com.amitozsingh.chatapp.utils.*
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.database.FirebaseDatabase
 
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import io.socket.client.IO
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
@@ -246,7 +246,7 @@ class AccountServices {
 
                         }
 
-                        FirebaseAuth.getInstance().signOut()
+                       // FirebaseAuth.getInstance().signOut()
                         Log.i("AMITOZ","LEVEL 6")
                        return NO_ERRORS
 
@@ -409,67 +409,162 @@ class AccountServices {
             })
     }
 
-    fun changeProfilePhoto(
+//    fun changeProfilePhoto(
+//
+//        uri: Uri,
+//        activity: MessagesActivity,
+//        currentUserEmail: String,
+//        imageView:ImageView,
+//        sharedPreferences: SharedPreferences,
+//        socket: Socket
+//    ): Subscription {
+//        val uriObservable = Observable.just(uri)
+//
+//        return uriObservable
+//            .subscribeOn(Schedulers.io())
+//            .map(object : Func1<Uri, String> {
+//                override fun call(uri: Uri): String? {
+//                    try {
+//
+//                        return uri.toString()
+//
+//                    } catch (e: IOException) {
+//                        e.printStackTrace()
+//                        return null
+//                    }
+//
+//                }
+//            }).observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(object : Observer<String> {
+//                override fun onCompleted() {
+//
+//                }
+//
+//                override fun onError(e: Throwable) {
+//
+//                }
+//
+//                override fun onNext(picUrl: String) {
+//
+////                    //Log.i("aa", storageReference.downloadUrl.toString())
+////                    val uploadTask = storageReference.putBytes(bytes)
+////                    var link:String?=null
+////                    uploadTask.addOnSuccessListener { taskSnapshot ->
+//
+//                        val sendData = JSONObject()
+//                          try {
+//                            sendData.put("email", currentUserEmail)
+//                            sendData.put("picUrl", picUrl)
+//                            socket.emit("userUpdatedPicture", sendData)
+//
+//
+//                             //node-chat-app-b19a4.appspot.com/usersProfilePics/babaji@gmail,com/IMG_20200201_192158.jpg
+//
+//                              // Log.i("aaaa",taskSnapshot.ge)
+//                               //serDatabase.child("imageurl").setValue(uri)
+//
+//
+//
+//
+//                            } catch (e: JSONException) {
+//                            e.printStackTrace()
+//                        }
+//
+//                }
+//            })
+//    }
 
+
+    fun changeProfilePhoto(
+        filepath: StorageReference,
         uri: Uri,
         activity: MessagesActivity,
         currentUserEmail: String,
-        imageView:ImageView,
-        sharedPreferences: SharedPreferences,
-        socket: Socket
+        imageView: ImageView,
+        msharedPreferences: SharedPreferences,
+        socket: Socket,userref:FirebaseDatabase
     ): Subscription {
-        val uriObservable = Observable.just(uri)
 
+        socket!!.connect()
+        val uriObservable = Observable.just(uri)
         return uriObservable
             .subscribeOn(Schedulers.io())
-            .map(object : Func1<Uri, String> {
-                override fun call(uri: Uri): String? {
+            .map(object : Func1<Uri, ByteArray> {
+                override fun call(uri: Uri): ByteArray? {
                     try {
 
-                        return uri.toString()
 
+                        val bitmap =
+                            MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
+
+
+                        val byteArrayOutPutStream = ByteArrayOutputStream()
+
+                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
+                        val data = byteArrayOutPutStream.toByteArray()
+                        return data
                     } catch (e: IOException) {
-                        e.printStackTrace()
+
                         return null
                     }
 
                 }
             }).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<String> {
+            .subscribe(object : Observer<ByteArray> {
                 override fun onCompleted() {
 
                 }
 
-                override fun onError(e: Throwable) {
+               override fun onError(e: Throwable) {
 
                 }
 
-                override fun onNext(picUrl: String) {
+                override fun onNext(data: ByteArray) {
+                    val uploadTask = filepath.putBytes(data)
 
-//                    //Log.i("aa", storageReference.downloadUrl.toString())
-//                    val uploadTask = storageReference.putBytes(bytes)
-//                    var link:String?=null
-//                    uploadTask.addOnSuccessListener { taskSnapshot ->
-
+                    uploadTask.addOnSuccessListener { taskSnapshot ->
                         val sendData = JSONObject()
-                          try {
-                            sendData.put("email", currentUserEmail)
-                            sendData.put("picUrl", picUrl)
+//                        try {
+//                            sendData.put("email", currentUserEmail)
+//                            sendData.put("picUrl", taskSnapshot.getDownloadUrl().toString())
+//                            socket.emit("userUpdatedPicture", sendData)
+//                            sharedPreferences.edit().putString(
+//                                USER_PICTURE,
+//                                taskSnapshot.getDownloadUrl().toString()
+//                            ).apply()
+//                            Picasso.with(activity)
+//                                .load(taskSnapshot.getDownloadUrl().toString())
+//                                .into(imageView)
+//                        } catch (e: JSONException) {
+//                            e.printStackTrace()
+//                        }
+
+                        filepath.downloadUrl
+                            .addOnSuccessListener { uri ->
+
+                                try {
+                                    sendData.put("email", currentUserEmail)
+                          sendData.put("picUrl", uri.toString())
                             socket.emit("userUpdatedPicture", sendData)
 
+                                    Log.i("zz4",uri.toString())
 
-                             //node-chat-app-b19a4.appspot.com/usersProfilePics/babaji@gmail,com/IMG_20200201_192158.jpg
+                                    msharedPreferences.edit().putString(
+                                        USER_PICTURE, uri.toString()
 
-                              // Log.i("aaaa",taskSnapshot.ge)
-                               //serDatabase.child("imageurl").setValue(uri)
-
-
-
-
-                            } catch (e: JSONException) {
-                            e.printStackTrace()
+                                    ).apply()
+                                   // userref.reference.child("users").child(encodeEmail(currentUserEmail)).child("userPicture").setValue(uri.toString())
+                                    //updateImageUri(uri.toString(),mUserEmailString!!)
+                                    Picasso.get().load(uri.toString()).resize(200,250).into(imageView)
+                                }catch (e: JSONException) {
+                           e.printStackTrace()
                         }
 
+
+
+                                }
+
+                    }
                 }
             })
     }
