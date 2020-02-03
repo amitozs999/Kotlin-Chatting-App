@@ -192,8 +192,17 @@ class ChattingFragment : BaseFragment() {
        var linearlayout=LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         linearlayout.stackFromEnd=true
         fragment_messages_recyclerView.layoutManager= linearlayout
+//
+//        fragment_messages_recyclerView.setHasFixedSize(true)
+//        fragment_messages_recyclerView.setItemViewCacheSize(200)
+//        fragment_messages_recyclerView.setDrawingCacheEnabled(true)
+
 
         fragment_messages_recyclerView.setAdapter(mAdapter)
+
+        //fragment_messages_recyclerView.recycledViewPool.setMaxRecycledViews(0, 0);
+
+
 
 
 
@@ -310,16 +319,36 @@ class ChattingFragment : BaseFragment() {
 
             newMessageRefernce!!.setValue(message)
 
-            mCompositeSubscription!!.add(
-                mLiveFriendsService?.sendMessage(
-                    mSocket!!,
-                    mUserEmailString!!,
-                    mSharedPreferences?.getString(USER_PICTURE, "")!!,
-                    fragment_messages_messageBox.getText().toString(),
-                    mFriendEmailString!!,
-                    mSharedPreferences?.getString(USER_NAME, "")!!
+            if(type=="textMessage"){
+
+                mCompositeSubscription!!.add(
+                    mLiveFriendsService?.sendMessage(
+                        mSocket!!,
+                        mUserEmailString!!,
+                        mSharedPreferences?.getString(USER_PICTURE, "")!!,
+                        fragment_messages_messageBox.getText().toString(),
+                        mFriendEmailString!!,
+                        mSharedPreferences?.getString(USER_NAME, "")!!,
+                        "textMessage"
+                    )
                 )
-            )
+            }
+
+            if(type=="picMessage"){
+                mCompositeSubscription!!.add(
+                    mLiveFriendsService?.sendMessage(
+                        mSocket!!,
+                        mUserEmailString!!,
+                        mSharedPreferences?.getString(USER_PICTURE, "")!!,
+                        uri,
+                        mFriendEmailString!!,
+                        mSharedPreferences?.getString(USER_NAME, "")!!,
+                        "PicMessage"
+                    )
+                )
+            }
+
+
 
             fragment_messages_recyclerView.scrollToPosition(mAdapter!!.itemCount-1);
 

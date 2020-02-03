@@ -152,11 +152,15 @@ function sendOrDeleteFriendRequest(socket,io){
       var chatRoomRef = db.ref('userChatRooms').child(encodeEmail(data.friendEmail))
       .child(encodeEmail(data.senderEmail));
   
+      //Console.log(data.messageType);
+      //Console.log(data.messageText);
+
         var message={
         messageId: friendMessageRef.key,
         messageText: data.messageText,
         messageSenderEmail: data.senderEmail,
-        messageSenderPicture: data.senderPicture
+        messageSenderPicture: data.senderPicture,
+        messageType:data.type
       };
   
      

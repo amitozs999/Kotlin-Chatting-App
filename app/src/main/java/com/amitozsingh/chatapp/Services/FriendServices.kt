@@ -376,7 +376,8 @@ class FriendServices {
         messageSenderPicture: String,
         messageText: String,
         friendEmail: String,
-        messageSenderName: String
+        messageSenderName: String,
+        type:String
     ): Subscription {
         val details = ArrayList<String>()
         details.add(messageSenderEmail)
@@ -384,6 +385,7 @@ class FriendServices {
         details.add(messageText)
         details.add(friendEmail)
         details.add(messageSenderName)
+        details.add(type)
         val listObservable = Observable.just(details)
 
         return listObservable
@@ -401,6 +403,7 @@ class FriendServices {
                         sendData.put("messageText", strings[2])
                         sendData.put("friendEmail", strings[3])
                         sendData.put("senderName", strings[4])
+                        sendData.put("type",strings[5])
                         socket.emit("details", sendData)
                         return SERVER_SUCCESS
                     } catch (e: JSONException) {
@@ -430,6 +433,7 @@ class FriendServices {
         adapter: MessagesAdapter, userEmail: String
     ): ValueEventListener {
         val messages = ArrayList<Message>()
+
         return object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 messages.clear()
@@ -438,8 +442,8 @@ class FriendServices {
                     .child(encodeEmail(userEmail))
                 for (snapshot in dataSnapshot.children) {
                     val message = snapshot.getValue(Message::class.java)
-                    newMessagesReference.child(message?.messageId!!).removeValue()
-                    messages.add(message)
+                    //newMessagesReference.child(message?.messageId!!).removeValue()
+                    messages.add(message!!)
                 }
 
                 if (messages.isEmpty()) {
