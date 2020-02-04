@@ -130,7 +130,7 @@ function sendOrDeleteFriendRequest(socket,io){
               friendFriendRef.set({
                 email:snapshot.val().email,
                 userName:snapshot.val().userName,
-                userPicture:' ',
+                userPicture:snapshot.val().userPicture,
                 dateJoined:date,
                 hasLoggedIn:snapshot.val().hasLoggedIn
               });

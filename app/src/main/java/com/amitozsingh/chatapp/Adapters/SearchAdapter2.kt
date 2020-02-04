@@ -14,6 +14,7 @@ import com.amitozsingh.chatapp.utils.isIncludedInMap
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.user_list.view.*
 import kotlinx.android.synthetic.main.user_list.view.userdp
+import java.lang.IllegalArgumentException
 
 
 class FindFriendsAdapter(
@@ -136,9 +137,13 @@ return ViewHolder(userView)
 
 
 
+try {
 
+    Picasso.get().load(user.userPicture).fit().into(itemView.userdp)
+}
+catch (e:IllegalArgumentException){
 
-            Picasso.get().load(user.userPicture).fit().into(itemView.userdp)
+}
 
 
             itemView.username.text=user.userName

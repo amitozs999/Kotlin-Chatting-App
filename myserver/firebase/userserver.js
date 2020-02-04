@@ -148,12 +148,12 @@ function registerUser(socket,io){
       var userRef = ref.child(encodeEmail(data.email)).child('userPicture');
       userRef.set(data.picUrl);
   
-      var userFriendRef = db.ref('userFriends').child(encodeEmail(data.email));
-      userFriendRef.orderByChild("email").on("child_added",(snapshot)=>{
-        var friendRef = db.ref('userFriends').child(encodeEmail(snapshot.val().email))
-        .child(encodeEmail(data.email)).child('userPicture');
-        friendRef.set(data.picUrl);
-      });
+      // var userFriendRef = db.ref('userFriends').child(encodeEmail(data.email));
+      // userFriendRef.orderByChild("email").on("child_added",(snapshot)=>{
+      //   var friendRef = db.ref('userFriends').child(encodeEmail(snapshot.val().email))
+      //   .child(encodeEmail(data.email)).child('userPicture');
+      //   friendRef.set(data.picUrl);
+      // });
 
       
   });

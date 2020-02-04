@@ -156,7 +156,7 @@ Log.i("aa","1")
                     itemView.list_messages_friendPicture.visibility = View.VISIBLE   //friend visible
                     itemView.list_messages_messagePicfriend.visibility=View.VISIBLE
 
-                    Picasso.get().load(message.messageText)
+                    Picasso.get().load(message.messageText).placeholder(R.drawable.ic_launcher_background)
                         .into(itemView.list_messages_messagePicfriend)
 
 

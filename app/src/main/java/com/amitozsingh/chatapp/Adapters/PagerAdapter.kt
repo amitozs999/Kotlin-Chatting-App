@@ -16,9 +16,9 @@ class myPagerAdapter(fm:FragmentManager) :FragmentStatePagerAdapter(fm) {
         var fragment: Fragment?=null
 
         when (position) {
-            0 -> fragment = FriendslistFragment.newInstance()
-            1 -> fragment = FriendRequestsFragment.newInstance()
-            2 -> fragment = SearchFriendsFragment.newInstance()
+            1 -> fragment = FriendslistFragment.newInstance()
+            2 -> fragment = FriendRequestsFragment.newInstance()
+            0 -> fragment = SearchFriendsFragment.newInstance()
 
 
         }
@@ -34,9 +34,9 @@ class myPagerAdapter(fm:FragmentManager) :FragmentStatePagerAdapter(fm) {
         val title: CharSequence
 
         when (position) {
-            0 -> title = "Friends"
-            1 -> title = "Requests"
-            2 -> title = "Find Friends"
+            1 -> title = "Friends"
+            2 -> title = "Requests"
+            0 -> title = "Search"
             else -> return null
         }
 

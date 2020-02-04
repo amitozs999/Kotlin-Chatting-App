@@ -8,6 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.utils.User
+import com.amitozsingh.chatapp.utils.encodeEmail
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.friend_request_list_layout.view.*
 
@@ -63,7 +68,32 @@ class UserFriendsAdapter(
         fun bindItems(mListener: UserListener, user: User){
 
 
-            Picasso.get().load(user.userPicture).fit().into(itemView.userdp)
+            val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
+            userDatabase.child(encodeEmail(user.email)).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    val user = p0.getValue(User::class.java)
+
+                    if(user!!.userPicture != null) {
+                        try {
+
+
+                            Picasso.get().load(user.userPicture).placeholder(R.drawable.ic_launcher_background).fit().into(itemView.userdp)
+                        } catch (e: IllegalArgumentException) {
+
+                        }
+                    }
+                }
+
+            })
+
+
+
+            //Picasso.get().load(user.userPicture).fit().into(itemView.userdp)
 
             itemView.friend_request_userName.text=user.userName
 

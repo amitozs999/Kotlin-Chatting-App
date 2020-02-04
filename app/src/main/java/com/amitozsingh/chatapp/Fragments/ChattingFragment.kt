@@ -189,11 +189,11 @@ class ChattingFragment : BaseFragment() {
 //        fragment_messages_recyclerView.setHasFixedSize(true)
 //        fragment_messages_recyclerView.setItemViewCacheSize(200)
 //        fragment_messages_recyclerView.setDrawingCacheEnabled(true)
-
+        fragment_messages_recyclerView.recycledViewPool.setMaxRecycledViews(0, 0);
 
         fragment_messages_recyclerView.setAdapter(mAdapter)
 
-        //fragment_messages_recyclerView.recycledViewPool.setMaxRecycledViews(0, 0);
+
 
 
 

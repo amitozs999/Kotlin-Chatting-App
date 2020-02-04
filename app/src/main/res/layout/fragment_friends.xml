@@ -20,8 +20,10 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/friendsviewpager"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-        android:layout_height="600dp"
+
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintTop_toBottomOf="@id/navigationTabs" />
 
 
