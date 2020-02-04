@@ -1,27 +1,20 @@
-package com.amitozsingh.chatapp
+package com.amitozsingh.chatapp.Adapters
 
-import android.R
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
+import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.utils.User
-import com.amitozsingh.chatapp.utils.isIncludedInMap
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.friend_request_list_layout.view.*
-import kotlinx.android.synthetic.main.friend_request_list_layout.view.userdp
-import kotlinx.android.synthetic.main.user_list.view.*
 
-
-class RequestAdapter(
+class UserFriendsAdapter(
     private val mActivity: MessagesActivity,
-    private val mListener: OnOptionListener
-) : RecyclerView.Adapter<RequestAdapter.ViewHolder>()  {
+    private val mListener: UserListener
+) : RecyclerView.Adapter<UserFriendsAdapter.ViewHolder>()  {
 
 
     private val mUsers: ArrayList<User>
@@ -46,8 +39,8 @@ class RequestAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val userView=li.inflate(com.amitozsingh.chatapp.R.layout.friend_request_list_layout,parent,false)
-        return  ViewHolder(userView)
+        val userView=li.inflate(R.layout.user_friend_list_layout,parent,false)
+        return ViewHolder(userView)
 
     }
 
@@ -57,29 +50,27 @@ class RequestAdapter(
 //            mActivity,
 //            mUsers[position]
 //        )
-        holder.itemView.acceptRequest.setOnClickListener {
+
             var user=mUsers[position]
 
 
-            mListener.OnOptionClicked(user,"0")
-
-        }
-        holder.itemView.rejectRequest.setOnClickListener {
-            var user=mUsers[position]
 
 
-            mListener.OnOptionClicked(user,"1")
-        }
 
-        holder.bindItems(mUsers[position])
+        holder.bindItems(mListener,mUsers[position])
     }
     class ViewHolder(itemview: View): RecyclerView.ViewHolder(itemview){
-        fun bindItems(user: User){
+        fun bindItems(mListener: UserListener, user: User){
 
 
-            //Picasso.get().load(user.userPicture).into(itemView.userdp)
+            Picasso.get().load(user.userPicture).fit().into(itemView.userdp)
 
             itemView.friend_request_userName.text=user.userName
+
+            itemView.setOnClickListener {
+                mListener.OnUserClicked(user)
+            }
+
 
 
         }
@@ -89,7 +80,7 @@ class RequestAdapter(
         return mUsers.size
     }
 
-    interface OnOptionListener {
-        fun OnOptionClicked(user: User, result: String)
+    interface UserListener {
+        fun OnUserClicked(user: User)
     }
 }

@@ -11,34 +11,22 @@ import com.amitozsingh.chatapp.R
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseReference
 
-import com.amitozsingh.chatapp.SearchAdapter
 import com.amitozsingh.chatapp.Services.FriendServices
-import butterknife.Unbinder
 import io.socket.client.IO
 import io.socket.client.Socket
 import com.google.firebase.database.FirebaseDatabase
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.Activities.MessagesActivity
-import com.amitozsingh.chatapp.FindFriendsAdapter
-import com.amitozsingh.chatapp.RequestAdapter
+import com.amitozsingh.chatapp.Adapters.RequestAdapter
 import com.amitozsingh.chatapp.utils.*
 import kotlinx.android.synthetic.main.fragment_friend_requests.*
-import kotlinx.android.synthetic.main.fragment_search_friends.*
-import kotlinx.android.synthetic.main.friend_request_list_layout.*
-
-
-
-
-
-
-
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class FriendRequestsFragment : BaseFragment(),RequestAdapter.OnOptionListener{
+class FriendRequestsFragment : BaseFragment(), RequestAdapter.OnOptionListener{
 
 
     private var mFriendServices: FriendServices? = null
@@ -116,7 +104,8 @@ class FriendRequestsFragment : BaseFragment(),RequestAdapter.OnOptionListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mAdapter=RequestAdapter(activity as MessagesActivity, this)
+        mAdapter=
+            RequestAdapter(activity as MessagesActivity, this)
 
 
 

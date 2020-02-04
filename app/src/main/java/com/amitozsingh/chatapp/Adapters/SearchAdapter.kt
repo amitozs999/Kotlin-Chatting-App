@@ -1,4 +1,4 @@
-package com.amitozsingh.chatapp
+package com.amitozsingh.chatapp.Adapters
 
 import android.content.Context
 import android.util.Log
@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
+import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.utils.User
-import com.squareup.picasso.Picasso
 
-class SearchAdapter(var mActivity:MessagesActivity,var mListener:UserListener,private var userlist: ArrayList<User>) : RecyclerView.Adapter<SearchAdapter.myviewHolder>() {
+class SearchAdapter(var mActivity:MessagesActivity, var mListener: UserListener, private var userlist: ArrayList<User>) : RecyclerView.Adapter<SearchAdapter.myviewHolder>() {
 
     fun addElement(chat: User) {
         userlist.add(chat)
@@ -29,7 +28,7 @@ class SearchAdapter(var mActivity:MessagesActivity,var mListener:UserListener,pr
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int):myviewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): myviewHolder {
         Log.i("AMITOZ1","AGYA")
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view=li.inflate(R.layout.user_list,parent,false)

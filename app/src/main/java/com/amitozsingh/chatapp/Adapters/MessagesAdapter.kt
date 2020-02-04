@@ -1,4 +1,4 @@
-package com.amitozsingh.chatapp
+package com.amitozsingh.chatapp.Adapters
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.Activities.ChattingActivity
-import com.amitozsingh.chatapp.Activities.MessagesActivity
+import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.utils.Message
 import com.amitozsingh.chatapp.utils.User
 import com.amitozsingh.chatapp.utils.encodeEmail
@@ -17,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.list_messages.view.*
 
 
@@ -51,8 +50,8 @@ class MessagesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val userView=li.inflate(com.amitozsingh.chatapp.R.layout.list_messages,parent,false)
-        return  ViewHolder(userView)
+        val userView=li.inflate(R.layout.list_messages,parent,false)
+        return ViewHolder(userView)
 
     }
 

@@ -1,4 +1,4 @@
-package com.amitozsingh.chatapp
+package com.amitozsingh.chatapp.Adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

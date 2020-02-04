@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.amitozsingh.chatapp.R
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_chatting.*
 
 import com.amitozsingh.chatapp.utils.USER_EMAIL
@@ -23,9 +22,6 @@ import com.amitozsingh.chatapp.utils.USER_EMAIL
  */
 
 
-import kotlinx.android.synthetic.main.fragment_chatting.*
-
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
@@ -33,30 +29,24 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.Activities.ChattingActivity
-import com.amitozsingh.chatapp.Activities.MessagesActivity
-import com.amitozsingh.chatapp.MessagesAdapter
+import com.amitozsingh.chatapp.Adapters.MessagesAdapter
 
 import com.amitozsingh.chatapp.Services.FriendServices
-import com.amitozsingh.chatapp.UserFriendsAdapter
 import com.amitozsingh.chatapp.utils.*
 import io.socket.client.IO
 import io.socket.client.Socket
-import kotlinx.android.synthetic.main.fragment_friendslist.*
 import rx.subjects.PublishSubject
 import com.amitozsingh.chatapp.utils.ChatRoom
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import rx.internal.operators.OperatorReplay.observeOn
 import rx.Subscription
 import rx.Observer
 import java.util.concurrent.TimeUnit
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import com.amitozsingh.chatapp.Services.AccountServices
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
@@ -168,7 +158,10 @@ class ChattingFragment : BaseFragment() {
 
         fragment_messages_friendName.setText(mFriendNameString)
 
-        mAdapter= MessagesAdapter(activity as ChattingActivity, mUserEmailString!!)
+        mAdapter= MessagesAdapter(
+            activity as ChattingActivity,
+            mUserEmailString!!
+        )
 
 
 

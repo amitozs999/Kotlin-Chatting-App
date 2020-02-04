@@ -1,8 +1,5 @@
 package com.amitozsingh.chatapp.Services
 
-import android.content.Context
-import android.util.Log
-import android.widget.EditText
 import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.google.firebase.database.DatabaseError
@@ -19,13 +16,11 @@ import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Func1
 import rx.schedulers.Schedulers
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.amitozsingh.chatapp.*
+import com.amitozsingh.chatapp.Adapters.*
 import com.amitozsingh.chatapp.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
@@ -47,7 +42,7 @@ class FriendServices {
     }
 
     fun getFriendRequestsSent(
-        adapter: FindFriendsAdapter,fragment:SearchFriendsFragment
+        adapter: FindFriendsAdapter, fragment:SearchFriendsFragment
     ): ValueEventListener {
         val userHashMap=HashMap<String,User>()
        // var userHashMap: HashMap<String, User>? = null

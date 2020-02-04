@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 
 import com.amitozsingh.chatapp.Activities.MessagesActivity
-import com.amitozsingh.chatapp.FindFriendsAdapter
+import com.amitozsingh.chatapp.Adapters.FindFriendsAdapter
 import com.amitozsingh.chatapp.utils.*
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_search_friends.*
@@ -26,22 +26,14 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import rx.subjects.PublishSubject
 
-import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Func1
-import rx.schedulers.Schedulers
-import rx.internal.operators.OperatorReplay.observeOn
-import rx.Subscription
-
 import android.text.Editable
 import android.text.TextWatcher
-import rx.Observer
-import java.util.concurrent.TimeUnit
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
+class SearchFriendsFragment : BaseFragment(), FindFriendsAdapter.UserListener {
 
 
 
@@ -117,7 +109,8 @@ class SearchFriendsFragment : BaseFragment(),FindFriendsAdapter.UserListener {
 //        mAdapter = SearchAdapter(activity as MessagesActivity, this,mAllUsers)
 
         mAllUsers = ArrayList()
-        mAdapter = FindFriendsAdapter(activity as MessagesActivity, this)
+        mAdapter =
+            FindFriendsAdapter(activity as MessagesActivity, this)
 
         mUsersListener = getAllUsers(mAdapter!!,mUserEmailString)
 

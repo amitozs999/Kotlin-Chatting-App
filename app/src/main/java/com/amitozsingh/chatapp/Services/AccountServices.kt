@@ -555,7 +555,7 @@ class AccountServices {
                                     ).apply()
                                    // userref.reference.child("users").child(encodeEmail(currentUserEmail)).child("userPicture").setValue(uri.toString())
                                     //updateImageUri(uri.toString(),mUserEmailString!!)
-                                    Picasso.get().load(uri.toString()).resize(200,250).into(imageView)
+                                    Picasso.get().load(uri.toString()).fit().into(imageView)
                                 }catch (e: JSONException) {
                            e.printStackTrace()
                         }

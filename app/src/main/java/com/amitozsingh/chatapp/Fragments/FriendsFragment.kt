@@ -11,13 +11,9 @@ import androidx.viewpager.widget.ViewPager
 import com.amitozsingh.chatapp.R
 
 
-import com.amitozsingh.chatapp.myPagerAdapter
+import com.amitozsingh.chatapp.Adapters.myPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_friends.*
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.DatabaseReference
-
-import com.amitozsingh.chatapp.Services.FriendServices
 
 
 /**
@@ -54,7 +50,8 @@ class FriendsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         friendsviewpager.currentItem = 0
 
-        friendsviewpager!!.adapter = myPagerAdapter(childFragmentManager)
+        friendsviewpager!!.adapter =
+            myPagerAdapter(childFragmentManager)
 
         navigationTabs.setupWithViewPager(friendsviewpager)
 

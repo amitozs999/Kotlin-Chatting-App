@@ -5,13 +5,15 @@
         android:id="@+id/itemmessages"
         android:icon="@drawable/ic_message"
         android:title="Messages"/>
-    <item
-        android:id="@+id/itemprofile"
-        android:icon="@drawable/ic_profile"
-        android:title="Profile"/>
+
     <item
         android:id="@+id/itemfriends"
         android:icon="@drawable/ic_friends"
         android:title="Friends"/>
+
+    <item
+        android:id="@+id/itemprofile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"/>
 
 </menu>

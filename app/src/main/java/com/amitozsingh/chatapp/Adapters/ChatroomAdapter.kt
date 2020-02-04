@@ -1,15 +1,19 @@
-package com.amitozsingh.chatapp
+package com.amitozsingh.chatapp.Adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.amitozsingh.chatapp.Activities.ChattingActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
-import com.amitozsingh.chatapp.utils.Message
-import kotlinx.android.synthetic.main.list_messages.view.*
+import com.amitozsingh.chatapp.R
 import com.amitozsingh.chatapp.utils.ChatRoom
+import com.amitozsingh.chatapp.utils.User
+import com.amitozsingh.chatapp.utils.encodeEmail
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_room.view.*
@@ -22,7 +26,7 @@ import kotlinx.android.synthetic.main.list_room.view.*
 
 
 class ChatroomAdapter(
-    private val mActivity: MessagesActivity,var mListener:ChatRoomListener,
+    private val mActivity: MessagesActivity, var mListener: ChatRoomListener,
     var mCurrentUserEmail:String
 ) : RecyclerView.Adapter<ChatroomAdapter.ViewHolder>()  {
 
@@ -50,8 +54,8 @@ class ChatroomAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val userView=li.inflate(com.amitozsingh.chatapp.R.layout.list_room,parent,false)
-        return  ViewHolder(userView)
+        val userView=li.inflate(R.layout.list_room,parent,false)
+        return ViewHolder(userView)
 
     }
 
@@ -77,6 +81,30 @@ class ChatroomAdapter(
 //            Picasso.with(context)
 //                .load(chatRoom.getFriendPicture())
 //                .into(mUserPicture)
+
+
+            val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
+            userDatabase.child(encodeEmail(chatRoom.friendEmail)).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    val user = p0.getValue(User::class.java)
+
+                    if(user!!.userPicture != null) {
+                        try {
+
+
+                            Picasso.get().load(user.userPicture).fit().into(itemView.list_chat_room_userPicture)
+                        } catch (e: IllegalArgumentException) {
+
+                        }
+                    }
+                }
+
+            })
 
             itemView.list_chat_room_userName.setText(chatRoom.friendName)
 

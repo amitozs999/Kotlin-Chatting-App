@@ -1,4 +1,4 @@
-package com.amitozsingh.chatapp
+package com.amitozsingh.chatapp.Adapters
 
 import androidx.recyclerview.widget.RecyclerView
 import android.R
@@ -8,12 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Filter
 import android.widget.Filterable
-import com.amitozsingh.chatapp.Activities.BaseActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
-import com.amitozsingh.chatapp.Services.FriendServices
 import com.amitozsingh.chatapp.utils.User
 import com.amitozsingh.chatapp.utils.isIncludedInMap
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.user_list.view.*
+import kotlinx.android.synthetic.main.user_list.view.userdp
 
 
 class FindFriendsAdapter(
@@ -108,7 +108,7 @@ class FindFriendsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var li=parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val userView=li.inflate(com.amitozsingh.chatapp.R.layout.user_list,parent,false)
-return  ViewHolder(userView)
+return ViewHolder(userView)
       //  val findFriendsViewHolder = FindFriendsViewHolder(userView)
 //        findFriendsViewHolder.setOnClickListener(object : View.OnClickListener {
 //            override fun onClick(view: View) {
@@ -133,6 +133,14 @@ return  ViewHolder(userView)
     }
     class ViewHolder(itemview:View):RecyclerView.ViewHolder(itemview){
         fun bindItems(user: User,friendRequestSentMap:HashMap<String,User>?,friendRequestRecievedMap: HashMap<String, User>,UserFriendMap: HashMap<String, User>){
+
+
+
+
+
+            Picasso.get().load(user.userPicture).fit().into(itemView.userdp)
+
+
             itemView.username.text=user.userName
 
             if (isIncludedInMap(friendRequestSentMap,user)){

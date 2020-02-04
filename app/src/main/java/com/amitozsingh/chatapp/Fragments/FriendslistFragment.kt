@@ -10,30 +10,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.amitozsingh.chatapp.R
-import butterknife.Unbinder
 
-import com.amitozsingh.chatapp.RequestAdapter
 import com.amitozsingh.chatapp.Services.FriendServices
-import com.amitozsingh.chatapp.UserFriendsAdapter
+import com.amitozsingh.chatapp.Adapters.UserFriendsAdapter
 import com.amitozsingh.chatapp.utils.*
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.fragment_friend_requests.*
 import kotlinx.android.synthetic.main.fragment_friendslist.*
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import android.content.Intent
 
-import android.content.Context
 import android.util.Log
 import com.amitozsingh.chatapp.Activities.ChattingActivity
-import com.google.firebase.database.DataSnapshot
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class FriendslistFragment : BaseFragment(),UserFriendsAdapter.UserListener {
+class FriendslistFragment : BaseFragment(), UserFriendsAdapter.UserListener {
 
 
     var mActivity:MessagesActivity?=null
@@ -78,7 +73,8 @@ class FriendslistFragment : BaseFragment(),UserFriendsAdapter.UserListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mAdapter= UserFriendsAdapter(activity as MessagesActivity, this)
+        mAdapter=
+            UserFriendsAdapter(activity as MessagesActivity, this)
 
 
 
