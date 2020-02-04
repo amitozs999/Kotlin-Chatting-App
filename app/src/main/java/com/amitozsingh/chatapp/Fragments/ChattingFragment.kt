@@ -225,7 +225,7 @@ class ChattingFragment : BaseFragment() {
 
 
                 val filePath = FirebaseStorage.getInstance().reference
-                    .child("usersProfilePic").child(encodeEmail(mUserEmailString))
+                    .child("MessagePics").child(encodeEmail(mUserEmailString)).child(selectedImageUri?.lastPathSegment!!);
                 var bitmap: Bitmap? = null
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(

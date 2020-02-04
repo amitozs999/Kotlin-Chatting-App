@@ -114,9 +114,9 @@ Log.i("aa","1")
                     itemView.list_messages_friendText.visibility = View.GONE         //text gone(friend)
 
                     itemView.list_messages_friendPicture.visibility = View.VISIBLE   //friend visible
+                    itemView.list_messages_messagePicfriend.visibility=View.VISIBLE
 
-
-                    Picasso.get().load(message.messageText).fit()
+                    Picasso.get().load(message.messageText)
                         .into(itemView.list_messages_messagePicfriend)
 
 
@@ -160,7 +160,9 @@ Log.i("aa","1")
                     itemView.list_messages_friendPicture.visibility=View.GONE
                     itemView.list_messages_friendText.visibility=View.GONE             //friend gonne
 
-                    Picasso.get().load(message.messageText).fit().placeholder(R.drawable.ic_launcher_background).into(itemView.list_messages_messagePicUser)
+                    itemView.list_messages_messagePicUser.visibility=View.VISIBLE
+
+                    Picasso.get().load(message.messageText).placeholder(R.drawable.ic_launcher_background).into(itemView.list_messages_messagePicUser)
                 }
 
 
