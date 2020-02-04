@@ -279,9 +279,20 @@ class ChattingFragment : BaseFragment() {
 
 
     fun setmSendMessage(type:String,uri:String) {
+//        val filePath = FirebaseStorage.getInstance().reference
+//            .child("usersProfilePics").child(encodeEmail(mUserEmailString))
+
+        val filepath = FirebaseDatabase.getInstance().getReference()
+            .child(FIREBASE_USERS)
+            .child(encodeEmail(mUserEmailString)).child("userPicture")
+
+
         if (fragment_messages_messageBox.getText().toString().equals("")&&type=="textMessage") {
             Toast.makeText(activity, "Message Can't Be Blank", Toast.LENGTH_SHORT).show()
+
+
         } else {
+
 
             val chatRoom = ChatRoom(
                 mFriendPictureString, mFriendNameString,

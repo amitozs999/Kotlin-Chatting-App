@@ -9,8 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amitozsingh.chatapp.Activities.ChattingActivity
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.utils.Message
+import com.amitozsingh.chatapp.utils.User
+import com.amitozsingh.chatapp.utils.encodeEmail
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.list_messages.view.*
 
 
@@ -77,7 +84,39 @@ class MessagesAdapter(
 Log.i("aa","1")
 
 
+
+
+
             if (!currentUserEmail.equals(message.messageSenderEmail)){
+
+
+
+
+                val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
+                userDatabase.child(encodeEmail(message.messageSenderEmail)).addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val user = p0.getValue(User::class.java)
+
+                        if(user!!.userPicture != null) {
+                            try {
+
+
+                                Picasso.get().load(user.userPicture).fit().into(itemView.list_messages_friendPicture)
+                            } catch (e: IllegalArgumentException) {
+
+                            }
+                        }
+                    }
+
+                })
+
+
+
 
 
                 Log.i("aa","2")
@@ -93,12 +132,14 @@ Log.i("aa","1")
                     itemView.list_messages_messagePicfriend.visibility=View.GONE
 
                     itemView.list_messages_friendPicture.visibility=View.VISIBLE    //friend visible
+
                     itemView.list_messages_friendText.visibility=View.VISIBLE
 
                     // Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_friendPicture)
 
                     itemView.list_messages_friendText.setText(message.messageText)
 
+                    //Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_friendPicture)
 
                    }
 
@@ -120,12 +161,42 @@ Log.i("aa","1")
                         .into(itemView.list_messages_messagePicfriend)
 
 
+                    //Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_friendPicture)
+
+
                           }
 
 
 
 
             } else{
+
+
+
+                val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
+                userDatabase.child(encodeEmail(currentUserEmail)).addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val user = p0.getValue(User::class.java)
+
+                        if(user!!.userPicture != null) {
+                            try {
+
+
+                                Picasso.get().load(user.userPicture).fit().into(itemView.list_messages_userPicture)
+                            } catch (e: IllegalArgumentException) {
+
+                            }
+                        }
+                    }
+
+                })
+
+
 
                 Log.i("aa","5")
                 if(message.messageType=="textMessage"){
@@ -144,6 +215,8 @@ Log.i("aa","1")
                     //Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_userPicture)
 
                     itemView.list_messages_UserText.setText(message.messageText)
+
+                   // Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_userPicture)
                 }
 
               else{
@@ -163,6 +236,8 @@ Log.i("aa","1")
                     itemView.list_messages_messagePicUser.visibility=View.VISIBLE
 
                     Picasso.get().load(message.messageText).placeholder(R.drawable.ic_launcher_background).into(itemView.list_messages_messagePicUser)
+
+                //    Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_userPicture)
                 }
 
 
