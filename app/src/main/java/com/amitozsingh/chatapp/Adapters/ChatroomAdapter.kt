@@ -171,8 +171,13 @@ class ChatroomAdapter(
             }
 
 
+if(chatRoom.messageType=="textMessage") {
+    itemView.list_chat_room_lastMessage.setText(AESDecryptionMethod(chatRoom.lastMessage!!))
+}
+            else{
 
-            itemView.list_chat_room_lastMessage.setText(AESDecryptionMethod(chatRoom.lastMessage!!))
+    itemView.list_chat_room_lastMessage.setText("Image")
+            }
 
 
             itemView.setOnClickListener {

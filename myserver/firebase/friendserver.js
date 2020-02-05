@@ -171,7 +171,8 @@ function sendOrDeleteFriendRequest(socket,io){
         lastMessage: data.messageText,
         lastMessageSenderEmail: data.senderEmail,
         lastMessageRead:false,
-        sentLastMessage:true
+        sentLastMessage:true,
+        messageType:data.type
       };
 
       friendMessageRef.set(message);

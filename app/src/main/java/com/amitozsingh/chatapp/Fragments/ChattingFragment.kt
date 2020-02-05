@@ -322,7 +322,7 @@ class ChattingFragment : BaseFragment() {
                     AESEncryptionMethod(fragment_messages_messageBox.text.toString()),
                     mUserEmailString,
                     true,
-                    true
+                    true,"textMessage"
                 )
             }else{
                 chatRoom=ChatRoom(
@@ -332,7 +332,7 @@ class ChattingFragment : BaseFragment() {
                     AESEncryptionMethod(uri),
                     mUserEmailString,
                     true,
-                    true)
+                    true,"PicMessage")
 
             }
 

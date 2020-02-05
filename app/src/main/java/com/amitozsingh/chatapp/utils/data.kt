@@ -32,6 +32,7 @@ data class ChatRoom (
      var lastMessage: String? = "",
      var lastMessageSenderEmail: String? = "",
      var lastMessageRead: Boolean = false,
-    var sentLastMessage: Boolean = false
+    var sentLastMessage: Boolean = false,
+     var messageType:String=""
 )
 
