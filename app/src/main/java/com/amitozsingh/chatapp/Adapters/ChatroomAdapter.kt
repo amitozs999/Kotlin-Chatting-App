@@ -17,11 +17,20 @@ import com.google.firebase.database.ValueEventListener
 
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_room.view.*
+import java.security.InvalidKeyException
+import java.security.NoSuchAlgorithmException
+import javax.crypto.BadPaddingException
+import javax.crypto.Cipher
+import javax.crypto.IllegalBlockSizeException
+import javax.crypto.NoSuchPaddingException
+import javax.crypto.spec.SecretKeySpec
 
 
-
-
-
+private var stringMessage: String? = null
+private var encryptionKey = byteArrayOf(56, 15, 78, 6, 85, 67, 7, -23, 78, 4, 6, 70, 65, -15, 19, 53)
+private var cipher: Cipher? = null
+private  var decipher: Cipher? = null
+private var secretKeySpec: SecretKeySpec? = null
 
 
 
@@ -39,6 +48,17 @@ class ChatroomAdapter(
     init {
         mInflater = mActivity.layoutInflater
         mChatRooms = ArrayList()
+        try {
+            cipher = Cipher.getInstance("AES");
+            decipher = Cipher.getInstance("AES");
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace();
+        } catch (e: NoSuchPaddingException) {
+            e.printStackTrace();
+        }
+
+        secretKeySpec = SecretKeySpec(encryptionKey, "AES")
+
 
 
     }
@@ -106,7 +126,29 @@ class ChatroomAdapter(
 
             })
 
+            fun AESDecryptionMethod(string: String): String {
+                val EncryptedByte = string.toByteArray(charset("ISO-8859-1"))
+                var decryptedString = string
+
+                val decryption: ByteArray
+
+                try {
+                    decipher?.init(Cipher.DECRYPT_MODE, secretKeySpec)
+                    decryption = decipher!!.doFinal(EncryptedByte)
+                    decryptedString = String(decryption)
+                } catch (e: InvalidKeyException) {
+                    e.printStackTrace()
+                } catch (e: BadPaddingException) {
+                    e.printStackTrace()
+                } catch (e: IllegalBlockSizeException) {
+                    e.printStackTrace()
+                }
+
+                return decryptedString
+            }
             itemView.list_chat_room_userName.setText(chatRoom.friendName)
+
+
 
             var lastMessageSent = chatRoom.lastMessage
 
@@ -130,7 +172,7 @@ class ChatroomAdapter(
 
 
 
-            itemView.list_chat_room_lastMessage.setText(lastMessageSent)
+            itemView.list_chat_room_lastMessage.setText(AESDecryptionMethod(chatRoom.lastMessage!!))
 
 
             itemView.setOnClickListener {

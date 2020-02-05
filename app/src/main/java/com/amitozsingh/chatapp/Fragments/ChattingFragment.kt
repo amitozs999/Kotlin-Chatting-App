@@ -49,6 +49,15 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.io.UnsupportedEncodingException
+import java.nio.charset.Charset
+import java.security.InvalidKeyException
+import java.security.NoSuchAlgorithmException
+import javax.crypto.BadPaddingException
+import javax.crypto.Cipher
+import javax.crypto.IllegalBlockSizeException
+import javax.crypto.NoSuchPaddingException
+import javax.crypto.spec.SecretKeySpec
 
 
 /**
@@ -90,6 +99,13 @@ class ChattingFragment : BaseFragment() {
     private var mMessageSubject: PublishSubject<String>? = null
 
 
+    private var stringMessage: String? = null
+    private var encryptionKey = byteArrayOf(56, 15, 78, 6, 85, 67, 7, -23, 78, 4, 6, 70, 65, -15, 19, 53)
+    private var cipher: Cipher? = null
+    private  var decipher: Cipher? = null
+    private var secretKeySpec: SecretKeySpec? = null
+
+
 
     var mActivity: ChattingActivity?=null
     private var mAdapter: MessagesAdapter? = null
@@ -111,6 +127,17 @@ class ChattingFragment : BaseFragment() {
         mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL, "")
 
         mPermission = PermissionsChatting(activity as ChattingActivity)
+
+        try {
+            cipher = Cipher.getInstance("AES");
+            decipher = Cipher.getInstance("AES");
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace();
+        } catch (e: NoSuchPaddingException) {
+            e.printStackTrace();
+        }
+
+        secretKeySpec = SecretKeySpec(encryptionKey, "AES")
 
     }
 
@@ -286,11 +313,28 @@ class ChattingFragment : BaseFragment() {
 
         } else {
 
+            var chatRoom=ChatRoom()
+            if(type=="textMessage") {
+                chatRoom=ChatRoom(
+                    mFriendPictureString,
+                    mFriendNameString,
+                    mFriendEmailString,
+                    AESEncryptionMethod(fragment_messages_messageBox.text.toString()),
+                    mUserEmailString,
+                    true,
+                    true
+                )
+            }else{
+                chatRoom=ChatRoom(
+                    mFriendPictureString,
+                    mFriendNameString,
+                    mFriendEmailString,
+                    AESEncryptionMethod(uri),
+                    mUserEmailString,
+                    true,
+                    true)
 
-            val chatRoom = ChatRoom(
-                mFriendPictureString, mFriendNameString,
-                mFriendEmailString, fragment_messages_messageBox.text.toString(), mUserEmailString, true, true
-            )
+            }
 
             mUserChatRoomReference!!.setValue(chatRoom)
 
@@ -300,7 +344,7 @@ class ChattingFragment : BaseFragment() {
             if(type=="textMessage"){
                 message = Message(
                     newMessageRefernce?.key!!,
-                    fragment_messages_messageBox.getText().toString(),type,
+                    AESEncryptionMethod(fragment_messages_messageBox.getText().toString()),type,
                     mUserEmailString!!,
                     mSharedPreferences?.getString(USER_PICTURE, "")!!
                 )
@@ -312,7 +356,7 @@ class ChattingFragment : BaseFragment() {
 
                 message = Message(
                     newMessageRefernce?.key!!,
-                   uri,type,
+                   AESEncryptionMethod(uri),type,
                     mUserEmailString!!,
                     mSharedPreferences?.getString(USER_PICTURE, "")!!
                 )
@@ -330,7 +374,7 @@ class ChattingFragment : BaseFragment() {
                         mSocket!!,
                         mUserEmailString!!,
                         mSharedPreferences?.getString(USER_PICTURE, "")!!,
-                        fragment_messages_messageBox.getText().toString(),
+                        AESEncryptionMethod(fragment_messages_messageBox.getText().toString()),
                         mFriendEmailString!!,
                         mSharedPreferences?.getString(USER_NAME, "")!!,
                         "textMessage"
@@ -344,7 +388,7 @@ class ChattingFragment : BaseFragment() {
                         mSocket!!,
                         mUserEmailString!!,
                         mSharedPreferences?.getString(USER_PICTURE, "")!!,
-                        uri,
+                        AESEncryptionMethod(uri),
                         mFriendEmailString!!,
                         mSharedPreferences?.getString(USER_NAME, "")!!,
                         "PicMessage"
@@ -424,6 +468,38 @@ class ChattingFragment : BaseFragment() {
             }
         }
     }
+
+    private fun AESEncryptionMethod(string: String): String {
+
+        val stringByte = string.toByteArray()
+        var encryptedByte = ByteArray(stringByte.size)
+
+        try {
+            cipher?.init(Cipher.ENCRYPT_MODE, secretKeySpec)
+            encryptedByte = cipher!!.doFinal(stringByte)
+        } catch (e: InvalidKeyException) {
+            e.printStackTrace()
+        } catch (e: BadPaddingException) {
+            e.printStackTrace()
+        } catch (e: IllegalBlockSizeException) {
+            e.printStackTrace()
+        }
+
+        var returnString: String? = null
+        val charset: Charset = Charsets.ISO_8859_1
+
+        try {
+            returnString = String(encryptedByte, charset)
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+
+        return returnString!!
+    }
+
+
+
+
     override fun onDestroy() {
         super.onDestroy()
         //FriendslistFragment.newInstance()

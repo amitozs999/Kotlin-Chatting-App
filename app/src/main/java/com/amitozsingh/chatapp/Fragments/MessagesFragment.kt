@@ -29,6 +29,8 @@ import kotlinx.android.synthetic.main.fragment_messages.*
 /**
  * A simple [Fragment] subclass.
  */
+
+
 class MessagesFragment : BaseFragment() , ChatroomAdapter.ChatRoomListener{
     override fun OnChatRoomClicked(chatRoom: ChatRoom) {
 
