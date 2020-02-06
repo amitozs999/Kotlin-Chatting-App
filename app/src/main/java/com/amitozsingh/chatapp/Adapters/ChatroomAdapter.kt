@@ -150,19 +150,17 @@ class ChatroomAdapter(
 
 
 
-            var lastMessageSent = chatRoom.lastMessage
+            var lastMessageSent = AESDecryptionMethod(chatRoom.lastMessage!!)
 
-            if (lastMessageSent!!.length > 40) {
+            if (lastMessageSent.length > 40) {
                 lastMessageSent = lastMessageSent.substring(0, 40) + " ..."
             }
 
             if (!chatRoom.sentLastMessage) {
-                lastMessageSent = lastMessageSent + " (Draft)"
+                lastMessageSent = lastMessageSent+ " (Draft)"
             }
 
-            if (chatRoom.lastMessageSenderEmail.equals(currentUserEmail)) {
-                lastMessageSent = "Me: $lastMessageSent"
-            }
+
 
             if (!chatRoom.lastMessageRead) {
                 itemView.list_chat_room_newMessageIndicator.setVisibility(View.VISIBLE)
@@ -172,12 +170,22 @@ class ChatroomAdapter(
 
 
 if(chatRoom.messageType=="textMessage") {
-    itemView.list_chat_room_lastMessage.setText(AESDecryptionMethod(chatRoom.lastMessage!!))
-}
-            else{
 
-    itemView.list_chat_room_lastMessage.setText("Image")
-            }
+    if (chatRoom.lastMessageSenderEmail.equals(currentUserEmail)) {
+        itemView.list_chat_room_lastMessage.setText("Me: $lastMessageSent")
+    } else {
+        itemView.list_chat_room_lastMessage.setText(lastMessageSent)
+    }
+
+}
+            else {
+
+    if (chatRoom.lastMessageSenderEmail.equals(currentUserEmail)) {
+        itemView.list_chat_room_lastMessage.setText("Me: Image")
+    } else {
+        itemView.list_chat_room_lastMessage.setText("Image")
+    }
+}
 
 
             itemView.setOnClickListener {
