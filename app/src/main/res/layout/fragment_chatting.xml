@@ -5,8 +5,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <LinearLayout
+        android:id="@+id/userstatus"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="status"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/userstatus"
         android:id="@+id/fragment_messages_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

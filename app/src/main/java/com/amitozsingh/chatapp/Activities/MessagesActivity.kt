@@ -25,9 +25,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import io.socket.client.IO
 import io.socket.client.Socket
-
-
-
+import org.json.JSONObject
 
 
 class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
@@ -163,6 +161,41 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
     }
 
 
+    fun updatestatus(status:String){
+
+        val sharedPreferences = getSharedPreferences(
+            USER_INFO_PREFERENCE,
+            Context.MODE_PRIVATE
+        )
+        val userEmail = sharedPreferences.getString(USER_EMAIL, "")
+        val sendData = JSONObject()
+
+        sendData.put("email",userEmail )
+        sendData.put("status", status)
+
+
+       // mSocket!!.emit("updatestatus", sendData)
+
+
+
+
+
+
+    }
+
+
+//    override fun onStart() {
+//        super.onStart()
+//        updatestatus("online")
+//    }
+
+
+    override fun onStop() {
+        super.onStop()
+        updatestatus("offline")
+
+    }
+
     fun encodeEmaill(email: String?): String {
         return email!!.replace(".", ",")
     }
@@ -170,6 +203,7 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
         super.onStart()
 
             mAuth?.addAuthStateListener(mListener!!)
+        updatestatus("online")
 
     }
 

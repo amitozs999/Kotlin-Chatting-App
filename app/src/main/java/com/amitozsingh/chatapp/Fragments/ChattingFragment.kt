@@ -47,6 +47,8 @@ import android.text.TextWatcher
 import android.util.Log
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.list_messages.view.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.UnsupportedEncodingException
@@ -181,6 +183,24 @@ class ChattingFragment : BaseFragment() {
         }
 
 
+        val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
+        userDatabase.child(encodeEmail(mUserEmailString)).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val user = p0.getValue(User::class.java)
+                status.text=user!!.status.toString()
+
+
+            }
+
+        })
+
+
+
 
 
         fragment_messages_friendName.setText(mFriendNameString)
@@ -217,6 +237,7 @@ class ChattingFragment : BaseFragment() {
 //        fragment_messages_recyclerView.setItemViewCacheSize(200)
 //        fragment_messages_recyclerView.setDrawingCacheEnabled(true)
         fragment_messages_recyclerView.recycledViewPool.setMaxRecycledViews(0, 0);
+
 
         fragment_messages_recyclerView.setAdapter(mAdapter)
 

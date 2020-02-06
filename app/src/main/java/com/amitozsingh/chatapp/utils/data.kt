@@ -6,7 +6,8 @@ data class User(
     val email: String? = "",
     val hasLoggedIn: Boolean=false,
     val userName: String? = "",
-    val userPicture: String? = ""
+    val userPicture: String? = "",
+    var status:String?=""
 
 
 

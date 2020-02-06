@@ -3,6 +3,7 @@ package com.amitozsingh.chatapp.Fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,10 +18,15 @@ import com.google.firebase.database.DatabaseReference
 
 import com.amitozsingh.chatapp.Activities.ChattingActivity
 import com.amitozsingh.chatapp.Adapters.ChatroomAdapter
+import com.amitozsingh.chatapp.Services.AccountServices
 import com.amitozsingh.chatapp.Services.FriendServices
 import com.amitozsingh.chatapp.utils.*
 import com.google.firebase.database.FirebaseDatabase
+import io.socket.client.IO
+import io.socket.client.Socket
 import kotlinx.android.synthetic.main.fragment_messages.*
+import org.json.JSONException
+import org.json.JSONObject
 
 
 
@@ -49,6 +55,7 @@ class MessagesFragment : BaseFragment() , ChatroomAdapter.ChatRoomListener{
     //var mActivity: MessagesActivity? = null
 
     private var mLiveFriendsService: FriendServices? = null
+    private var mSocket: Socket? = null
 //
 //    private var mAllFriendRequestsReference: DatabaseReference? = null
 //    private var mAllFriendRequestsListener: ValueEventListener? = null
@@ -75,6 +82,10 @@ class MessagesFragment : BaseFragment() , ChatroomAdapter.ChatRoomListener{
         super.onCreate(savedInstanceState)
         mLiveFriendsService = FriendServices().getInstance();
         mUserEmailString = mSharedPreferences!!.getString(USER_EMAIL,"");
+//        mSocket = IO.socket(LOCAL_HOST)
+//
+//
+//        mSocket!!.connect()
     }
     //var bott: BottomNavigationView?=null
     override fun onCreateView(
@@ -110,11 +121,48 @@ class MessagesFragment : BaseFragment() , ChatroomAdapter.ChatRoomListener{
 
         mUserChatRoomReference?.addValueEventListener(mUserChatRoomListener!!)
 
+
+
+
         fragment_inbox_recyclerView.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         fragment_inbox_recyclerView.setAdapter(mAdapter)
 
 
 
+    }
+
+    fun updatestatus(status:String){
+
+        val sendData = JSONObject()
+
+            sendData.put("email", mUserEmailString)
+            sendData.put("status", status)
+
+
+            mSocket!!.emit("updatestatus", sendData)
+
+
+
+
+
+
+    }
+
+
+//    override fun onStart() {
+//        super.onStart()
+//        updatestatus("online")
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        updatestatus("offline")
+//
+//    }
+
+    override fun onStop() {
+        super.onStop()
+       // getFragmentManager()!!.beginTransaction().remove(this).commit()
     }
 
 

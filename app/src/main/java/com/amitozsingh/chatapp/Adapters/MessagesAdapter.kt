@@ -99,6 +99,9 @@ class MessagesAdapter(
         fun bindItems(message: Message,currentUserEmail:String){
 
 
+
+
+
             fun AESDecryptionMethod(string: String): String {
                 val EncryptedByte = string.toByteArray(charset("ISO-8859-1"))
                 var decryptedString = string

@@ -323,6 +323,8 @@ class AccountServices {
                             sendData.put("email", userEmail)
                             sendData.put("userName", userName)
                             sendData.put("password", userPassword)
+
+
                             socket.emit("userData", sendData)
                             return SERVER_SUCCESS
                         } catch (e: JSONException) {

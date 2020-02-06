@@ -26,6 +26,8 @@ import android.content.Context
 /**
  * A simple [Fragment] subclass.
  */
+
+ //var status:String?=""
 class RegisterFragment : BaseFragment() {
 
     lateinit var msocket: Socket
@@ -38,6 +40,7 @@ class RegisterFragment : BaseFragment() {
             return RegisterFragment()
         }
     }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +82,18 @@ class RegisterFragment : BaseFragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        status="online"
+//
+//
+//    }
+
+//    override fun onStop() {
+//        super.onStop()
+//        status="offine"
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

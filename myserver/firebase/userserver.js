@@ -23,6 +23,8 @@ var userAccountrequests=(io)=>{
         updateProfilePicture(socket,io);
         registerUser(socket,io);
         logUserIn(socket,io);
+        userstatus(socket,io);
+        userstatusnew(socket,io)
        
       });
 
@@ -156,8 +158,29 @@ function registerUser(socket,io){
       // });
 
       
-  });
+     });
   
+  }
+
+  function userstatus(socket,io){
+    socket.on('updatestatus',(data) =>{
+   
+      var db = admin.database();
+      var ref = db.ref(`users`);
+      var userRef = ref.child(encodeEmail(data.email)).child('userStatus');
+      userRef.set(data.status);
+      
+     });
+  }
+  function userstatusnew(socket,io){
+    socket.on('updatestatusnew',(data) =>{
+   
+      var db = admin.database();
+      var ref = db.ref(`users`);
+      var userRef = ref.child(encodeEmail(data.email)).child('userStatus');
+      userRef.set(data.status);
+      
+     });
   }
   
 
