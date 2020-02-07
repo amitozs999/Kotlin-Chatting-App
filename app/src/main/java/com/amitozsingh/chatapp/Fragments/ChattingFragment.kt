@@ -195,9 +195,11 @@ class ChattingFragment : BaseFragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(User::class.java)
                 Log.i("vv",user!!.status.toString())
-                status.text=user!!.status.toString()
+                if(statustv!=null) {
+                    statustv.text = user.status.toString()
 
-                Log.i("vv",mUserEmailString.toString())
+                    Log.i("vv", mUserEmailString.toString())
+                }
             }
 
         })

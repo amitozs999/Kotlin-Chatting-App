@@ -7,7 +7,7 @@ data class User(
     val hasLoggedIn: Boolean=false,
     val userName: String? = "",
     val userPicture: String? = "",
-    var status:String?=""
+    var status:String=""
 
 
 
