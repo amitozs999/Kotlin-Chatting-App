@@ -44,47 +44,47 @@ class ChattingActivity : BaseActivity() {
 
         mSocket!!.connect()
     }
-
-    fun updatestatus(status:String){
-
-        val sharedPreferences = getSharedPreferences(
-            USER_INFO_PREFERENCE,
-            Context.MODE_PRIVATE
-        )
-        val userEmail = sharedPreferences.getString(USER_EMAIL, "")
-        val sendData = JSONObject()
-
-        sendData.put("email",userEmail )
-        sendData.put("status", status)
-
-
-        mSocket!!.emit("updatestatusnew", sendData)
-        Log.i("ii",userEmail.toString())
-        Log.i("ii",status)
-        Log.i("ii",sendData.toString())
-
-
-
-
-
-
-
-    }
-
-
-
-    override fun onStart() {
-        super.onStart()
-
-        updatestatus("online")
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        updatestatus("offline")
-    }
+//
+//    fun updatestatus(status:String){
+//
+//        val sharedPreferences = getSharedPreferences(
+//            USER_INFO_PREFERENCE,
+//            Context.MODE_PRIVATE
+//        )
+//        val userEmail = sharedPreferences.getString(USER_EMAIL, "")
+//        val sendData = JSONObject()
+//
+//        sendData.put("email",userEmail )
+//        sendData.put("status", status)
+//
+//
+//        mSocket!!.emit("updatestatusnew", sendData)
+//        Log.i("ii",userEmail.toString())
+//        Log.i("ii",status)
+//        Log.i("ii",sendData.toString())
+//
+//
+//
+//
+//
+//
+//
+//    }
+//
+//
+//
+//    override fun onStart() {
+//        super.onStart()
+//
+//        updatestatus("online")
+//
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//
+//        updatestatus("offline")
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

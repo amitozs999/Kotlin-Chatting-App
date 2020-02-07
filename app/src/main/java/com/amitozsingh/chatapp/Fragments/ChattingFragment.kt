@@ -49,6 +49,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_messages.view.*
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.UnsupportedEncodingException
@@ -184,7 +185,7 @@ class ChattingFragment : BaseFragment() {
         Log.i("vv","kk")
 
         val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
-        userDatabase.child(encodeEmail(mFriendEmailString)).addListenerForSingleValueEvent(object :
+        userDatabase.child(encodeEmail(mFriendEmailString)).addValueEventListener(object :
             ValueEventListener {
 
             override fun onCancelled(p0: DatabaseError) {
@@ -522,6 +523,47 @@ class ChattingFragment : BaseFragment() {
 
 
 
+
+    fun updatestatus(status:String){
+//
+//        val sharedPreferences = getSharedPreferences(
+//            USER_INFO_PREFERENCE,
+//            Context.MODE_PRIVATE
+//        )
+//        val userEmail = sharedPreferences.getString(USER_EMAIL, "")
+        val sendData = JSONObject()
+
+        sendData.put("email",mUserEmailString )
+        sendData.put("status", status)
+
+
+        mSocket!!.emit("updatestatusnew", sendData)
+        Log.i("ii",mUserEmailString!!)
+        Log.i("ii",status)
+        Log.i("ii",sendData.toString())
+
+
+
+
+
+
+
+    }
+
+
+
+    override fun onStart() {
+        super.onStart()
+
+        updatestatus("online")
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        updatestatus("offline")
+    }
 
     override fun onDestroy() {
         super.onDestroy()
