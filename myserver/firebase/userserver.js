@@ -177,7 +177,7 @@ function registerUser(socket,io){
    
       var db = admin.database();
       var ref = db.ref(`users`);
-      var userRef = ref.child(encodeEmail(data.email)).child('userStatus');
+      var userRef = ref.child(encodeEmail(data.email)).child('status');
       userRef.set(data.status);
       
      });

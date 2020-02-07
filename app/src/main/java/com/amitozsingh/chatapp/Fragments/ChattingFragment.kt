@@ -181,20 +181,22 @@ class ChattingFragment : BaseFragment() {
             }
 
         }
-
+        Log.i("vv","kk")
 
         val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
-        userDatabase.child(encodeEmail(mUserEmailString)).addListenerForSingleValueEvent(object :
+        userDatabase.child(encodeEmail(mFriendEmailString)).addListenerForSingleValueEvent(object :
             ValueEventListener {
+
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(User::class.java)
+                Log.i("vv",user!!.status.toString())
                 status.text=user!!.status.toString()
 
-
+                Log.i("vv",mUserEmailString.toString())
             }
 
         })

@@ -189,12 +189,12 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
 //        updatestatus("online")
 //    }
 
-
-    override fun onStop() {
-        super.onStop()
-        updatestatus("offline")
-
-    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        updatestatus("offline")
+//
+//    }
 
     fun encodeEmaill(email: String?): String {
         return email!!.replace(".", ",")
@@ -203,7 +203,7 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
         super.onStart()
 
             mAuth?.addAuthStateListener(mListener!!)
-        updatestatus("online")
+        //updatestatus("online")
 
     }
 
