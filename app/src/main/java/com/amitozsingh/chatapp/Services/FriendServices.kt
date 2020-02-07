@@ -438,9 +438,10 @@ class FriendServices {
                 val newMessagesReference = FirebaseDatabase.getInstance().getReference()
                     .child(FIRE_BASE_PATH_USER_NEW_MESSAGES)
                     .child(encodeEmail(userEmail))
+
                 for (snapshot in dataSnapshot.children) {
                     val message = snapshot.getValue(Message::class.java)
-                    //newMessagesReference.child(message?.messageId!!).removeValue()
+                    newMessagesReference.child(message?.messageId!!).removeValue()
                     messages.add(message!!)
                 }
 

@@ -100,7 +100,7 @@ class MessagesAdapter(
 
 
 
-
+   itemView.list_messages_time1.text=message.finaltime
 
             fun AESDecryptionMethod(string: String): String {
                 val EncryptedByte = string.toByteArray(charset("ISO-8859-1"))

@@ -16,7 +16,7 @@ val FIRE_BASE_PATH_USER_TOKEN = "userToken"
 val FIRE_BASE_PATH_USER_MESSAGES = "userMessages"
 val FIRE_BASE_PATH_USER_NEW_MESSAGES = "newUserMessages"
 val FIRE_BASE_PATH_USER_CHAT_ROOMS = "userChatRooms"
-
+val FIRE_BASE_PATH_USER_MESSAGECOUNT = "messagecount"
 
 fun encodeEmail(email: String?): String {
     return email!!.replace(".", ",")
