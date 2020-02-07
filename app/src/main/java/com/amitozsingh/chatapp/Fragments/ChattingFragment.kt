@@ -1,6 +1,7 @@
 package com.amitozsingh.chatapp.Fragments
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -56,11 +57,17 @@ import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 import javax.crypto.BadPaddingException
 import javax.crypto.Cipher
 import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.spec.SecretKeySpec
+import kotlin.collections.ArrayList
 
 
 /**
@@ -152,6 +159,7 @@ class ChattingFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_chatting, container, false)
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        Picasso.get()
@@ -161,6 +169,13 @@ class ChattingFragment : BaseFragment() {
 
 
         sendArrow.setOnClickListener {
+
+//            val current = LocalDateTime.now()
+//            val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+//            val formatted = current.format(formatter)
+
+
+
             setmSendMessage("textMessage","")
         }
 
@@ -328,6 +343,24 @@ class ChattingFragment : BaseFragment() {
 //        val filePath = FirebaseStorage.getInstance().reference
 //            .child("usersProfilePics").child(encodeEmail(mUserEmailString))
 
+
+        var calender=Calendar.getInstance()
+        var currentdate=SimpleDateFormat("MMM dd,yyyy")
+        var saveddate=currentdate.format(calender.time)
+
+
+        var currenttime=SimpleDateFormat("hh:mm a")
+
+        var savedtime=currenttime.format(calender.time)
+        var b=savedtime.toUpperCase()
+
+
+        var finaltime="$b-$saveddate"
+        Log.i("zz", "$b-$saveddate")
+        Log.i("zz", finaltime)
+
+
+
         val filepath = FirebaseDatabase.getInstance().getReference()
             .child(FIREBASE_USERS)
             .child(encodeEmail(mUserEmailString)).child("userPicture")
@@ -372,7 +405,7 @@ class ChattingFragment : BaseFragment() {
                     newMessageRefernce?.key!!,
                     AESEncryptionMethod(fragment_messages_messageBox.getText().toString()),type,
                     mUserEmailString!!,
-                    mSharedPreferences?.getString(USER_PICTURE, "")!!
+                    mSharedPreferences?.getString(USER_PICTURE, "")!!,finaltime
                 )
 
                 Log.i("xx",fragment_messages_messageBox.text.toString())
@@ -384,7 +417,7 @@ class ChattingFragment : BaseFragment() {
                     newMessageRefernce?.key!!,
                    AESEncryptionMethod(uri),type,
                     mUserEmailString!!,
-                    mSharedPreferences?.getString(USER_PICTURE, "")!!
+                    mSharedPreferences?.getString(USER_PICTURE, "")!!,finaltime
                 )
 
                 Log.i("xx2",uri)
@@ -403,7 +436,7 @@ class ChattingFragment : BaseFragment() {
                         AESEncryptionMethod(fragment_messages_messageBox.getText().toString()),
                         mFriendEmailString!!,
                         mSharedPreferences?.getString(USER_NAME, "")!!,
-                        "textMessage"
+                        "textMessage",finaltime
                     )
                 )
             }
@@ -417,7 +450,7 @@ class ChattingFragment : BaseFragment() {
                         AESEncryptionMethod(uri),
                         mFriendEmailString!!,
                         mSharedPreferences?.getString(USER_NAME, "")!!,
-                        "PicMessage"
+                        "PicMessage",finaltime
                     )
                 )
             }

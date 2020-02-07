@@ -160,7 +160,8 @@ function sendOrDeleteFriendRequest(socket,io){
         messageText: data.messageText,
         messageSenderEmail: data.senderEmail,
         messageSenderPicture: data.senderPicture,
-        messageType:data.type
+        messageType:data.type,
+        messageTime:data.finaltime
       };
   
      

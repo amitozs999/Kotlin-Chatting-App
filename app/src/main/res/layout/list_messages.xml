@@ -20,15 +20,32 @@
         app:riv_oval="false"
         app:riv_tile_mode="repeat" />
 
+
     <TextView
         android:id="@+id/list_messages_friendText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_centerInParent="true"
+
+  android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_toEndOf="@+id/list_messages_friendPicture"
+        android:text="message 1"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/list_messages_time1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/list_messages_friendText"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/list_messages_friendPicture"
+        android:text="time 1"
         android:textSize="16sp" />
 
     <ImageView
@@ -64,6 +81,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layout_toStartOf="@+id/list_messages_userPicture"
+        android:text="user2"
         android:textSize="16sp" />
 
     <ImageView

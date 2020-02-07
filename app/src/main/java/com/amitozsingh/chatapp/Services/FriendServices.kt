@@ -372,7 +372,8 @@ class FriendServices {
         messageText: String,
         friendEmail: String,
         messageSenderName: String,
-        type:String
+        type:String,
+        finaltime:String
     ): Subscription {
         val details = ArrayList<String>()
         details.add(messageSenderEmail)
@@ -381,6 +382,7 @@ class FriendServices {
         details.add(friendEmail)
         details.add(messageSenderName)
         details.add(type)
+        details.add(finaltime)
         val listObservable = Observable.just(details)
 
         return listObservable
@@ -399,6 +401,7 @@ class FriendServices {
                         sendData.put("friendEmail", strings[3])
                         sendData.put("senderName", strings[4])
                         sendData.put("type",strings[5])
+                        sendData.put("finaltime",strings[6])
                         socket.emit("details", sendData)
                         return SERVER_SUCCESS
                     } catch (e: JSONException) {

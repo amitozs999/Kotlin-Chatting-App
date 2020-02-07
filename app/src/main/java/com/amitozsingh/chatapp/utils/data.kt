@@ -19,7 +19,8 @@ data class Message(
 var messageText:String="",
     var messageType:String="",
 var messageSenderEmail:String="",
-var messageSenderPicture:String=""
+var messageSenderPicture:String="",
+    var finaltime:String=""
 
 
 
