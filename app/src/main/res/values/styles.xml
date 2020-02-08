@@ -17,11 +17,32 @@
 
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <style name="standardbutton">
         <item name="android:background" > @drawable/roundedbutton</item>
 
 
+    </style>
+
+    <style name="MyCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
+        <item name="cornerFamily">rounded</item>
+
+
+
+        <item name="cornerSizeTopLeft">30dp</item>
+
+        <item name="cornerSizeBottomLeft">30dp</item>
     </style>
 
 </resources>

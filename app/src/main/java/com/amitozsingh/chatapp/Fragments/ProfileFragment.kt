@@ -123,7 +123,7 @@ class ProfileFragment : BaseFragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(User::class.java)
 
-                nameed.setText(user!!.userName)
+                //nameed.setText(user!!.userName)
 
                 if(user!!.userPicture != null) {
                     try {
@@ -145,7 +145,7 @@ class ProfileFragment : BaseFragment() {
         //Picasso.get().load(mSharedPreferences?.getString(USER_PICTURE,"")).resize(200,250).into(fragment_profile_userPicture)
 
         fragment_profile_userEmail.setText(mUserEmailString);
-       //nameed.setText(mSharedPreferences!!.getString(USER_NAME, ""))
+       nameed.setText(mSharedPreferences!!.getString(USER_NAME, ""))
 
 
         fragment_profile_signOut.setOnClickListener {
