@@ -18,8 +18,8 @@
     </style>
 
 
-    <style name="standardbutton" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:background" >@drawable/roundedbutton</item>
+    <style name="standardbutton">
+        <item name="android:background" > @drawable/roundedbutton</item>
 
 
     </style>
