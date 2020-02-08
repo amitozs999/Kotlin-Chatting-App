@@ -41,6 +41,7 @@ import io.socket.client.Socket
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import io.socket.client.IO
@@ -122,6 +123,8 @@ class ProfileFragment : BaseFragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(User::class.java)
 
+                nameed.setText(user!!.userName)
+
                 if(user!!.userPicture != null) {
                     try {
 
@@ -142,7 +145,7 @@ class ProfileFragment : BaseFragment() {
         //Picasso.get().load(mSharedPreferences?.getString(USER_PICTURE,"")).resize(200,250).into(fragment_profile_userPicture)
 
         fragment_profile_userEmail.setText(mUserEmailString);
-        fragment_profile_userName.setText(mSharedPreferences!!.getString(USER_NAME, ""))
+       //nameed.setText(mSharedPreferences!!.getString(USER_NAME, ""))
 
 
         fragment_profile_signOut.setOnClickListener {
@@ -151,6 +154,12 @@ class ProfileFragment : BaseFragment() {
             mSharedPreferences!!.edit().putString(USER_EMAIL,"").apply();
             FirebaseAuth.getInstance().signOut();
            mActivity!!.finish()
+        }
+
+        fragment_profile_update.setOnClickListener {
+
+            updateDetails()
+
         }
         fragment_profile_camera_Picture.setOnClickListener {
 
@@ -191,6 +200,15 @@ class ProfileFragment : BaseFragment() {
         }
 
 
+    }
+
+    fun updateDetails(){
+
+        val name = nameed.text.toString()
+
+        val userDatabase = FirebaseDatabase.getInstance().reference.child("users").child(encodeEmail(mUserEmailString))
+
+        userDatabase.child("age").setValue(name)
     }
 
     private fun getOutputFile(): File? {
