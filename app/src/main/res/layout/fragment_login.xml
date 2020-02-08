@@ -5,29 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@color/white"
     >
 
-    <EditText
-        android:id="@+id/login_Email"
-        android:layout_width="match_parent"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_Email_lay"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="280sp"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:layout_marginTop="10dp"
+     >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Email"
 
 
-    <EditText
-        android:id="@+id/login_Password"
-        android:layout_width="match_parent"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_Password_lay"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="280sp"
         android:layout_height="wrap_content"
-        android:hint="Password" />
+        android:layout_marginTop="10dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_Password"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Password"
+
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/signin_button"
-        android:layout_width="match_parent"
+        style="@style/standardbutton"
+        android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:hint="Sign In"
-        />
-
-
+        android:text="Sign In"
+        android:textColor="#EDFDFCFC"
+        android:textSize="16sp" />
     <Button
         android:id="@+id/signup_button"
         android:layout_width="match_parent"

@@ -7,183 +7,186 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/fragment_profile_userPicture"
-        android:layout_width="200dp"
-        android:layout_height="250dp"
-        android:layout_above="@+id/fragment_profile_centerPoint"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop" />
-
-
-    <TextView
-        android:id="@+id/fragment_profile_centerPoint"
-        android:text=""
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        />
-
-    <ImageView
-        android:id="@+id/fragment_profile_camera_Picture"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_below="@+id/fragment_profile_userPicture"
-        android:background="@drawable/request_sent_bg"
-        android:layout_toLeftOf="@+id/fragment_profile_centerPoint"
-        android:layout_toStartOf="@+id/fragment_profile_centerPoint"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
-        android:src="@drawable/ic_add"
-        />
+        <ImageView
+            android:layout_marginTop="50dp"
+            android:id="@+id/fragment_profile_userPicture"
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:layout_above="@+id/fragment_profile_centerPoint"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop" />
 
 
-    <ImageView
-        android:id="@+id/fragment_profile_image_Picture"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_below="@+id/fragment_profile_userPicture"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@+id/fragment_profile_centerPoint"
-        android:layout_toEndOf="@+id/fragment_profile_centerPoint"
-        android:background="@drawable/request_sent_bg"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:src="@drawable/ic_send"
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_profile_userName"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_profile_camera_Picture"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-           android:background="@color/white"
-            android:id="@+id/nameed"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/fragment_profile_centerPoint"
+            android:text=""
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageView
+            android:id="@+id/fragment_profile_camera_Picture"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/fragment_profile_userPicture"
+            android:background="@drawable/request_sent_bg"
+            android:layout_toLeftOf="@+id/fragment_profile_centerPoint"
+            android:layout_toStartOf="@+id/fragment_profile_centerPoint"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_add"
+            />
 
 
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:textSize="20sp"
+        <ImageView
+            android:id="@+id/fragment_profile_image_Picture"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/fragment_profile_userPicture"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/fragment_profile_centerPoint"
+            android:layout_toEndOf="@+id/fragment_profile_centerPoint"
+            android:background="@drawable/request_sent_bg"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_send"
+            />
 
-            android:hint="Name.." />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_profile_bio"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_profile_userName"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:background="@color/white"
-            android:id="@+id/bioed"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_profile_userName"
+            android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:layout_below="@+id/fragment_profile_camera_Picture"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp">
 
-            android:hint="Bio.." />
+            <com.google.android.material.textfield.TextInputEditText
+                android:background="@color/white"
+                android:id="@+id/nameed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_profile_age"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_profile_bio"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp">
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textSize="20sp"
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:background="@color/white"
-            android:id="@+id/ageedt"
-            android:layout_width="match_parent"
+                android:hint="Name.." />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/fragment_profile_bio"-->
+<!--            android:layout_width="300sp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/fragment_profile_userName"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_marginTop="10dp">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:background="@color/white"-->
+<!--                android:id="@+id/bioed"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="20sp"-->
+
+<!--                android:hint="Bio.." />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/fragment_profile_age"-->
+<!--            android:layout_width="300sp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/fragment_profile_bio"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_marginTop="10dp">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:background="@color/white"-->
+<!--                android:id="@+id/ageedt"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="20sp"-->
+
+<!--                android:hint="Age.." />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/fragment_profile_city"-->
+<!--            android:layout_width="300sp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/fragment_profile_age"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_marginTop="10dp">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:background="@color/white"-->
+<!--                android:id="@+id/cityedt"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="20sp"-->
+
+<!--                android:hint="City.." />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_profile_userEmaill"
+            android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:layout_below="@+id/fragment_profile_userName"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp">
 
-            android:hint="Age.." />
+            <com.google.android.material.textfield.TextInputEditText
+                android:background="@color/white"
+                android:id="@+id/fragment_profile_userEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
 
-    </com.google.android.material.textfield.TextInputLayout>
+                android:hint="email.." />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_profile_city"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_profile_age"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:background="@color/white"
-            android:id="@+id/cityedt"
-            android:layout_width="match_parent"
+
+
+
+
+
+        <Button
+            android:id="@+id/fragment_profile_signOut"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:layout_below="@+id/fragment_profile_userEmaill"
+            android:layout_centerHorizontal="true"
+            android:text="Sign Out"
+            />
 
-            android:hint="City.." />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_profile_userEmaill"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_profile_city"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:background="@color/white"
-            android:id="@+id/fragment_profile_userEmail"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/fragment_profile_update"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-
-            android:hint="email.." />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-
-    <Button
-        android:id="@+id/fragment_profile_signOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_profile_userEmaill"
-        android:layout_centerHorizontal="true"
-        android:text="Sign Out"
-        />
-
-    <Button
-        android:id="@+id/fragment_profile_update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_profile_signOut"
-        android:layout_centerHorizontal="true"
-        android:text="UPDATE"
-        />
+            android:layout_below="@+id/fragment_profile_signOut"
+            android:layout_centerHorizontal="true"
+            android:text="UPDATE"
+            />
 
 
 
 
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

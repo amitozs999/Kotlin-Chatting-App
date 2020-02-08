@@ -8,4 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="MyTextLabel" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/white</item>
+
+        <item name="android:textSize">20sp</item>
+
+    </style>
+
+
+    <style name="standardbutton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background" >@drawable/roundedbutton</item>
+
+
+    </style>
+
 </resources>
