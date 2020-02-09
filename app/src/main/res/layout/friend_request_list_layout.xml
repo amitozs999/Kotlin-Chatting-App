@@ -1,73 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+
     >
 
+    <com.google.android.material.card.MaterialCardView
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/userdp"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_profile"
-        app:riv_border_color="@color/design_default_color_primary"
-        app:riv_border_width="2dip"
-        app:riv_corner_radius="40dip"
-        app:riv_mutate_background="true"
-        app:riv_oval="true"
-        app:riv_tile_mode="repeat" />
-
-    <TextView
-        android:id="@+id/friend_request_userName"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Carlos Valentin"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_gravity="center"
-        android:textSize="18sp"
-        android:layout_weight="0.20"
-        />
-<LinearLayout
-    android:layout_width="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
 
-    android:layout_height="wrap_content">
+        android:layout_marginEnd="3dp"
+        android:background="@color/white"
+        android:elevation="0dp">
 
-    <ImageView
-        android:id="@+id/acceptRequest"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_weight="0.05"
-        android:background="@drawable/request_approve"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:orientation="horizontal">
 
-        android:src="@drawable/ic_add"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/userdp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
 
-        />
-</LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
 
-        android:layout_height="wrap_content">
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_profile"
+                app:riv_corner_radius="45dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="true" />
 
-        <ImageView
-            android:id="@+id/rejectRequest"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            <TextView
+                android:id="@+id/friend_request_userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.20"
+                android:text="Carlos Valentin"
+                android:textSize="18sp" />
 
-            android:layout_weight="0.05"
-            android:background="@drawable/request_decline"
-            android:src="@drawable/ic_cancel"
+            <LinearLayout
+                android:layout_width="60dp"
 
-            />
-    </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp">
+
+                <ImageView
+                    android:id="@+id/acceptRequest"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.05"
+
+
+                    android:background="@drawable/req_bag"
+                    android:src="@drawable/ic_check_black_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="60dp"
+
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp">
+
+                <ImageView
+                    android:id="@+id/rejectRequest"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.05"
+
+
+                    android:background="@drawable/req_bag"
+                    android:src="@drawable/ic_cancel_grey" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

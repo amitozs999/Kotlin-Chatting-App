@@ -79,7 +79,7 @@ android:elevation="0dp"
                     android:layout_marginStart="100dp"
                     android:layout_marginTop="30dp"
 
-                    android:background="@drawable/request_sent_bg">
+                    >
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/reqsendbutton"
