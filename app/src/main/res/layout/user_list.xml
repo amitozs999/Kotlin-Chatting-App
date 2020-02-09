@@ -2,80 +2,99 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="95dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="95dp"
+    <com.google.android.material.card.MaterialCardView
 
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp">
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/userdp"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_profile"
-            app:riv_border_color="@color/design_default_color_primary"
-            app:riv_border_width="2dip"
-            app:riv_corner_radius="40dip"
-            app:riv_mutate_background="true"
-            app:riv_oval="true"
-            app:riv_tile_mode="repeat" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="150dp"
-        android:layout_height="95dp"
-        android:orientation="vertical"
-        android:paddingTop="30dp">
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:paddingLeft="10sp"
-            android:text="Amitoz"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/senttv"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:paddingLeft="10sp"
-            android:text="Reqest Sent"
-            android:textSize="13sp"
-            android:textStyle="italic" />
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="95dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+android:elevation="0dp"
+        android:layout_marginStart="3dp"
+
+        android:layout_marginEnd="3dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/white">
 
         <LinearLayout
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:orientation="horizontal">
 
-            android:background="@drawable/request_sent_bg">
 
-            <ImageView
-                android:id="@+id/reqsentbutton"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+            <LinearLayout
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
 
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="6dp"
-                android:src="@drawable/ic_send" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp">
 
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/userdp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_profile"
+
+                    app:riv_corner_radius="45dip"
+                    app:riv_mutate_background="true"
+                    app:riv_oval="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="30dp">
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:paddingLeft="10sp"
+                    android:text="Amitoz"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/senttv"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:paddingLeft="10sp"
+                    android:text="Reqest Sent"
+                    android:textSize="13sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="30dp"
+
+                    android:background="@drawable/request_sent_bg">
+
+                    <ImageView
+                        android:id="@+id/reqsentbutton"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="6dp"
+                        android:src="@drawable/ic_send" />
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 
 </LinearLayout>

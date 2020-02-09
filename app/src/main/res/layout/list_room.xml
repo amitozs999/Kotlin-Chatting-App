@@ -29,7 +29,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
 
-                android:scaleType="fitCenter"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_profile"
 
                 app:riv_corner_radius="45dip"
