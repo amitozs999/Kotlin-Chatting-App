@@ -82,7 +82,7 @@ class UserFriendsAdapter(
                         try {
 
 
-                            Picasso.get().load(user.userPicture).placeholder(R.drawable.ic_launcher_background).fit().into(itemView.userdp)
+                            Picasso.get().load(user.userPicture).fit().into(itemView.userdp)
                         } catch (e: IllegalArgumentException) {
 
                         }

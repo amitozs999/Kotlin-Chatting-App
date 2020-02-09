@@ -125,6 +125,17 @@ class ProfileFragment : BaseFragment() {
 
                 //nameed.setText(user!!.userName)
 
+                if (user!!.age !=null)
+                {
+
+                fragment_profile_userAge.setText(user!!.age)
+                }
+                if(user.bio!=null) {
+
+
+                    fragment_profile_userBio.setText(user.bio)
+                }
+
                 if(user!!.userPicture != null) {
                     try {
 
@@ -204,11 +215,14 @@ class ProfileFragment : BaseFragment() {
 
     fun updateDetails(){
 
-        val name = nameed.text.toString()
+
+        val bio=fragment_profile_userBio.text.toString()
+        val age=fragment_profile_userAge.text.toString()
 
         val userDatabase = FirebaseDatabase.getInstance().reference.child("users").child(encodeEmail(mUserEmailString))
 
-        userDatabase.child("age").setValue(name)
+        userDatabase.child("bio").setValue(bio)
+        userDatabase.child("age").setValue(age)
     }
 
     private fun getOutputFile(): File? {
