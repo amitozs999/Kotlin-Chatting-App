@@ -73,7 +73,7 @@ android:elevation="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="100dp"
@@ -81,16 +81,25 @@ android:elevation="0dp"
 
                     android:background="@drawable/request_sent_bg">
 
-                    <ImageView
-                        android:id="@+id/reqsentbutton"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/reqsendbutton"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
 
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="6dp"
-                        android:src="@drawable/ic_send" />
+                        android:src="@drawable/ic_person_add_black_24dp" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/reqsentbutton"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
 
-                </LinearLayout>
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="6dp"
+                        android:src="@drawable/ic_sent_already" />
+
+
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 

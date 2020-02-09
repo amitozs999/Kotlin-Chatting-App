@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.core.content.ContextCompat
 import com.amitozsingh.chatapp.Activities.MessagesActivity
 import com.amitozsingh.chatapp.utils.User
 import com.amitozsingh.chatapp.utils.isIncludedInMap
@@ -130,6 +131,10 @@ return ViewHolder(userView)
             var user=mUsers[position]
             mListener.OnUserClicked(user)
         }
+        holder.itemView.reqsendbutton.setOnClickListener {
+            var user=mUsers[position]
+            mListener.OnUserClicked(user)
+        }
         holder.bindItems(filteredlist[position],mFriendRequestSentMap,mFriendRequestRecievedMap!!,mCurrentUserFriendsMap!!)
     }
     class ViewHolder(itemview:View):RecyclerView.ViewHolder(itemview){
@@ -151,22 +156,32 @@ catch (e:IllegalArgumentException){
             if (isIncludedInMap(friendRequestSentMap,user)){
                 //senttv.setVisibility(View.VISIBLE);
                 itemView.senttv.text="Friend Request Sent"
+
+                itemView.reqsendbutton.setVisibility(View.GONE)
                 itemView.reqsentbutton.setVisibility(View.VISIBLE)
-                itemView.reqsentbutton.setImageResource(R.drawable.btn_minus);
+        //        itemView.reqsentbutton.setImageResource(R.drawable.btn_minus);
                 //mAddFriend.setVisibility(View.VISIBLE);
+
             }else if(isIncludedInMap(friendRequestRecievedMap,user)){
                 itemView.senttv.text="User sent you request"
+
+                itemView.reqsendbutton.setVisibility(View.GONE)
                 itemView.reqsentbutton.setVisibility(View.GONE)
 
             }else if(isIncludedInMap(UserFriendMap,user)){
                 //mUserStatus.setVisibility(View.VISIBLE);
                 itemView.senttv.text="You are Friends"
                 //mAddFriend.setVisibility(View.GONE);
+                itemView.reqsendbutton.setVisibility(View.GONE)
+                itemView.reqsentbutton.setVisibility(View.GONE)
             }
             else{
                 itemView.reqsentbutton.setVisibility(View.VISIBLE)
                 itemView.senttv.setText("Add Friend")
-                itemView.reqsentbutton.setImageResource(R.drawable.btn_plus)
+                itemView.reqsendbutton.setVisibility(View.VISIBLE)
+                itemView.reqsentbutton.setVisibility(View.GONE)
+         //       itemView.reqsentbutton.setImageResource()
+
             }
         }
     }
