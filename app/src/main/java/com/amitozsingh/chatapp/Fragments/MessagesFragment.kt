@@ -18,15 +18,21 @@ import com.google.firebase.database.DatabaseReference
 
 import com.amitozsingh.chatapp.Activities.ChattingActivity
 import com.amitozsingh.chatapp.Adapters.ChatroomAdapter
+import com.amitozsingh.chatapp.Adapters.myPagerAdapter
 import com.amitozsingh.chatapp.Services.AccountServices
 import com.amitozsingh.chatapp.Services.FriendServices
 import com.amitozsingh.chatapp.utils.*
 import com.google.firebase.database.FirebaseDatabase
 import io.socket.client.IO
 import io.socket.client.Socket
+import kotlinx.android.synthetic.main.fragment_friends.*
 import kotlinx.android.synthetic.main.fragment_messages.*
 import org.json.JSONException
 import org.json.JSONObject
+
+
+
+
 
 
 
@@ -120,13 +126,34 @@ class MessagesFragment : BaseFragment() , ChatroomAdapter.ChatRoomListener{
         mUserChatRoomListener = mLiveFriendsService?.getAllChatRooms(fragment_inbox_recyclerView,fragment_inbox_message,mAdapter!!);
 
         mUserChatRoomReference?.addValueEventListener(mUserChatRoomListener!!)
-
+        var fragment: Fragment? =null
 
 
 
         fragment_inbox_recyclerView.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         fragment_inbox_recyclerView.setAdapter(mAdapter)
+fab.setOnClickListener {
+//    friendsviewpager.currentItem = 1
+//
+//    friendsviewpager!!.adapter =
+//        myPagerAdapter(childFragmentManager)
+//
+//    navigationTabs.setupWithViewPager(friendsviewpager)
 
+    val bundle = Bundle()
+    bundle.putString("key", "0") // Put anything what you want
+
+    fragment = FriendsFragment()
+    fragment!!.setArguments(bundle)
+
+    val fragmentManager = activity!!.supportFragmentManager
+    val fragmentTransaction = fragmentManager.beginTransaction()
+    fragmentTransaction.replace(R.id.fragcont, fragment!!)
+    fragmentTransaction.addToBackStack(null)
+    fragmentTransaction.commit()
+
+
+}
 
 
     }

@@ -49,9 +49,11 @@
         android:background="@drawable/toolbar_dropshadow" />
 
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_inbox_recyclerView"
@@ -59,10 +61,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:layout_marginBottom="50dp" />
+            />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+
+
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="75dp"
+
+
+            app:srcCompat="@drawable/ic_mail_white"
+            android:tint="@android:color/white"
+
+
+            app:backgroundTint="@color/white"
+
+            />
 
 
     </RelativeLayout>
+
+
 
 
     <TextView

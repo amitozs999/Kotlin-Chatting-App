@@ -16,6 +16,9 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_friends.*
 
 
+import android.util.Log
+
+
 /**
  * A simple [Fragment] subclass.
  */
@@ -48,10 +51,25 @@ class FriendsFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        friendsviewpager.currentItem = 0
+
+        Log.i("mm","jj")
+        val bundle = this.arguments
+
+            val code = bundle!!.getString("key")
+            Log.i("mm",code)
+
+
+
+
 
         friendsviewpager!!.adapter =
             myPagerAdapter(childFragmentManager)
+
+        if(code=="0") {
+            friendsviewpager.currentItem = 1
+        }else{
+            friendsviewpager.currentItem = 0
+        }
 
         navigationTabs.setupWithViewPager(friendsviewpager)
 
@@ -69,6 +87,9 @@ class FriendsFragment : BaseFragment() {
             }
 
         })
+    }
+    fun displayReceivedData(message: String) {
+
     }
 
 

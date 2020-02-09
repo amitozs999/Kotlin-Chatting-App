@@ -60,12 +60,20 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
                     return true
                 }
                 R.id.itemfriends -> {
-                  fragment = FriendsFragment()
+                    val bundle = Bundle()
+                    bundle.putString("key", "1") // Put anything what you want
+
+                    fragment = FriendsFragment()
+                    fragment!!.setArguments(bundle)
+
                     supportFragmentManager.beginTransaction().replace(R.id.fragcont, fragment)
                         .commit()
                     return true
                 }
                 R.id.itemmessages -> {
+
+
+
                     fragment = MessagesFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.fragcont, fragment)
                         .commit()

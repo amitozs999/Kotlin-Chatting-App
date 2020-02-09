@@ -1,5 +1,6 @@
 package com.amitozsingh.chatapp.Adapters
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -14,8 +15,10 @@ class myPagerAdapter(fm:FragmentManager) :FragmentStatePagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         var fragment: Fragment?=null
-
+        Log.i("mmmm",position.toString())
         when (position) {
+
+
             1 -> fragment = FriendslistFragment.newInstance()
             2 -> fragment = FriendRequestsFragment.newInstance()
             0 -> fragment = SearchFriendsFragment.newInstance()
