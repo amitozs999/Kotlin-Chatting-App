@@ -64,6 +64,8 @@
             />
 
 
+
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
@@ -79,7 +81,7 @@
             android:layout_marginBottom="75dp"
 
 
-            app:srcCompat="@drawable/ic_mail_white"
+            app:srcCompat="@drawable/ic_mail_blue"
             android:tint="@android:color/white"
 
 
