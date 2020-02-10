@@ -86,6 +86,8 @@ class ChattingActivity : BaseActivity() {
 //        updatestatus("offline")
 //    }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
 

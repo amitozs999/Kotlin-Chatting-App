@@ -25,6 +25,9 @@ import com.amitozsingh.chatapp.utils.USER_EMAIL
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Environment
+import android.os.StrictMode
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,6 +55,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_messages.view.*
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
@@ -123,8 +127,13 @@ class ChattingFragment : BaseFragment() {
     private var mSocket: Socket? = null
     private var mLiveFriendsService: FriendServices? = null
 
+    private var mTempUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
+
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
         super.onCreate(savedInstanceState)
         mSocket= IO.socket(LOCAL_HOST)
         mSocket!!.connect()
@@ -197,6 +206,31 @@ class ChattingFragment : BaseFragment() {
             }
 
         }
+
+        sendCamera.setOnClickListener {
+            if (mPermission != null) {
+                if (!mPermission!!.checkPermissionForCamera()) {
+                    mPermission!!.requestPermissionForCamera()
+                } else if (!mPermission!!.checkPermissionForWriteExternalStorage()) {
+                    mPermission!!.requestPermissionForWriteExternalStorage()
+                } else if (!mPermission!!.checkPermissionForReadExternalStorage()) {
+                    mPermission!!.requestPermissionForReadExternalStorage()
+                } else {
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    mTempUri = Uri.fromFile(getOutputFile())
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mTempUri)
+                    startActivityForResult(intent, REQUEST_CODE_CAMERA)
+                }
+            }
+        }
+
+        backbtn.setOnClickListener {
+
+            Log.i("ll","ll")
+           onDetach()
+        }
+
+
         Log.i("vv","kk")
 
         val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
@@ -277,12 +311,84 @@ class ChattingFragment : BaseFragment() {
     }
 
 
+    private fun getOutputFile(): File? {
+        val mesdiaStorageDir = File(
+            Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+            ), "ChatApp"
+        )
+
+        if (!mesdiaStorageDir.exists()) {
+            if (!mesdiaStorageDir.mkdir()) {
+                return null
+            }
+        }
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        return File(
+            mesdiaStorageDir.getPath() + File.separator +
+                    "IMG_" + timeStamp + ".jpg"
+        )
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if(data!=null) {
 
             if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_PICTURE) {
                 val selectedImageUri = data!!.data
+
+
+                val filePath = FirebaseStorage.getInstance().reference
+                    .child("MessagePics").child(encodeEmail(mUserEmailString))
+                    .child(selectedImageUri?.lastPathSegment!!);
+                var bitmap: Bitmap? = null
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                        mActivity!!.contentResolver,
+                        selectedImageUri
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                val baos = ByteArrayOutputStream()
+                bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+                val data = baos.toByteArray()
+
+                val uploadTask = filePath.putBytes(data)
+                uploadTask.addOnFailureListener { e -> e.printStackTrace() }
+                uploadTask.addOnSuccessListener { taskSnapshot ->
+                    filePath.downloadUrl
+                        .addOnSuccessListener { uri ->
+
+                            Log.i("zz5", uri.toString())
+
+                            mSharedPreferences!!.edit().putString(
+                                USER_PICTURE, uri.toString()
+
+                            ).apply()
+                            //PicUrl = uri.toString()
+                            setmSendMessage("picMessage", uri.toString())
+                            // updateImageUri(uri.toString(),mUserEmailString!!)
+                        }
+                        .addOnFailureListener { e -> e.printStackTrace() }
+                }
+//                Log.i("zz6", PicUrl)
+
+//            mCompositeSubscription!!.add(
+//                AccountServices().getInstance()
+//                    .changeProfilePhoto(
+//                        filePath, selectedImageUri!!, mActivity!!,
+//                        mUserEmailString!!, fragment_profile_userPicture, mSharedPreferences!!, mSocket!!,userref!!
+//                    )
+//            )
+
+            }
+
+        }
+
+            if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
+                val selectedImageUri = mTempUri
 
 
                 val filePath = FirebaseStorage.getInstance().reference
@@ -319,18 +425,10 @@ class ChattingFragment : BaseFragment() {
                         }
                         .addOnFailureListener { e -> e.printStackTrace() }
                 }
-//                Log.i("zz6", PicUrl)
 
-//            mCompositeSubscription!!.add(
-//                AccountServices().getInstance()
-//                    .changeProfilePhoto(
-//                        filePath, selectedImageUri!!, mActivity!!,
-//                        mUserEmailString!!, fragment_profile_userPicture, mSharedPreferences!!, mSocket!!,userref!!
-//                    )
-//            )
 
             }
-        }
+
     }
 
 
