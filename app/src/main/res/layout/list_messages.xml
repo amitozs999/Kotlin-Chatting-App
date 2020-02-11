@@ -4,94 +4,31 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp">
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/list_messages_friendPicture"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_profile"
-        app:riv_border_color="@color/design_default_color_primary"
-        app:riv_border_width="2dip"
-        app:riv_corner_radius="40dip"
-        app:riv_mutate_background="true"
-        app:riv_oval="false"
-        app:riv_tile_mode="repeat" />
+   >
 
 
-    <TextView
-        android:id="@+id/list_messages_friendText"
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Myfriendmessage"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
-
-
-  android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@+id/list_messages_friendPicture"
-        android:text="message 1"
-        android:textSize="16sp" />
+        android:layout_marginTop="10dp">
 
-    <TextView
-        android:id="@+id/list_messages_time1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/list_messages_friendText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:maxWidth="300dp"
+            android:text="hi how are you what are you doing ?"
+            android:textSize="26sp" />
 
-        android:layout_below="@id/list_messages_friendText"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/list_messages_friendPicture"
-        android:text="time 1"
-        android:textSize="16sp" />
-
-    <ImageView
-        android:id="@+id/list_messages_messagePicfriend"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@+id/list_messages_friendPicture" />
-
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/list_messages_userPicture"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentEnd="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_profile"
-        app:riv_border_color="@color/design_default_color_primary"
-        app:riv_border_width="2dip"
-        app:riv_corner_radius="40dip"
-        app:riv_mutate_background="true"
-        app:riv_oval="false"
-        app:riv_tile_mode="repeat" />
-
-    <TextView
-        android:id="@+id/list_messages_UserText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_centerInParent="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toStartOf="@+id/list_messages_userPicture"
-        android:text="user2"
-        android:textSize="16sp" />
-
-    <ImageView
-        android:id="@+id/list_messages_messagePicUser"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        android:layout_marginEnd="10dp"
-
-        android:layout_marginRight="10dp"
-        android:layout_toStartOf="@+id/list_messages_userPicture" />
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

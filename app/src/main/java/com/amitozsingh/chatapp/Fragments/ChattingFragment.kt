@@ -227,7 +227,8 @@ class ChattingFragment : BaseFragment() {
         backbtn.setOnClickListener {
 
             Log.i("ll","ll")
-           onDetach()
+            activity!!.finish();
+
         }
 
 

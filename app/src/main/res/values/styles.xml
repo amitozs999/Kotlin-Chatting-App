@@ -45,4 +45,36 @@
         <item name="cornerSizeBottomLeft">30dp</item>
     </style>
 
+
+    <style name="Mymessage" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.mymessage</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.mymessage" parent="">
+        <item name="cornerFamily">rounded</item>
+
+
+        <item name="cornerSizeBottomRight">30dp</item>
+
+        <item name="cornerSizeTopLeft">30dp</item>
+
+        <item name="cornerSizeBottomLeft">30dp</item>
+    </style>
+
+    <style name="Myfriendmessage" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.friendmessage</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.friendmessage" parent="">
+        <item name="cornerFamily">rounded</item>
+
+
+        <item name="cornerSizeBottomRight">30dp</item>
+
+        <item name="cornerSizeTopRight">30dp</item>
+
+        <item name="cornerSizeBottomLeft">30dp</item>
+    </style>
 </resources>
