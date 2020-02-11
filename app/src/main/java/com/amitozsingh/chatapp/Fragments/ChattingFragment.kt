@@ -177,6 +177,8 @@ class ChattingFragment : BaseFragment() {
 
 
 
+
+
         sendArrow.setOnClickListener {
 
 //            val current = LocalDateTime.now()

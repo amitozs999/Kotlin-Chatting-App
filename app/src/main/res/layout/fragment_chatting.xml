@@ -72,6 +72,33 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
+
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentEnd="true">-->
+
+<!--                    <com.makeramen.roundedimageview.RoundedImageView-->
+<!--                        android:layout_width="70dp"-->
+<!--                        android:layout_height="70dp"-->
+
+<!--                        android:layout_marginStart="5dp"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:id="@+id/mfriendpic"-->
+<!--                        android:src="@drawable/ic_profile"-->
+
+<!--                        android:scaleType="centerInside"-->
+
+
+<!--                        app:riv_corner_radius="45dip"-->
+<!--                        app:riv_mutate_background="true"-->
+<!--                        app:riv_oval="true" />-->
+
+
+
+<!--                </LinearLayout>-->
+
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 
