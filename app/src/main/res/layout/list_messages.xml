@@ -1,34 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-   >
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical">
 
-
-    <com.google.android.material.card.MaterialCardView
-        style="@style/Myfriendmessage"
+    <RelativeLayout
+        android:id="@+id/friendlayout"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/list_messages_friendText"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/friendcardview"
+            style="@style/Myfriendmessage"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="#039BE5">
+
+            <TextView
+                android:id="@+id/list_messages_friendText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:maxWidth="300dp"
+                android:text="hi how are"
+                android:textColor="#FAFAFA"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/friendcardviewimage"
+            style="@style/Myfriendmessage"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="#039BE5">
+
+            <ImageView
+                android:id="@+id/list_messages_messagePicfriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/list_messages_time_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/friendlayout"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="6dp"
+        android:text="abc"
+        android:textSize="10sp" />
+
+
+    <RelativeLayout
+        android:id="@+id/mylayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp">
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/myview"
+            style="@style/Mymessage"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:maxWidth="300dp"
-            android:text="hi how are you what are you doing ?"
-            android:textSize="26sp" />
 
-    </com.google.android.material.card.MaterialCardView>
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/list_messages_UserText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:maxWidth="300dp"
+                android:text="hi ?"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mycardviewimage"
+
+            style="@style/Mymessage"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/list_messages_messagePicUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+
+                />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/list_messages_time_my"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mylayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="30dp"
+        android:text="abc"
+        android:textSize="10sp" />
 
 </RelativeLayout>

@@ -70,6 +70,8 @@ dependencies {
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
 
+    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
+
 
 
 }

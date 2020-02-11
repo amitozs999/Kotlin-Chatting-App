@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.list_messages.view.*
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
@@ -100,7 +101,7 @@ class MessagesAdapter(
 
 
 
-   itemView.list_messages_time1.text=message.finaltime
+
 
             fun AESDecryptionMethod(string: String): String {
                 val EncryptedByte = string.toByteArray(charset("ISO-8859-1"))
@@ -128,7 +129,7 @@ class MessagesAdapter(
 
 
 
-Log.i("aa","1")
+Log.i("azi",message.finaltime)
 
 
 
@@ -137,6 +138,15 @@ Log.i("aa","1")
             if (!currentUserEmail.equals(message.messageSenderEmail)){
 
 
+
+
+
+
+                itemView.mylayout.visibility=View.GONE
+                itemView.friendlayout.visibility=View.VISIBLE
+
+                itemView.list_messages_time_friend.text=message.finaltime
+                itemView.list_messages_time_my.visibility=View.GONE
 
 
                 val userDatabase = FirebaseDatabase.getInstance().reference.child("users")
@@ -153,7 +163,7 @@ Log.i("aa","1")
                             try {
 
 
-                                Picasso.get().load(user.userPicture).fit().into(itemView.list_messages_friendPicture)
+                         //       Picasso.get().load(user.userPicture).fit().into(itemView.list_messages_friendPicture)
                             } catch (e: IllegalArgumentException) {
 
                             }
@@ -170,15 +180,19 @@ Log.i("aa","1")
                 if(message.messageType=="textMessage"){
 
 
+                    itemView.friendcardviewimage.visibility=View.GONE
+
+
+
                     Log.i("aa","3")
 
-                    itemView.list_messages_userPicture.visibility=View.GONE      //user gone
+//                    itemView.list_messages_userPicture.visibility=View.GONE      //user gone
                     itemView.list_messages_UserText.visibility=View.GONE
 
                     itemView.list_messages_messagePicUser.visibility=View.GONE     //pic gone
                     itemView.list_messages_messagePicfriend.visibility=View.GONE
 
-                    itemView.list_messages_friendPicture.visibility=View.VISIBLE    //friend visible
+//                    itemView.list_messages_friendPicture.visibility=View.VISIBLE    //friend visible
 
                     itemView.list_messages_friendText.visibility=View.VISIBLE
 
@@ -192,19 +206,22 @@ Log.i("aa","1")
 
                         else {
 
+
+                    itemView.friendcardviewimage.visibility=View.VISIBLE
+
                     Log.i("aa", "4")
 
-                    itemView.list_messages_userPicture.visibility = View.GONE      //user gone
+        //            itemView.list_messages_userPicture.visibility = View.GONE      //user gone
                     itemView.list_messages_UserText.visibility = View.GONE
 
                     itemView.list_messages_messagePicUser.visibility = View.GONE    //pic gone(user)
 
                     itemView.list_messages_friendText.visibility = View.GONE         //text gone(friend)
 
-                    itemView.list_messages_friendPicture.visibility = View.VISIBLE   //friend visible
+          //          itemView.list_messages_friendPicture.visibility = View.VISIBLE   //friend visible
                     itemView.list_messages_messagePicfriend.visibility=View.VISIBLE
 
-                    Picasso.get().load(AESDecryptionMethod(message.messageText)).placeholder(R.drawable.ic_launcher_background)
+                    Picasso.get().load(AESDecryptionMethod(message.messageText)).transform(RoundedCornersTransformation(10,10)).placeholder(R.drawable.ic_photo_library).resize(450,450)
                         .into(itemView.list_messages_messagePicfriend)
 
 
@@ -217,6 +234,18 @@ Log.i("aa","1")
 
 
             } else{
+
+
+
+
+
+                itemView.mylayout.visibility=View.VISIBLE
+                itemView.friendlayout.visibility=View.GONE
+
+
+                itemView.list_messages_time_my.text=message.finaltime
+
+                itemView.list_messages_time_friend.visibility=View.GONE
 
 
 
@@ -234,7 +263,7 @@ Log.i("aa","1")
                             try {
 
 
-                                Picasso.get().load(user.userPicture).fit().into(itemView.list_messages_userPicture)
+                             //   Picasso.get().load(user.userPicture).fit().into(itemView.list_messages_userPicture)
                             } catch (e: IllegalArgumentException) {
 
                             }
@@ -248,15 +277,16 @@ Log.i("aa","1")
                 Log.i("aa","5")
                 if(message.messageType=="textMessage"){
 
+                    itemView.mycardviewimage.visibility=View.GONE
 
                     Log.i("aa","6")
-                    itemView.list_messages_userPicture.visibility=View.VISIBLE   //user visible
+           //         itemView.list_messages_userPicture.visibility=View.VISIBLE   //user visible
                     itemView.list_messages_UserText.visibility=View.VISIBLE
 
                     itemView.list_messages_messagePicUser.visibility=View.GONE    //Pic gone
                     itemView.list_messages_messagePicfriend.visibility=View.GONE
 
-                    itemView.list_messages_friendPicture.visibility=View.GONE    //frieend gone
+             //       itemView.list_messages_friendPicture.visibility=View.GONE    //frieend gone
                     itemView.list_messages_friendText.visibility=View.GONE
 
                     //Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_userPicture)
@@ -268,8 +298,10 @@ Log.i("aa","1")
 
               else{
 
+                    itemView.mycardviewimage.visibility=View.VISIBLE
+
                     Log.i("aa","7")
-                    itemView.list_messages_userPicture.visibility=View.VISIBLE     //user visible
+               //     itemView.list_messages_userPicture.visibility=View.VISIBLE     //user visible
 
 
                     itemView.list_messages_UserText.visibility=View.GONE          //text gone (user)
@@ -277,12 +309,12 @@ Log.i("aa","1")
 
                     itemView.list_messages_messagePicfriend.visibility=View.GONE    //pic gone(friend)
 
-                    itemView.list_messages_friendPicture.visibility=View.GONE
+                 //   itemView.list_messages_friendPicture.visibility=View.GONE
                     itemView.list_messages_friendText.visibility=View.GONE             //friend gonne
 
                     itemView.list_messages_messagePicUser.visibility=View.VISIBLE
 
-                    Picasso.get().load(AESDecryptionMethod(message.messageText)).placeholder(R.drawable.ic_launcher_background).into(itemView.list_messages_messagePicUser)
+                    Picasso.get().load(AESDecryptionMethod(message.messageText)).transform(RoundedCornersTransformation(10,10)).placeholder(R.drawable.ic_photo_library).resize(450,450).into(itemView.list_messages_messagePicUser)
 
                 //    Picasso.get().load(message.messageSenderPicture).into(itemView.list_messages_userPicture)
                 }

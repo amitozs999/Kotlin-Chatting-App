@@ -260,6 +260,8 @@ class ChattingFragment : BaseFragment() {
 
         fragment_messages_friendName.setText(mFriendNameString)
 
+        friendname.setText(mFriendNameString)
+
         mAdapter= MessagesAdapter(
             activity as ChattingActivity,
             mUserEmailString!!
