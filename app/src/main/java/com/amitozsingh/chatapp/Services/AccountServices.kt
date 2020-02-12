@@ -238,7 +238,26 @@ class AccountServices {
 
                         try {
                             FirebaseInstanceId.getInstance().deleteInstanceId()
-                            FirebaseInstanceId.getInstance().token
+                           // FirebaseInstanceId.getInstance().token
+
+//                            FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+//
+//
+//                            }
+
+
+                            FirebaseInstanceId.getInstance().instanceId
+                                .addOnCompleteListener(OnCompleteListener { task ->
+                                    if (!task.isSuccessful) {
+
+                                        return@OnCompleteListener
+                                    }
+
+                                    // Get new Instance ID token
+                                    val token = task.result?.token
+                                    Log.i("newToken0",token)
+
+                                })
 
                         } catch (e: IOException) {
 
@@ -246,7 +265,7 @@ class AccountServices {
 
                         }
 
-                       // FirebaseAuth.getInstance().signOut()
+                       //FirebaseAuth.getInstance().signOut()
                         Log.i("AMITOZ","LEVEL 6")
                        return NO_ERRORS
 

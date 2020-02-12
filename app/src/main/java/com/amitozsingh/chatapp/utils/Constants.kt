@@ -1,5 +1,8 @@
 package com.amitozsingh.chatapp.utils
 //https://kotlin-chat-server.herokuapp.com/
+
+
+
 val LOCAL_HOST = "http://192.168.0.103:3000"
 val USER_INFO_PREFERENCE = "USER_INFO_PREFERENCE"
 

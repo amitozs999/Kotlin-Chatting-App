@@ -28,9 +28,15 @@ import com.google.firebase.database.ValueEventListener
 import io.socket.client.IO
 import io.socket.client.Socket
 import org.json.JSONObject
+import com.google.firebase.iid.InstanceIdResult
+import com.google.android.gms.tasks.OnSuccessListener
 
+import android.util.Log
 
+var messageToken:String=""
 class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
+
+
 
     private var mAuth: FirebaseAuth? = null
     private var mListener: FirebaseAuth.AuthStateListener? = null
@@ -100,7 +106,7 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
         mLiveFriendsService = FriendServices().getInstance()
 
 
-        val messageToken = FirebaseInstanceId.getInstance().token
+       // val messageToken = FirebaseInstanceId.getInstance().token
 
 
         val sharedPreferences = getSharedPreferences(
@@ -110,13 +116,24 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
         //initialy set email null so that it will come back to base activity if user not signed in
         val userEmail = sharedPreferences.getString(USER_EMAIL, "")
 
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this
+        ) { instanceIdResult ->
+            messageToken = instanceIdResult.token
+            Log.e("newToken", messageToken)
 
-        if (messageToken != null && !userEmail.equals("")) {
-            val tokenReference = FirebaseDatabase.getInstance().reference
-                .child(FIRE_BASE_PATH_USER_TOKEN).child(encodeEmail(userEmail))
-            tokenReference.child("token").setValue(messageToken)
+            if (messageToken != null && !userEmail.equals("")) {
+                val tokenReference = FirebaseDatabase.getInstance().reference
+                    .child(FIRE_BASE_PATH_USER_TOKEN).child(encodeEmail(userEmail))
+                tokenReference.child("token").setValue(messageToken)
 
+            }
         }
+        Log.e("newToken1", messageToken)
+
+
+
+
+
 
 
         mAuth = FirebaseAuth.getInstance()

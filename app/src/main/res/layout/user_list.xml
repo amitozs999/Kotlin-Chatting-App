@@ -68,7 +68,7 @@ android:elevation="0dp"
                     android:textStyle="italic" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -76,10 +76,10 @@ android:elevation="0dp"
                 <RelativeLayout
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:layout_marginStart="100dp"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="30dp"
 
-                    >
+                    android:layout_marginEnd="15dp">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/reqsendbutton"
@@ -89,6 +89,7 @@ android:elevation="0dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="6dp"
                         android:src="@drawable/ic_person_add_black_24dp" />
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/reqsentbutton"
                         android:layout_width="24dp"
@@ -100,7 +101,7 @@ android:elevation="0dp"
 
 
                 </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
