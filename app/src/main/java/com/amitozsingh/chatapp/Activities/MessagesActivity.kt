@@ -1,11 +1,13 @@
 package com.amitozsingh.chatapp.Activities
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.amitozsingh.chatapp.Fragments.FriendsFragment
 import com.amitozsingh.chatapp.Fragments.LoginFragment
@@ -215,6 +217,21 @@ class MessagesActivity : AppCompatActivity(),BottomNavigationView.OnNavigationIt
 
     }
 
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+            .setTitle("Confirmation")
+            .setMessage("Are you sure you want to exit?")
+            .setNegativeButton(android.R.string.no, null)
+            .setPositiveButton(android.R.string.yes, object : DialogInterface.OnClickListener {
+
+                override fun onClick(arg0: DialogInterface, arg1: Int) {
+                    onSuperBackPressed()
+                }
+            }).create().show()
+    }
+    fun onSuperBackPressed() {
+        super.onBackPressed()
+    }
     override fun onDestroy() {
         super.onDestroy()
 

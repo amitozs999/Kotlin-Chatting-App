@@ -42,6 +42,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import io.socket.client.IO
@@ -85,9 +86,9 @@ class ProfileFragment : BaseFragment() {
     private var mSocket: Socket? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
+//
+//        val builder = StrictMode.VmPolicy.Builder()
+//        StrictMode.setVmPolicy(builder.build())
         super.onCreate(savedInstanceState)
         mSocket= IO.socket(LOCAL_HOST)
         mSocket!!.connect()
@@ -183,7 +184,18 @@ class ProfileFragment : BaseFragment() {
                     mPermission!!.requestPermissionForReadExternalStorage()
                 } else {
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    mTempUri = Uri.fromFile(getOutputFile())
+                    //mTempUri = Uri.fromFile(getOutputFile())
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                    mTempUri = context?.let { it1 ->
+                        getOutputFile()?.let { it2 ->
+                            FileProvider.getUriForFile(
+                                it1,
+                                context!!.getApplicationContext().packageName + ".provider",
+                                it2
+                            )
+                        }
+                    }
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, mTempUri)
                     startActivityForResult(intent, REQUEST_CODE_CAMERA)
                 }
